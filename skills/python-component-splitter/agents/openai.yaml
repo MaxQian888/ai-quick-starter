@@ -1,0 +1,4 @@
+interface:
+  display_name: "Python Component Splitter"
+  short_description: "Split monolithic Python modules into maintainable components"
+  default_prompt: "Use $python-component-splitter to split a large Python module into project-aligned components with a staged migration plan."

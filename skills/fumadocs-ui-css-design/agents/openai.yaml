@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fumadocs Complete Guide"
+  short_description: "Current Fumadocs build, UI, and docs guidance."
+  default_prompt: "Use $fumadocs-ui-css-design to build or customize this Fumadocs site with current official guidance."

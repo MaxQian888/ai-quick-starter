@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gitignore Curator"
+  short_description: "Review .gitignore and related ignore files safely"
+  default_prompt: "Use $gitignore-curator to inspect this git project, review current git status and recent commits, propose safe additions for .gitignore or related ignore files, and update the approved files after confirmation."

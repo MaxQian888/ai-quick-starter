@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agents Team Builder"
+  short_description: "Design Codex subagent teams and config drafts."
+  default_prompt: "Use $agents-team-builder to decompose this project into a Codex subagent team, then generate Markdown, JSON, and .toml drafts."

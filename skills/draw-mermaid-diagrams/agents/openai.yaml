@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mermaid Diagram Builder"
+  short_description: "Create and refine Mermaid diagrams from requirements"
+  default_prompt: "Use $draw-mermaid-diagrams to draft a Mermaid flowchart for a user registration process."

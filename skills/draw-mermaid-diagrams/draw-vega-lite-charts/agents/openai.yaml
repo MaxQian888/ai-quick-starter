@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vega-Lite Chart Builder"
+  short_description: "Create, debug, and optimize Vega-Lite specs"
+  default_prompt: "Use $draw-vega-lite-charts to generate a Vega-Lite spec for monthly sales trend by region, then add tooltips and sort rules."

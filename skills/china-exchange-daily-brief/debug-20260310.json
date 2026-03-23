@@ -1,0 +1,132 @@
+{
+  "targetDate": "2026-03-10",
+  "generatedAt": "2026-03-10T15:31:47.686Z",
+  "options": {
+    "maxItems": 3,
+    "strictDate": false,
+    "includeBse": false,
+    "timeoutMs": 25000
+  },
+  "exchanges": [
+    {
+      "id": "sse",
+      "name": "上海证券交易所",
+      "listUrl": "https://www.sse.com.cn/aboutus/mediacenter/hotandd/",
+      "status": "partial",
+      "dateMode": "latest-fallback",
+      "message": "无当天条目，已回退到最新可用条目",
+      "items": [
+        {
+          "exchange": "上海证券交易所",
+          "title": "上海证券交易所2026年为市场办实事项目正式发布",
+          "date": "2026-02-12",
+          "link": "https://www.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20260212_10809460.shtml",
+          "image": "https://www.sse.com.cn/xhtml/images/ui_home_enter_edu_2024.png",
+          "summary": "上海证券交易所2026年为市场办实事项目正式发布为推动中央八项规定精神在上海证券交易所（以下简称上交所）落实落细，进一步深化“开门办审核、开门办监管、开门办服务”工作，上交所在认真研究市场各方诉求基础上，结合交易所实际，梳理形成了《上海证券",
+          "detailStatus": "ok",
+          "detailNote": ""
+        },
+        {
+          "exchange": "上海证券交易所",
+          "title": "上海证券交易所推出优化再融资一揽子措施",
+          "date": "2026-02-09",
+          "link": "https://www.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20260209_10809027.shtml",
+          "image": "https://www.sse.com.cn/xhtml/images/ui_home_enter_edu_2024.png",
+          "summary": "党的二十届四中全会提出，提高资本市场制度包容性、适应性，健全投资和融资相协调的资本市场功能。2025年中央经济工作会议要求，持续深化资本市场投融资综合改革。",
+          "detailStatus": "ok",
+          "detailNote": ""
+        },
+        {
+          "exchange": "上海证券交易所",
+          "title": "上交所新增发布三项可持续发展报告编制应用指南 助力上市公司高质量披露可持续发展报告",
+          "date": "2026-01-30",
+          "link": "https://www.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20260130_10807454.shtml",
+          "image": "https://www.sse.com.cn/xhtml/images/ui_home_enter_edu_2024.png",
+          "summary": "上交所新增发布三项可持续发展报告编制应用指南 助力上市公司高质量披露可持续发展报告近日，在中国证监会的指导下，上交所制定发布三项可持续发展报告编制应用指南，涉及污染物排放、能源利用和水资源利用，中英文版本同步向市场公开。",
+          "detailStatus": "ok",
+          "detailNote": ""
+        }
+      ]
+    },
+    {
+      "id": "szse",
+      "name": "深圳证券交易所",
+      "listUrl": "https://www.szse.cn/aboutus/trends/news/",
+      "status": "partial",
+      "dateMode": "latest-fallback",
+      "message": "无当天条目，已回退到最新可用条目",
+      "items": [
+        {
+          "exchange": "深圳证券交易所",
+          "title": "固德电材在深交所上市",
+          "date": "2026-03-06",
+          "link": "https://www.szse.cn/aboutus/trends/news/t20260306_619308.html",
+          "image": "http://res.static.szse.cn/common/images/legalrules-banner.jpg",
+          "summary": "固德电材（证券代码： 301680）于2026年03月06日登陆创业板。固德电材 本次公开发行股票 2,070万股，其中公开发行新股2,070万股，发行价格58元/股，新股募集资金12.01亿元，发行后总股本8,280万股。",
+          "detailStatus": "ok",
+          "detailNote": ""
+        },
+        {
+          "exchange": "深圳证券交易所",
+          "title": "关于*ST立方股票交易的风险提示",
+          "date": "2026-02-10",
+          "link": "https://www.szse.cn/aboutus/trends/news/t20260210_619132.html",
+          "image": "http://res.static.szse.cn/common/images/legalrules-banner.jpg",
+          "summary": "2025年11月28日，*ST立方收到安徽证监局作出的《行政处罚及市场禁入事先告知书》， 公司 2021年 至 2023年连续三年年度报告财务数据涉嫌虚假记载 ， 2021年和2022年连续两年 涉嫌虚假记载的营业 收入金额合计达到 5亿元",
+          "detailStatus": "ok",
+          "detailNote": ""
+        },
+        {
+          "exchange": "深圳证券交易所",
+          "title": "深圳证券交易所推出优化再融资一揽子措施",
+          "date": "2026-02-09",
+          "link": "https://www.szse.cn/aboutus/trends/news/t20260209_619077.html",
+          "image": "http://res.static.szse.cn/common/images/legalrules-banner.jpg",
+          "summary": "党的二十届三中、四中全会和 中央经济工作会议 对 提高资本市场制度包容性适应性、 深化资本市场投融资综合改革 作出重要部署。",
+          "detailStatus": "ok",
+          "detailNote": ""
+        }
+      ]
+    },
+    {
+      "id": "hkex",
+      "name": "香港交易所",
+      "listUrl": "https://www.hkex.com.hk/News/News-Release?sc_lang=zh-CN",
+      "status": "partial",
+      "dateMode": "latest-fallback",
+      "message": "无当天条目，已回退到最新可用条目",
+      "items": [
+        {
+          "exchange": "香港交易所",
+          "title": "香港交易所慈善基金推出照顧者關懷計劃",
+          "date": "2026-03-09",
+          "link": "https://www.hkex.com.hk/News/News-Release/2026/260309news?sc_lang=zh-HK",
+          "image": "https://www.hkex.com.hk/-/media/8753343A70D0474B8686191545E7F589.jpg",
+          "summary": "香港交易及結算所有限公司（香港交易所）旗下香港交易所慈善基金（基金）今天（星期一）正式啟動其旗艦照顧者關懷計劃，提升本地照顧者的身心健康。",
+          "detailStatus": "ok",
+          "detailNote": ""
+        },
+        {
+          "exchange": "香港交易所",
+          "title": "香港交易所歡迎香港特區政府委任董事會成員",
+          "date": "2026-02-27",
+          "link": "https://www.hkex.com.hk/News/News-Release/2026/2602272news?sc_lang=zh-HK",
+          "image": "https://www.hkex.com.hk/-/media/8753343A70D0474B8686191545E7F589.jpg",
+          "summary": "香港交易及結算所有限公司（香港交易所）今天（星期五）歡迎香港特區政府委任陳錦榮為董事，及再度委任陳健波和車品覺為董事。他們的任期將由香港交易所2026年股東周年大會結束時開始，至2028年股東周年大會結束時止。",
+          "detailStatus": "ok",
+          "detailNote": ""
+        },
+        {
+          "exchange": "香港交易所",
+          "title": "沒收未領取的2019年度第二次中期股息 pdf",
+          "date": "2026-02-27",
+          "link": "https://www.hkex.com.hk/-/media/HKEX-Market/News/News-Release/2026/260227news/260227news_Chi.pdf",
+          "image": "https://www.hkex.com.hk/assets/images/HKEX-Logo.png",
+          "summary": "%PDF-1.6 %���� 70 0 obj > endobj 97 0 obj >/Filter/FlateDecode/ID[ ]/Index[70 48]/Info 69 0 R/Length 118/Prev 381968/Roo",
+          "detailStatus": "ok",
+          "detailNote": ""
+        }
+      ]
+    }
+  ]
+}

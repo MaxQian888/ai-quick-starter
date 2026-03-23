@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Tool Benchmark Builder"
+  short_description: "Design benchmark packs for tool-using LLM agents."
+  default_prompt: "Use $agent-tool-benchmark-builder to turn real tool-using agent tasks into benchmark packs with task schemas, scoring rubrics, judge prompts, and results tables."

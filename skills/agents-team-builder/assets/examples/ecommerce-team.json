@@ -1,0 +1,435 @@
+{
+  "request": {
+    "project_name": "ecommerce-rebuild",
+    "project_slug": "ecommerce-rebuild",
+    "input_path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\ecommerce-input.md",
+    "source_summary": "# Ecommerce Rebuild Brief\n\nWe are starting a new ecommerce project and want to try Codex subagents for parallel work.\n\nTasks:\n\n- write product documentation\n- research current competitors\n- build the database schema\n- collect seed catalog data from public sites\n- write frontend pages\n- write backend APIs\n- debug integration issues\n\nConstraints:\n\n- keep the team small\n- prefer built-in roles first\n- generate reviewable `.toml` drafts instead of installing them automatically"
+  },
+  "assumptions": [
+    "Used ecommerce-input.md as the primary request source.",
+    "This first-pass plan uses keyword heuristics instead of a semantic dependency graph.",
+    "Generated .toml files are reviewable drafts and are not installed automatically.",
+    "Verification work was split into its own phase to avoid false parallelism."
+  ],
+  "task_graph": [
+    {
+      "id": "research",
+      "title": "Research",
+      "role": "explorer",
+      "phase": "discovery",
+      "description": "Read the landscape and gather constraints before implementation starts.",
+      "parallelizable": true,
+      "reads_from": [
+        "brief",
+        "external-sources"
+      ],
+      "writes_to": [
+        "notes",
+        "findings"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "documentation",
+      "title": "Documentation",
+      "role": "default",
+      "phase": "synthesis",
+      "description": "Draft specs, user guides, or internal docs from the active workstream.",
+      "parallelizable": true,
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "implementation-status"
+      ],
+      "writes_to": [
+        "docs"
+      ],
+      "depends_on": [
+        "research",
+        "data-collection",
+        "backend",
+        "database",
+        "frontend"
+      ]
+    },
+    {
+      "id": "database",
+      "title": "Database",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Design or implement persistence models, schemas, and migrations.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "research-notes"
+      ],
+      "writes_to": [
+        "database"
+      ],
+      "depends_on": [
+        "research",
+        "data-collection"
+      ]
+    },
+    {
+      "id": "data-collection",
+      "title": "Data Collection",
+      "role": "explorer",
+      "phase": "discovery",
+      "description": "Gather source material or seed data needed by downstream tasks.",
+      "parallelizable": true,
+      "reads_from": [
+        "brief",
+        "external-sources"
+      ],
+      "writes_to": [
+        "dataset",
+        "raw-findings"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Implement screens, components, and client-side behavior.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "design-assets",
+        "research-notes"
+      ],
+      "writes_to": [
+        "frontend"
+      ],
+      "depends_on": [
+        "research",
+        "data-collection"
+      ]
+    },
+    {
+      "id": "backend",
+      "title": "Backend",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Implement APIs, services, and server-side orchestration.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "research-notes",
+        "database"
+      ],
+      "writes_to": [
+        "backend"
+      ],
+      "depends_on": [
+        "research",
+        "data-collection"
+      ]
+    },
+    {
+      "id": "debugging",
+      "title": "Debugging",
+      "role": "worker",
+      "phase": "verification",
+      "description": "Stabilize the integration surface and resolve regressions.",
+      "parallelizable": false,
+      "reads_from": [
+        "logs",
+        "frontend",
+        "backend",
+        "database"
+      ],
+      "writes_to": [
+        "fixes",
+        "regression-notes"
+      ],
+      "depends_on": [
+        "backend",
+        "database",
+        "frontend"
+      ]
+    }
+  ],
+  "parallel_groups": [
+    {
+      "group_id": "discovery-batch",
+      "goal": "Discovery",
+      "tasks": [
+        "research",
+        "data-collection"
+      ],
+      "max_concurrency": 2,
+      "why_parallelizable": "These tasks share the same phase and do not require one another's immediate writes.",
+      "merge_point": "Review outputs from this batch before handing off to the next phase."
+    },
+    {
+      "group_id": "implementation-batch",
+      "goal": "Implementation",
+      "tasks": [
+        "database",
+        "frontend",
+        "backend"
+      ],
+      "max_concurrency": 3,
+      "why_parallelizable": "These tasks share the same phase and do not require one another's immediate writes.",
+      "merge_point": "Review outputs from this batch before handing off to the next phase."
+    },
+    {
+      "group_id": "synthesis-batch",
+      "goal": "Synthesis",
+      "tasks": [
+        "documentation"
+      ],
+      "max_concurrency": 1,
+      "why_parallelizable": "These tasks share the same phase and do not require one another's immediate writes.",
+      "merge_point": "Review outputs from this batch before handing off to the next phase."
+    }
+  ],
+  "agents": [
+    {
+      "name": "default",
+      "role": "default",
+      "purpose": "Fallback synthesis, documentation, and integration support.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Atlas",
+        "Delta",
+        "Echo"
+      ],
+      "developer_instructions": "Answer in the user's working language. Preserve code, commands, and logs verbatim. Handle synthesis, planning, and cross-task cleanup without drifting into unrelated work.",
+      "owns_tasks": [
+        "documentation"
+      ],
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "implementation-status"
+      ],
+      "writes_to": [
+        "docs",
+        "summaries",
+        "handoff-notes"
+      ]
+    },
+    {
+      "name": "worker",
+      "role": "worker",
+      "purpose": "Execution-focused implementation and fixes.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Forge",
+        "Relay",
+        "Nova"
+      ],
+      "developer_instructions": "Implement only the assigned scope. Validate touched files. Do not revert work owned by other agents. Call out blocked dependencies instead of guessing.",
+      "owns_tasks": [
+        "backend",
+        "database",
+        "debugging",
+        "frontend"
+      ],
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "existing-code"
+      ],
+      "writes_to": [
+        "source-code",
+        "tests",
+        "fixes"
+      ]
+    },
+    {
+      "name": "explorer",
+      "role": "explorer",
+      "purpose": "Read-heavy exploration, mapping, and evidence gathering.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Scout",
+        "Trace",
+        "Lens"
+      ],
+      "developer_instructions": "Stay in exploration mode. Read, map, and report findings without editing files. Surface uncertainty and likely next reads.",
+      "owns_tasks": [
+        "data-collection",
+        "research"
+      ],
+      "reads_from": [
+        "brief",
+        "repositories",
+        "docs",
+        "public-sources"
+      ],
+      "writes_to": [
+        "findings",
+        "indices",
+        "research-notes"
+      ]
+    },
+    {
+      "name": "reviewer",
+      "role": "reviewer",
+      "purpose": "Review and regression-focused quality pass.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Audit",
+        "Guard",
+        "Pulse"
+      ],
+      "developer_instructions": "Review outputs for regressions, missing tests, and unsafe assumptions. Prefer targeted verification and concise findings.",
+      "owns_tasks": [
+        "debugging"
+      ],
+      "reads_from": [
+        "diff",
+        "tests",
+        "logs"
+      ],
+      "writes_to": [
+        "review-findings",
+        "regression-tests"
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "agent": "default",
+      "prompt": "Use the default agent to handle Documentation. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "worker",
+      "prompt": "Use the worker agent to handle Backend, Database, Debugging, Frontend. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "explorer",
+      "prompt": "Use the explorer agent to handle Data Collection, Research. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "reviewer",
+      "prompt": "Use the reviewer agent to handle Debugging. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    }
+  ],
+  "toml_files": {
+    "default.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\default.toml",
+      "role": "default",
+      "content": "name = \"default\"\ndescription = \"Fallback synthesis, documentation, and integration support.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Atlas\", \"Delta\", \"Echo\"]\ndeveloper_instructions = \"\"\"\nAnswer in the user's working language. Preserve code, commands, and logs verbatim. Handle synthesis, planning, and cross-task cleanup without drifting into unrelated work.\n\"\"\"\n"
+    },
+    "worker.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\worker.toml",
+      "role": "worker",
+      "content": "name = \"worker\"\ndescription = \"Execution-focused implementation and fixes.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Forge\", \"Relay\", \"Nova\"]\ndeveloper_instructions = \"\"\"\nImplement only the assigned scope. Validate touched files. Do not revert work owned by other agents. Call out blocked dependencies instead of guessing.\n\"\"\"\n"
+    },
+    "explorer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\explorer.toml",
+      "role": "explorer",
+      "content": "name = \"explorer\"\ndescription = \"Read-heavy exploration, mapping, and evidence gathering.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Scout\", \"Trace\", \"Lens\"]\ndeveloper_instructions = \"\"\"\nStay in exploration mode. Read, map, and report findings without editing files. Surface uncertainty and likely next reads.\n\"\"\"\n"
+    },
+    "reviewer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\reviewer.toml",
+      "role": "reviewer",
+      "content": "name = \"reviewer\"\ndescription = \"Review and regression-focused quality pass.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Audit\", \"Guard\", \"Pulse\"]\ndeveloper_instructions = \"\"\"\nReview outputs for regressions, missing tests, and unsafe assumptions. Prefer targeted verification and concise findings.\n\"\"\"\n"
+    }
+  },
+  "execution_plan": [
+    {
+      "step": 1,
+      "task_id": "data-collection",
+      "title": "Data Collection",
+      "phase": "discovery",
+      "depends_on": [],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 2,
+      "task_id": "research",
+      "title": "Research",
+      "phase": "discovery",
+      "depends_on": [],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 3,
+      "task_id": "backend",
+      "title": "Backend",
+      "phase": "implementation",
+      "depends_on": [
+        "research",
+        "data-collection"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 4,
+      "task_id": "database",
+      "title": "Database",
+      "phase": "implementation",
+      "depends_on": [
+        "research",
+        "data-collection"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 5,
+      "task_id": "frontend",
+      "title": "Frontend",
+      "phase": "implementation",
+      "depends_on": [
+        "research",
+        "data-collection"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 6,
+      "task_id": "documentation",
+      "title": "Documentation",
+      "phase": "synthesis",
+      "depends_on": [
+        "research",
+        "data-collection",
+        "backend",
+        "database",
+        "frontend"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 7,
+      "task_id": "debugging",
+      "title": "Debugging",
+      "phase": "verification",
+      "depends_on": [
+        "backend",
+        "database",
+        "frontend"
+      ],
+      "handoff": "Complete and verify before proceeding."
+    }
+  ],
+  "risks": [
+    "Too many write-capable agents on overlapping files will erase the value of parallelization.",
+    "If a task's immediate next action depends on another task's output, it should stay serial.",
+    "Generated model and prompt choices are defaults, not guarantees of actual runtime selection.",
+    "Frontend, backend, and database work need an explicit merge point before debugging or QA."
+  ],
+  "open_questions": [
+    "Should any custom agents be promoted from drafts into persistent ~/.codex/agents/*.toml files?",
+    "Are there repository-specific instructions that should be merged into developer_instructions?",
+    "Does data collection require credentials, APIs, or legal review before delegation?"
+  ],
+  "install_manifest": {},
+  "installed_files": [],
+  "install_actions": []
+}

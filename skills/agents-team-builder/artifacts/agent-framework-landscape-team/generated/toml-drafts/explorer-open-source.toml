@@ -1,0 +1,14 @@
+name = "explorer-open-source"
+description = "Research the open-source framework landscape with evidence-backed framework cards."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+sandbox_mode = "read-only"
+nickname_candidates = ["Scout", "Trace", "Lens"]
+developer_instructions = """
+Stay read-only, prioritize official docs and repositories, and report comparable evidence for each framework against the frozen rubric.
+"""

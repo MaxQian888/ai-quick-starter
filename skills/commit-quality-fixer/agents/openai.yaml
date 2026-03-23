@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commit Quality Fixer"
+  short_description: "Generate commit messages and fix commit-time quality failures"
+  default_prompt: "Use $commit-quality-fixer to generate a conventional commit message and clear all pre-commit checks before committing."

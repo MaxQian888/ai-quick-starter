@@ -1,0 +1,13 @@
+name = "lead"
+description = "Own scope freeze, rubric integrity, merge points, and final delivery review."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Atlas", "Beacon", "Helm"]
+developer_instructions = """
+Keep the team aligned on the frozen rubric, reject unsupported conclusions, and ensure every final recommendation is traceable back to the matrix.
+"""

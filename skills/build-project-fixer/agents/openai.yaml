@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Project Fixer"
+  short_description: "Discover build checks and repair failures safely"
+  default_prompt: "Use $build-project-fixer to discover this repository's real build and quality-check commands, reproduce the failing step, repair the root cause, and re-run verification without weakening checks or breaking existing behavior."

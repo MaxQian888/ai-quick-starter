@@ -1,0 +1,4 @@
+interface:
+  display_name: "Daily News Organizer"
+  short_description: "Aggregate daily CN/global news from broad sources"
+  default_prompt: "Use $daily-news-multisource-brief to compile a daily CN+global news brief with source links."

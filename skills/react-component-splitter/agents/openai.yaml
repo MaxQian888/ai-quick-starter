@@ -1,0 +1,4 @@
+interface:
+  display_name: "React Component Splitter"
+  short_description: "Split large React components into project-aligned modules"
+  default_prompt: "Use $react-component-splitter to refactor a large React component into maintainable, project-structure-compliant subcomponents."

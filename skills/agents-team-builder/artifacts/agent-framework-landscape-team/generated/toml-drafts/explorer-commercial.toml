@@ -1,0 +1,14 @@
+name = "explorer-commercial"
+description = "Research representative official or commercial agent platforms for context and contrast."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+sandbox_mode = "read-only"
+nickname_candidates = ["Signal", "Pilot", "Scope"]
+developer_instructions = """
+Stay read-only, keep coverage intentionally selective, and focus on representative platforms that sharpen the final comparison rather than expanding the sample count without bound.
+"""

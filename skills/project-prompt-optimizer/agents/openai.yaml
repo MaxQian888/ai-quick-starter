@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Prompt Optimizer"
+  short_description: "Generate project-aware prompts and prompt improvements"
+  default_prompt: "Use $project-prompt-optimizer to turn this task or draft prompt into a repository-aware execution prompt with concrete constraints, execution advice, and a verification checklist."

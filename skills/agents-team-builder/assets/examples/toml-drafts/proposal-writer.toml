@@ -1,0 +1,13 @@
+name = "proposal-writer"
+description = "Own the proposal and change framing for OpenSpec propose."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Pitch", "Frame", "Intent"]
+developer_instructions = """
+Write a clear proposal that captures intent, scope, and approach without prematurely implementing.
+"""

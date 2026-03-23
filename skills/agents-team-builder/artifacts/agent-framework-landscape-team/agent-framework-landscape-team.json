@@ -1,0 +1,467 @@
+{
+  "request": {
+    "project_name": "agent-framework-landscape-team",
+    "project_slug": "agent-framework-landscape-team",
+    "input_path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\agent-framework-landscape-brief.md",
+    "source_summary": "Create a small Codex agent team that researches 12 to 15 current agent frameworks, prioritizes open-source options, includes a small number of representative official or commercial platforms, and delivers a comparison matrix, ranked selection conclusion, and phased implementation roadmap."
+  },
+  "workflow_profile": "generic",
+  "workflow_detection": {
+    "mode": "auto",
+    "signals": [],
+    "summary": "No workflow-specific profile was required; this team uses a generic research-and-synthesis lifecycle."
+  },
+  "workflow_steps": [],
+  "workflow_integrations": [],
+  "assumptions": [
+    "Used agent-framework-landscape-brief.md as the primary request source.",
+    "The generated first pass was refined manually because keyword heuristics collapsed the research workflow into generic implementation tasks.",
+    "Generated .toml files remain reviewable drafts and are not installed automatically.",
+    "Open-source frameworks remain the priority, while official or commercial platforms are included only as representative context."
+  ],
+  "task_graph": [
+    {
+      "id": "freeze-scope-and-rubric",
+      "title": "Freeze Scope And Rubric",
+      "role": "lead",
+      "phase": "discovery",
+      "description": "Lock the framework sample pool, evaluation dimensions, evidence standard, and merge rules before parallel research starts.",
+      "parallelizable": false,
+      "reads_from": [
+        "brief",
+        "seed-framework-list",
+        "research-dimensions"
+      ],
+      "writes_to": [
+        "sample-pool",
+        "rubric",
+        "research-briefing"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "research-open-source-frameworks",
+      "title": "Research Open-Source Frameworks",
+      "role": "explorer",
+      "phase": "discovery",
+      "description": "Research the primary open-source agent frameworks against the frozen rubric and capture evidence-backed framework cards.",
+      "parallelizable": true,
+      "reads_from": [
+        "research-briefing",
+        "sample-pool",
+        "public-sources"
+      ],
+      "writes_to": [
+        "open-source-framework-cards",
+        "evidence-notes"
+      ],
+      "depends_on": [
+        "freeze-scope-and-rubric"
+      ]
+    },
+    {
+      "id": "research-representative-platforms",
+      "title": "Research Representative Official Or Commercial Platforms",
+      "role": "explorer",
+      "phase": "discovery",
+      "description": "Research a small number of representative official or commercial agent platforms for context using the same rubric and evidence standard.",
+      "parallelizable": true,
+      "reads_from": [
+        "research-briefing",
+        "sample-pool",
+        "public-sources"
+      ],
+      "writes_to": [
+        "platform-cards",
+        "evidence-notes"
+      ],
+      "depends_on": [
+        "freeze-scope-and-rubric"
+      ]
+    },
+    {
+      "id": "normalize-comparison-matrix",
+      "title": "Normalize Comparison Matrix",
+      "role": "analyst",
+      "phase": "synthesis",
+      "description": "Merge the two research tracks into one normalized matrix with aligned scoring language, comparable evidence links, and explicit gaps.",
+      "parallelizable": false,
+      "reads_from": [
+        "open-source-framework-cards",
+        "platform-cards",
+        "rubric"
+      ],
+      "writes_to": [
+        "comparison-matrix",
+        "gap-log"
+      ],
+      "depends_on": [
+        "research-open-source-frameworks",
+        "research-representative-platforms"
+      ]
+    },
+    {
+      "id": "recommendation-and-roadmap",
+      "title": "Recommendation And Roadmap",
+      "role": "strategist",
+      "phase": "synthesis",
+      "description": "Turn the normalized matrix into recommended tiers, scenario-specific picks, and a phased proof-of-concept to adoption roadmap.",
+      "parallelizable": false,
+      "reads_from": [
+        "comparison-matrix",
+        "gap-log"
+      ],
+      "writes_to": [
+        "selection-conclusion",
+        "implementation-roadmap"
+      ],
+      "depends_on": [
+        "normalize-comparison-matrix"
+      ]
+    },
+    {
+      "id": "final-package-review",
+      "title": "Final Package Review",
+      "role": "lead",
+      "phase": "verification",
+      "description": "Check that the matrix, recommendation, and roadmap are evidence-backed, mutually consistent, and scoped to the requested deliverables.",
+      "parallelizable": false,
+      "reads_from": [
+        "comparison-matrix",
+        "selection-conclusion",
+        "implementation-roadmap"
+      ],
+      "writes_to": [
+        "final-package",
+        "handoff-notes"
+      ],
+      "depends_on": [
+        "normalize-comparison-matrix",
+        "recommendation-and-roadmap"
+      ]
+    }
+  ],
+  "parallel_groups": [
+    {
+      "group_id": "discovery-research-batch",
+      "goal": "Run evidence gathering in parallel after the rubric is frozen.",
+      "tasks": [
+        "research-open-source-frameworks",
+        "research-representative-platforms"
+      ],
+      "max_concurrency": 2,
+      "why_parallelizable": "Both tasks are read-heavy, use the same rubric, and write to separate evidence bundles that merge only in the matrix stage.",
+      "merge_point": "Lead confirms both evidence bundles are complete enough for analyst normalization before synthesis begins."
+    }
+  ],
+  "agents": [
+    {
+      "name": "lead",
+      "role": "lead",
+      "purpose": "Own scope freeze, rubric integrity, merge points, and final delivery review.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Atlas",
+        "Beacon",
+        "Helm"
+      ],
+      "developer_instructions": "Keep the team aligned on the frozen rubric, reject unsupported conclusions, and ensure every final recommendation is traceable back to the matrix.",
+      "owns_tasks": [
+        "freeze-scope-and-rubric",
+        "final-package-review"
+      ],
+      "reads_from": [
+        "brief",
+        "rubric",
+        "comparison-matrix",
+        "implementation-roadmap"
+      ],
+      "writes_to": [
+        "sample-pool",
+        "research-briefing",
+        "handoff-notes",
+        "final-package"
+      ]
+    },
+    {
+      "name": "explorer-open-source",
+      "role": "explorer",
+      "purpose": "Research the open-source framework landscape with evidence-backed framework cards.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Scout",
+        "Trace",
+        "Lens"
+      ],
+      "developer_instructions": "Stay read-only, prioritize official docs and repositories, and report comparable evidence for each framework against the frozen rubric.",
+      "owns_tasks": [
+        "research-open-source-frameworks"
+      ],
+      "reads_from": [
+        "research-briefing",
+        "sample-pool",
+        "public-sources"
+      ],
+      "writes_to": [
+        "open-source-framework-cards",
+        "evidence-notes"
+      ]
+    },
+    {
+      "name": "explorer-commercial",
+      "role": "explorer",
+      "purpose": "Research representative official or commercial agent platforms for context and contrast.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Signal",
+        "Pilot",
+        "Scope"
+      ],
+      "developer_instructions": "Stay read-only, keep coverage intentionally selective, and focus on representative platforms that sharpen the final comparison rather than expanding the sample count without bound.",
+      "owns_tasks": [
+        "research-representative-platforms"
+      ],
+      "reads_from": [
+        "research-briefing",
+        "sample-pool",
+        "public-sources"
+      ],
+      "writes_to": [
+        "platform-cards",
+        "evidence-notes"
+      ]
+    },
+    {
+      "name": "analyst",
+      "role": "analyst",
+      "purpose": "Normalize both research tracks into one comparison matrix with aligned scoring and explicit evidence gaps.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Matrix",
+        "Grid",
+        "Ledger"
+      ],
+      "developer_instructions": "Do not reopen research scope. Normalize terminology, flag missing evidence, and keep the matrix comparable across all frameworks and platforms.",
+      "owns_tasks": [
+        "normalize-comparison-matrix"
+      ],
+      "reads_from": [
+        "open-source-framework-cards",
+        "platform-cards",
+        "rubric"
+      ],
+      "writes_to": [
+        "comparison-matrix",
+        "gap-log"
+      ]
+    },
+    {
+      "name": "strategist",
+      "role": "strategist",
+      "purpose": "Convert the matrix into ranked recommendations, scenario-specific picks, and a phased implementation roadmap.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Northstar",
+        "Route",
+        "Frame"
+      ],
+      "developer_instructions": "Base every recommendation on matrix evidence, separate general-purpose picks from scenario-specific picks, and keep the roadmap constrained to realistic proof-of-concept and adoption phases.",
+      "owns_tasks": [
+        "recommendation-and-roadmap"
+      ],
+      "reads_from": [
+        "comparison-matrix",
+        "gap-log"
+      ],
+      "writes_to": [
+        "selection-conclusion",
+        "implementation-roadmap"
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "agent": "lead",
+      "prompt": "Use the lead agent to freeze the sample pool, evaluation rubric, merge rules, and final review boundary for the agent-framework research package."
+    },
+    {
+      "agent": "explorer-open-source",
+      "prompt": "Use the explorer-open-source agent to research the open-source agent frameworks with official-source evidence and write framework cards against the frozen rubric."
+    },
+    {
+      "agent": "explorer-commercial",
+      "prompt": "Use the explorer-commercial agent to research a small number of representative official or commercial platforms and write comparable evidence cards without expanding scope unnecessarily."
+    },
+    {
+      "agent": "analyst",
+      "prompt": "Use the analyst agent to merge both research tracks into one normalized comparison matrix, align terminology, and flag evidence gaps."
+    },
+    {
+      "agent": "strategist",
+      "prompt": "Use the strategist agent to turn the normalized matrix into ranked recommendations, scenario-specific picks, and a phased implementation roadmap."
+    }
+  ],
+  "toml_files": {
+    "lead.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\lead.toml",
+      "role": "lead",
+      "content": "name = \"lead\"\ndescription = \"Own scope freeze, rubric integrity, merge points, and final delivery review.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Atlas\", \"Beacon\", \"Helm\"]\ndeveloper_instructions = \"\"\"\nKeep the team aligned on the frozen rubric, reject unsupported conclusions, and ensure every final recommendation is traceable back to the matrix.\n\"\"\"\n"
+    },
+    "explorer-open-source.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\explorer-open-source.toml",
+      "role": "explorer",
+      "content": "name = \"explorer-open-source\"\ndescription = \"Research the open-source framework landscape with evidence-backed framework cards.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Scout\", \"Trace\", \"Lens\"]\ndeveloper_instructions = \"\"\"\nStay read-only, prioritize official docs and repositories, and report comparable evidence for each framework against the frozen rubric.\n\"\"\"\n"
+    },
+    "explorer-commercial.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\explorer-commercial.toml",
+      "role": "explorer",
+      "content": "name = \"explorer-commercial\"\ndescription = \"Research representative official or commercial agent platforms for context and contrast.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Signal\", \"Pilot\", \"Scope\"]\ndeveloper_instructions = \"\"\"\nStay read-only, keep coverage intentionally selective, and focus on representative platforms that sharpen the final comparison rather than expanding the sample count without bound.\n\"\"\"\n"
+    },
+    "analyst.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\analyst.toml",
+      "role": "analyst",
+      "content": "name = \"analyst\"\ndescription = \"Normalize both research tracks into one comparison matrix with aligned scoring and explicit evidence gaps.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Matrix\", \"Grid\", \"Ledger\"]\ndeveloper_instructions = \"\"\"\nDo not reopen research scope. Normalize terminology, flag missing evidence, and keep the matrix comparable across all frameworks and platforms.\n\"\"\"\n"
+    },
+    "strategist.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\strategist.toml",
+      "role": "strategist",
+      "content": "name = \"strategist\"\ndescription = \"Convert the matrix into ranked recommendations, scenario-specific picks, and a phased implementation roadmap.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Northstar\", \"Route\", \"Frame\"]\ndeveloper_instructions = \"\"\"\nBase every recommendation on matrix evidence, separate general-purpose picks from scenario-specific picks, and keep the roadmap constrained to realistic proof-of-concept and adoption phases.\n\"\"\"\n"
+    }
+  },
+  "install_manifest": {
+    "action": "install",
+    "path": "C:\\Users\\qwdma\\.codex\\agents\\.agents-team-builder\\manifests\\agent-framework-landscape-team.json"
+  },
+  "installed_files": [
+    {
+      "file_name": "analyst.toml",
+      "role": "analyst",
+      "source_path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\analyst.toml",
+      "destination_path": "C:\\Users\\qwdma\\.codex\\agents\\analyst.toml",
+      "action": "created",
+      "backup_path": null
+    },
+    {
+      "file_name": "explorer-commercial.toml",
+      "role": "explorer",
+      "source_path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\explorer-commercial.toml",
+      "destination_path": "C:\\Users\\qwdma\\.codex\\agents\\explorer-commercial.toml",
+      "action": "created",
+      "backup_path": null
+    },
+    {
+      "file_name": "explorer-open-source.toml",
+      "role": "explorer",
+      "source_path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\explorer-open-source.toml",
+      "destination_path": "C:\\Users\\qwdma\\.codex\\agents\\explorer-open-source.toml",
+      "action": "created",
+      "backup_path": null
+    },
+    {
+      "file_name": "lead.toml",
+      "role": "lead",
+      "source_path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\lead.toml",
+      "destination_path": "C:\\Users\\qwdma\\.codex\\agents\\lead.toml",
+      "action": "created",
+      "backup_path": null
+    },
+    {
+      "file_name": "strategist.toml",
+      "role": "strategist",
+      "source_path": "D:\\Project\\skills-test\\agents-team-builder\\artifacts\\agent-framework-landscape-team\\generated\\toml-drafts\\strategist.toml",
+      "destination_path": "C:\\Users\\qwdma\\.codex\\agents\\strategist.toml",
+      "action": "created",
+      "backup_path": null
+    }
+  ],
+  "install_actions": [
+    "created",
+    "created",
+    "created",
+    "created",
+    "created"
+  ],
+  "execution_plan": [
+    {
+      "step": 1,
+      "task_id": "freeze-scope-and-rubric",
+      "title": "Freeze Scope And Rubric",
+      "phase": "discovery",
+      "depends_on": [],
+      "handoff": "Lead publishes the rubric, sample pool, and evidence standard before any parallel research starts."
+    },
+    {
+      "step": 2,
+      "task_id": "research-open-source-frameworks",
+      "title": "Research Open-Source Frameworks",
+      "phase": "discovery",
+      "depends_on": [
+        "freeze-scope-and-rubric"
+      ],
+      "handoff": "Explorer-open-source hands off evidence-backed framework cards to the analyst after lead confirms scope coverage."
+    },
+    {
+      "step": 3,
+      "task_id": "research-representative-platforms",
+      "title": "Research Representative Official Or Commercial Platforms",
+      "phase": "discovery",
+      "depends_on": [
+        "freeze-scope-and-rubric"
+      ],
+      "handoff": "Explorer-commercial hands off comparable platform cards to the analyst after lead confirms the representative set is sufficient."
+    },
+    {
+      "step": 4,
+      "task_id": "normalize-comparison-matrix",
+      "title": "Normalize Comparison Matrix",
+      "phase": "synthesis",
+      "depends_on": [
+        "research-open-source-frameworks",
+        "research-representative-platforms"
+      ],
+      "handoff": "Analyst publishes the normalized matrix and gap log before any recommendations are drafted."
+    },
+    {
+      "step": 5,
+      "task_id": "recommendation-and-roadmap",
+      "title": "Recommendation And Roadmap",
+      "phase": "synthesis",
+      "depends_on": [
+        "normalize-comparison-matrix"
+      ],
+      "handoff": "Strategist drafts the recommendation package and roadmap using only matrix-backed claims."
+    },
+    {
+      "step": 6,
+      "task_id": "final-package-review",
+      "title": "Final Package Review",
+      "phase": "verification",
+      "depends_on": [
+        "normalize-comparison-matrix",
+        "recommendation-and-roadmap"
+      ],
+      "handoff": "Lead checks cross-document consistency, traceability, and scope before delivery."
+    }
+  ],
+  "risks": [
+    "If the lead does not freeze the rubric up front, the two research tracks will drift and the matrix will become non-comparable.",
+    "Allowing either explorer to expand the framework list opportunistically will break the requested 12 to 15 framework budget and slow the synthesis stages.",
+    "If the analyst silently normalizes missing evidence into ratings, the selection conclusion will look precise without being trustworthy.",
+    "Recommendation and roadmap work must stay serial after matrix normalization; starting them early would create unsupported conclusions."
+  ],
+  "open_questions": [
+    "Which 2 to 4 official or commercial platforms should be treated as representative context during stage 1 scope freeze?",
+    "Should the final package include weighted scoring, or should the matrix remain qualitative with scenario-based recommendations?",
+    "Do you want these TOML drafts to stay local artifacts, or should they later be promoted into persistent Codex agent configs after the team proves useful?"
+  ]
+}

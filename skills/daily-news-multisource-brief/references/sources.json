@@ -1,0 +1,1039 @@
+{
+  "presets": {
+    "cn-core": [
+      "chinadaily-china",
+      "chinadaily-world",
+      "chinadaily-business",
+      "chinadaily-opinion",
+      "cgtn-world",
+      "cgtn-china",
+      "globaltimes-world",
+      "google-news-cn"
+    ],
+    "global-core": [
+      "bbc-world",
+      "bbc-business",
+      "nyt-world",
+      "nyt-business",
+      "guardian-world",
+      "guardian-business",
+      "aljazeera-all",
+      "cnbc-top",
+      "marketwatch-top",
+      "ft-world",
+      "ft-global-economy",
+      "ap-via-google-news",
+      "un-news",
+      "who-via-google-news",
+      "worldbank-via-google-news"
+    ],
+    "all-core": [
+      "chinadaily-china",
+      "chinadaily-world",
+      "chinadaily-business",
+      "chinadaily-opinion",
+      "cgtn-world",
+      "cgtn-china",
+      "globaltimes-world",
+      "google-news-cn",
+      "bbc-world",
+      "bbc-business",
+      "nyt-world",
+      "nyt-business",
+      "guardian-world",
+      "guardian-business",
+      "aljazeera-all",
+      "cnbc-top",
+      "marketwatch-top",
+      "ft-world",
+      "ft-global-economy",
+      "ap-via-google-news",
+      "un-news",
+      "who-via-google-news",
+      "worldbank-via-google-news"
+    ],
+    "all-official": [
+      "chinadaily-china",
+      "chinadaily-world",
+      "chinadaily-business",
+      "chinadaily-opinion",
+      "cgtn-world",
+      "cgtn-china",
+      "globaltimes-world",
+      "bbc-world",
+      "bbc-business",
+      "bbc-tech",
+      "nyt-world",
+      "nyt-business",
+      "nyt-tech",
+      "guardian-world",
+      "guardian-business",
+      "guardian-tech",
+      "aljazeera-all",
+      "cnn-world",
+      "ft-world",
+      "ft-global-economy",
+      "cnbc-top",
+      "cnbc-world",
+      "cnbc-tech",
+      "marketwatch-top",
+      "yahoo-finance-news",
+      "techcrunch",
+      "the-verge",
+      "ars-technica",
+      "wired",
+      "sciencedaily-top",
+      "nasa-breaking",
+      "federal-reserve-press",
+      "sec-press"
+    ],
+    "all-expanded": [
+      "chinadaily-china",
+      "chinadaily-world",
+      "chinadaily-business",
+      "chinadaily-opinion",
+      "cgtn-world",
+      "cgtn-china",
+      "globaltimes-world",
+      "google-news-cn",
+      "xinhua-news",
+      "xinhua-world",
+      "people-daily",
+      "cctv-news",
+      "thepaper-featured",
+      "caixin-latest",
+      "yicai-latest",
+      "nbd-latest",
+      "cailianpress-telegraph",
+      "twentyonejingji-latest",
+      "stcn-latest",
+      "sina-china",
+      "huxiu-hot",
+      "thirtysixkr-flash",
+      "ifanr-news",
+      "pingwest-feed",
+      "guancha-latest",
+      "reuters-world",
+      "reuters-business",
+      "reuters-tech",
+      "bbc-world",
+      "bbc-business",
+      "bbc-tech",
+      "nyt-world",
+      "nyt-business",
+      "nyt-tech",
+      "guardian-world",
+      "guardian-business",
+      "guardian-tech",
+      "aljazeera-all",
+      "cnn-world",
+      "ap-via-google-news",
+      "ft-world",
+      "ft-global-economy",
+      "cnbc-top",
+      "cnbc-world",
+      "cnbc-tech",
+      "marketwatch-top",
+      "yahoo-finance-news",
+      "politico-politics",
+      "euronews-all",
+      "techcrunch",
+      "the-verge",
+      "ars-technica",
+      "wired",
+      "engadget",
+      "hackernews-frontpage",
+      "reddit-worldnews",
+      "nature-latest",
+      "sciencedaily-top",
+      "nasa-breaking",
+      "who-via-google-news",
+      "who-news",
+      "un-news",
+      "worldbank-via-google-news",
+      "world-bank-news",
+      "imf-news",
+      "federal-reserve-press",
+      "sec-press",
+      "iea-news",
+      "oecd-news",
+      "wef-agenda"
+    ]
+  },
+  "sources": [
+    {
+      "id": "chinadaily-china",
+      "name": "China Daily China",
+      "region": "cn",
+      "category": "politics",
+      "country": "cn",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.chinadaily.com.cn/rss/china_rss.xml"
+      ]
+    },
+    {
+      "id": "chinadaily-world",
+      "name": "China Daily World",
+      "region": "cn",
+      "category": "world",
+      "country": "cn",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.chinadaily.com.cn/rss/world_rss.xml"
+      ]
+    },
+    {
+      "id": "chinadaily-business",
+      "name": "China Daily Business",
+      "region": "cn",
+      "category": "business",
+      "country": "cn",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.chinadaily.com.cn/rss/bizchina_rss.xml"
+      ]
+    },
+    {
+      "id": "chinadaily-opinion",
+      "name": "China Daily Opinion",
+      "region": "cn",
+      "category": "policy",
+      "country": "cn",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.chinadaily.com.cn/rss/opinion_rss.xml"
+      ]
+    },
+    {
+      "id": "cgtn-world",
+      "name": "CGTN World",
+      "region": "cn",
+      "category": "world",
+      "country": "cn",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.cgtn.com/subscribe/rss/section/world.xml"
+      ]
+    },
+    {
+      "id": "cgtn-china",
+      "name": "CGTN China",
+      "region": "cn",
+      "category": "politics",
+      "country": "cn",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.cgtn.com/subscribe/rss/section/china.xml"
+      ]
+    },
+    {
+      "id": "globaltimes-world",
+      "name": "Global Times",
+      "region": "cn",
+      "category": "world",
+      "country": "cn",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.globaltimes.cn/rss/outbrain.xml"
+      ]
+    },
+    {
+      "id": "google-news-cn",
+      "name": "Google News China Locale",
+      "region": "cn",
+      "category": "general",
+      "country": "cn",
+      "language": "zh",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss?hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+      ]
+    },
+    {
+      "id": "xinhua-news",
+      "name": "Xinhua News",
+      "region": "cn",
+      "category": "general",
+      "country": "cn",
+      "language": "zh",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:xinhuanet.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/xinhuanet/news"
+      ]
+    },
+    {
+      "id": "xinhua-world",
+      "name": "Xinhua World",
+      "region": "cn",
+      "category": "world",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:xinhuanet.com+world&hl=en-US&gl=US&ceid=US:en",
+        "https://rsshub.app/xinhuanet/world"
+      ]
+    },
+    {
+      "id": "people-daily",
+      "name": "People's Daily",
+      "region": "cn",
+      "category": "politics",
+      "country": "cn",
+      "language": "zh",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:people.com.cn&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/people"
+      ]
+    },
+    {
+      "id": "cctv-news",
+      "name": "CCTV News",
+      "region": "cn",
+      "category": "general",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:cctv.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/cctv/xwlb"
+      ]
+    },
+    {
+      "id": "thepaper-featured",
+      "name": "The Paper Featured",
+      "region": "cn",
+      "category": "general",
+      "country": "cn",
+      "language": "zh",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:thepaper.cn&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/thepaper/featured"
+      ]
+    },
+    {
+      "id": "caixin-latest",
+      "name": "Caixin Latest",
+      "region": "cn",
+      "category": "finance",
+      "country": "cn",
+      "language": "zh",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:caixin.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/caixin/latest"
+      ]
+    },
+    {
+      "id": "yicai-latest",
+      "name": "Yicai Latest",
+      "region": "cn",
+      "category": "finance",
+      "country": "cn",
+      "language": "zh",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:yicai.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/yicai/latest"
+      ]
+    },
+    {
+      "id": "nbd-latest",
+      "name": "NBD Latest",
+      "region": "cn",
+      "category": "finance",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:nbd.com.cn&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/nbd/news"
+      ]
+    },
+    {
+      "id": "cailianpress-telegraph",
+      "name": "Cailian Press Telegraph",
+      "region": "cn",
+      "category": "markets",
+      "country": "cn",
+      "language": "zh",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:cailianpress.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/cailianpress/telegraph"
+      ]
+    },
+    {
+      "id": "twentyonejingji-latest",
+      "name": "21 Jingji Latest",
+      "region": "cn",
+      "category": "business",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:21jingji.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/21jingji/news"
+      ]
+    },
+    {
+      "id": "stcn-latest",
+      "name": "STCN Latest",
+      "region": "cn",
+      "category": "markets",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:stcn.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/stcn/news"
+      ]
+    },
+    {
+      "id": "sina-china",
+      "name": "Sina China News",
+      "region": "cn",
+      "category": "general",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:news.sina.com.cn&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/sina/news/china"
+      ]
+    },
+    {
+      "id": "huxiu-hot",
+      "name": "Huxiu Hot",
+      "region": "cn",
+      "category": "business",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:huxiu.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/huxiu/channel/102"
+      ]
+    },
+    {
+      "id": "thirtysixkr-flash",
+      "name": "36Kr Flash",
+      "region": "cn",
+      "category": "technology",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:36kr.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/36kr/newsflashes"
+      ]
+    },
+    {
+      "id": "ifanr-news",
+      "name": "iFanr News",
+      "region": "cn",
+      "category": "technology",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:ifanr.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/ifanr/news"
+      ]
+    },
+    {
+      "id": "pingwest-feed",
+      "name": "PingWest",
+      "region": "cn",
+      "category": "technology",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:pingwest.com&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://www.pingwest.com/feed"
+      ]
+    },
+    {
+      "id": "guancha-latest",
+      "name": "Guancha Latest",
+      "region": "cn",
+      "category": "politics",
+      "country": "cn",
+      "language": "zh",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:guancha.cn&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        "https://rsshub.app/guancha/news"
+      ]
+    },
+    {
+      "id": "reuters-world",
+      "name": "Reuters World",
+      "region": "global",
+      "category": "world",
+      "country": "int",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:reuters.com+world&hl=en-US&gl=US&ceid=US:en",
+        "http://feeds.reuters.com/Reuters/worldNews"
+      ]
+    },
+    {
+      "id": "reuters-business",
+      "name": "Reuters Business",
+      "region": "global",
+      "category": "business",
+      "country": "int",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:reuters.com+business&hl=en-US&gl=US&ceid=US:en",
+        "http://feeds.reuters.com/reuters/businessNews"
+      ]
+    },
+    {
+      "id": "reuters-tech",
+      "name": "Reuters Technology",
+      "region": "global",
+      "category": "technology",
+      "country": "int",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:reuters.com+technology&hl=en-US&gl=US&ceid=US:en",
+        "http://feeds.reuters.com/reuters/technologyNews"
+      ]
+    },
+    {
+      "id": "bbc-world",
+      "name": "BBC World",
+      "region": "global",
+      "category": "world",
+      "country": "uk",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "http://feeds.bbci.co.uk/news/world/rss.xml"
+      ]
+    },
+    {
+      "id": "bbc-business",
+      "name": "BBC Business",
+      "region": "global",
+      "category": "business",
+      "country": "uk",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "http://feeds.bbci.co.uk/news/business/rss.xml"
+      ]
+    },
+    {
+      "id": "bbc-tech",
+      "name": "BBC Technology",
+      "region": "global",
+      "category": "technology",
+      "country": "uk",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "http://feeds.bbci.co.uk/news/technology/rss.xml"
+      ]
+    },
+    {
+      "id": "nyt-world",
+      "name": "New York Times World",
+      "region": "global",
+      "category": "world",
+      "country": "us",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+      ]
+    },
+    {
+      "id": "nyt-business",
+      "name": "New York Times Business",
+      "region": "global",
+      "category": "business",
+      "country": "us",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"
+      ]
+    },
+    {
+      "id": "nyt-tech",
+      "name": "New York Times Technology",
+      "region": "global",
+      "category": "technology",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+      ]
+    },
+    {
+      "id": "guardian-world",
+      "name": "The Guardian World",
+      "region": "global",
+      "category": "world",
+      "country": "uk",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.theguardian.com/world/rss"
+      ]
+    },
+    {
+      "id": "guardian-business",
+      "name": "The Guardian Business",
+      "region": "global",
+      "category": "business",
+      "country": "uk",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.theguardian.com/uk/business/rss"
+      ]
+    },
+    {
+      "id": "guardian-tech",
+      "name": "The Guardian Technology",
+      "region": "global",
+      "category": "technology",
+      "country": "uk",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.theguardian.com/uk/technology/rss"
+      ]
+    },
+    {
+      "id": "aljazeera-all",
+      "name": "Al Jazeera All News",
+      "region": "global",
+      "category": "world",
+      "country": "qa",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.aljazeera.com/xml/rss/all.xml"
+      ]
+    },
+    {
+      "id": "cnn-world",
+      "name": "CNN World",
+      "region": "global",
+      "category": "world",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "http://rss.cnn.com/rss/edition_world.rss"
+      ]
+    },
+    {
+      "id": "ap-via-google-news",
+      "name": "AP via Google News",
+      "region": "global",
+      "category": "world",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:apnews.com&hl=en-US&gl=US&ceid=US:en"
+      ]
+    },
+    {
+      "id": "ft-world",
+      "name": "Financial Times World",
+      "region": "global",
+      "category": "world",
+      "country": "uk",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.ft.com/world?format=rss"
+      ]
+    },
+    {
+      "id": "ft-global-economy",
+      "name": "Financial Times Global Economy",
+      "region": "global",
+      "category": "business",
+      "country": "uk",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.ft.com/global-economy?format=rss"
+      ]
+    },
+    {
+      "id": "cnbc-top",
+      "name": "CNBC Top News",
+      "region": "global",
+      "category": "business",
+      "country": "us",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+      ]
+    },
+    {
+      "id": "cnbc-world",
+      "name": "CNBC World News",
+      "region": "global",
+      "category": "world",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.cnbc.com/id/100727362/device/rss/rss.html"
+      ]
+    },
+    {
+      "id": "cnbc-tech",
+      "name": "CNBC Technology",
+      "region": "global",
+      "category": "technology",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.cnbc.com/id/19854910/device/rss/rss.html"
+      ]
+    },
+    {
+      "id": "marketwatch-top",
+      "name": "MarketWatch Top Stories",
+      "region": "global",
+      "category": "markets",
+      "country": "us",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "http://feeds.marketwatch.com/marketwatch/topstories/"
+      ]
+    },
+    {
+      "id": "yahoo-finance-news",
+      "name": "Yahoo Finance News",
+      "region": "global",
+      "category": "markets",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://finance.yahoo.com/news/rssindex"
+      ]
+    },
+    {
+      "id": "politico-politics",
+      "name": "Politico Politics",
+      "region": "global",
+      "category": "politics",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:politico.com+politics&hl=en-US&gl=US&ceid=US:en",
+        "https://www.politico.com/rss/politics08.xml"
+      ]
+    },
+    {
+      "id": "euronews-all",
+      "name": "Euronews",
+      "region": "global",
+      "category": "world",
+      "country": "eu",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:euronews.com&hl=en-US&gl=US&ceid=US:en",
+        "https://www.euronews.com/rss"
+      ]
+    },
+    {
+      "id": "techcrunch",
+      "name": "TechCrunch",
+      "region": "global",
+      "category": "technology",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://techcrunch.com/feed/"
+      ]
+    },
+    {
+      "id": "the-verge",
+      "name": "The Verge",
+      "region": "global",
+      "category": "technology",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.theverge.com/rss/index.xml"
+      ]
+    },
+    {
+      "id": "ars-technica",
+      "name": "Ars Technica",
+      "region": "global",
+      "category": "technology",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://feeds.arstechnica.com/arstechnica/index"
+      ]
+    },
+    {
+      "id": "wired",
+      "name": "WIRED",
+      "region": "global",
+      "category": "technology",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.wired.com/feed/rss"
+      ]
+    },
+    {
+      "id": "engadget",
+      "name": "Engadget",
+      "region": "global",
+      "category": "technology",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:engadget.com&hl=en-US&gl=US&ceid=US:en",
+        "https://www.engadget.com/rss.xml"
+      ]
+    },
+    {
+      "id": "hackernews-frontpage",
+      "name": "Hacker News Frontpage",
+      "region": "global",
+      "category": "technology",
+      "country": "int",
+      "language": "en",
+      "tier": "community",
+      "urls": [
+        "https://hnrss.org/frontpage"
+      ]
+    },
+    {
+      "id": "reddit-worldnews",
+      "name": "Reddit r/worldnews",
+      "region": "global",
+      "category": "world",
+      "country": "int",
+      "language": "en",
+      "tier": "community",
+      "urls": [
+        "https://news.google.com/rss/search?q=reddit+worldnews&hl=en-US&gl=US&ceid=US:en",
+        "https://news.google.com/rss/search?q=site:reddit.com/r/worldnews&hl=en-US&gl=US&ceid=US:en",
+        "https://www.reddit.com/r/worldnews/.rss"
+      ]
+    },
+    {
+      "id": "nature-latest",
+      "name": "Nature Latest",
+      "region": "global",
+      "category": "science",
+      "country": "uk",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:nature.com+science&hl=en-US&gl=US&ceid=US:en",
+        "https://www.nature.com/nature/articles?type=news&format=rss",
+        "https://www.nature.com/nature.rss"
+      ]
+    },
+    {
+      "id": "sciencedaily-top",
+      "name": "ScienceDaily Top",
+      "region": "global",
+      "category": "science",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.sciencedaily.com/rss/top.xml"
+      ]
+    },
+    {
+      "id": "nasa-breaking",
+      "name": "NASA Breaking News",
+      "region": "global",
+      "category": "science",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.nasa.gov/rss/dyn/breaking_news.rss"
+      ]
+    },
+    {
+      "id": "who-via-google-news",
+      "name": "WHO via Google News",
+      "region": "global",
+      "category": "health",
+      "country": "int",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:who.int+health&hl=en-US&gl=US&ceid=US:en"
+      ]
+    },
+    {
+      "id": "who-news",
+      "name": "WHO News",
+      "region": "global",
+      "category": "health",
+      "country": "int",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:who.int+health&hl=en-US&gl=US&ceid=US:en",
+        "https://www.who.int/feeds/entity/mediacentre/news/en/rss.xml"
+      ]
+    },
+    {
+      "id": "un-news",
+      "name": "UN News",
+      "region": "global",
+      "category": "policy",
+      "country": "int",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:news.un.org&hl=en-US&gl=US&ceid=US:en",
+        "https://news.un.org/feed/subscribe/en/news/all/rss.xml"
+      ]
+    },
+    {
+      "id": "worldbank-via-google-news",
+      "name": "World Bank via Google News",
+      "region": "global",
+      "category": "policy",
+      "country": "int",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=World+Bank&hl=en-US&gl=US&ceid=US:en"
+      ]
+    },
+    {
+      "id": "world-bank-news",
+      "name": "World Bank News",
+      "region": "global",
+      "category": "policy",
+      "country": "int",
+      "language": "en",
+      "tier": "core",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:worldbank.org&hl=en-US&gl=US&ceid=US:en",
+        "https://www.worldbank.org/en/news/all?format=rss"
+      ]
+    },
+    {
+      "id": "imf-news",
+      "name": "IMF News",
+      "region": "global",
+      "category": "policy",
+      "country": "int",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:imf.org&hl=en-US&gl=US&ceid=US:en",
+        "https://www.imf.org/en/News/RSS"
+      ]
+    },
+    {
+      "id": "federal-reserve-press",
+      "name": "Federal Reserve Press Releases",
+      "region": "global",
+      "category": "markets",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.federalreserve.gov/feeds/press_all.xml"
+      ]
+    },
+    {
+      "id": "sec-press",
+      "name": "US SEC Press Releases",
+      "region": "global",
+      "category": "markets",
+      "country": "us",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://www.sec.gov/news/pressreleases.rss"
+      ]
+    },
+    {
+      "id": "iea-news",
+      "name": "IEA News",
+      "region": "global",
+      "category": "energy",
+      "country": "int",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:iea.org+energy&hl=en-US&gl=US&ceid=US:en",
+        "https://www.iea.org/rss/news.xml"
+      ]
+    },
+    {
+      "id": "oecd-news",
+      "name": "OECD Newsroom",
+      "region": "global",
+      "category": "policy",
+      "country": "int",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:oecd.org&hl=en-US&gl=US&ceid=US:en",
+        "https://www.oecd.org/newsroom/rss.xml"
+      ]
+    },
+    {
+      "id": "wef-agenda",
+      "name": "World Economic Forum Agenda",
+      "region": "global",
+      "category": "policy",
+      "country": "int",
+      "language": "en",
+      "tier": "extended",
+      "urls": [
+        "https://news.google.com/rss/search?q=site:weforum.org+agenda&hl=en-US&gl=US&ceid=US:en",
+        "https://www.weforum.org/agenda/feed/"
+      ]
+    }
+  ]
+}

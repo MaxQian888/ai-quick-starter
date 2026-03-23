@@ -1,0 +1,40 @@
+{
+  "title": "Monthly Revenue by Region",
+  "dataUrl": "sales.csv",
+  "mark": {
+    "type": "line",
+    "point": true
+  },
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "timeUnit": "yearmonth"
+    },
+    "y": {
+      "aggregate": "sum",
+      "field": "revenue",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "region",
+      "type": "nominal"
+    },
+    "tooltip": [
+      {
+        "field": "region",
+        "type": "nominal"
+      },
+      {
+        "aggregate": "sum",
+        "field": "revenue",
+        "type": "quantitative"
+      }
+    ]
+  },
+  "transform": [
+    {
+      "filter": "datum.revenue != null"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "C++ Teaching Code Generator"
+  short_description: "Create classroom-ready C++ lessons and exercises"
+  default_prompt: "Use $cpp-teaching-code-generator to create a beginner-friendly C++ lesson with runnable code, explanation, and practice tasks."

@@ -1,0 +1,13 @@
+name = "design-author"
+description = "Write or refine the technical design for the change."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Design", "Flow", "Bridge"]
+developer_instructions = """
+Translate requirements into a concrete technical approach and call out dependencies or risks.
+"""

@@ -1,0 +1,25 @@
+scoring_modes:
+  strict:
+    tool_match: exact
+    arg_match: exact_required_plus_semantic_optional
+    allow_redundant_calls: false
+    enforce_preconditions: true
+  tolerant:
+    tool_match: exact_or_alias
+    arg_match: semantic_required
+    allow_redundant_calls: true
+    enforce_preconditions: false
+
+dimensions:
+  - id: tool_choice
+    description: "Correct tool selected first."
+    weight: 0.5
+  - id: arg_correctness
+    description: "Required arguments are complete and valid."
+    weight: 0.3
+  - id: call_format
+    description: "Call is parseable by the target runtime."
+    weight: 0.1
+  - id: misuse_penalty
+    description: "Unnecessary or forbidden calls reduce score."
+    weight: 0.1

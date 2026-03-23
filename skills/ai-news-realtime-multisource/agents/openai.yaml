@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI News Realtime Multisource"
+  short_description: "Aggregate latest AI news from CN and global sources"
+  default_prompt: "Use $ai-news-realtime-multisource to fetch and summarize the latest AI news from Chinese and global sources."

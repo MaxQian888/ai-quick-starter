@@ -1,0 +1,16 @@
+tools:
+  - name: search_docs
+    category: retrieval
+    description: "Search indexed documentation for relevant passages."
+    args_schema:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: "Search phrase or question."
+    side_effects: none
+    cost_profile: low
+    constraints:
+      - "must not be called with an empty query"

@@ -1,0 +1,13 @@
+name = "planner"
+description = "Turn approved specs into execution-ready plans and chunk boundaries."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Draft", "Frame", "Map"]
+developer_instructions = """
+Focus on implementation planning, explicit file boundaries, and bite-sized steps. Do not skip review checkpoints.
+"""

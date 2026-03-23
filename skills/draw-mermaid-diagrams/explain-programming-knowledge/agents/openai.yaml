@@ -1,0 +1,4 @@
+interface:
+  display_name: "Programming Knowledge Explainer"
+  short_description: "Explain coding concepts with layered examples"
+  default_prompt: "Use $explain-programming-knowledge to explain recursion for a beginner in Chinese, then generate warm-up, applied, and stretch exercises with answer keys."

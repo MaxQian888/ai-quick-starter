@@ -1,0 +1,4 @@
+interface:
+  display_name: "China Exchange Brief"
+  short_description: "Fetch same-day updates from major China exchanges with per-item summary, link, and image."
+  default_prompt: "Fetch today's latest updates from SSE, SZSE, HKEX (and BSE if available), then output itemized summaries with source links and images."

@@ -1,0 +1,779 @@
+{
+  "request": {
+    "project_name": "openspec-demo",
+    "project_slug": "openspec-demo",
+    "input_path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\openspec-input.md",
+    "source_summary": "# OpenSpec Workflow Brief\n\nUse OpenSpec for this change.\n\nPreferred command path:\n\n- /opsx:explore\n- /opsx:new\n- /opsx:continue\n- /opsx:ff\n- /opsx:apply\n- /opsx:verify\n- /opsx:sync\n- /opsx:archive\n\nThe change touches docs, database work, frontend, backend, and verification."
+  },
+  "workflow_profile": "openspec-expanded",
+  "workflow_detection": {
+    "mode": "auto",
+    "signals": [
+      "/opsx:explore",
+      "/opsx:new",
+      "/opsx:continue",
+      "/opsx:ff",
+      "/opsx:verify",
+      "/opsx:sync"
+    ],
+    "summary": "Detected expanded OpenSpec workflow cues from OPSX commands."
+  },
+  "workflow_steps": [
+    {
+      "id": "opsx:explore",
+      "title": "Explore",
+      "parallelizable": true,
+      "notes": "Parallelize exploration, not artifact writes."
+    },
+    {
+      "id": "opsx:new",
+      "title": "New",
+      "parallelizable": false,
+      "notes": "Create the change scaffold."
+    },
+    {
+      "id": "opsx:continue",
+      "title": "Continue",
+      "parallelizable": false,
+      "notes": "Create the next dependency-ready artifact."
+    },
+    {
+      "id": "opsx:ff",
+      "title": "Fast Forward",
+      "parallelizable": false,
+      "notes": "Generate planning artifacts when the shape is already clear."
+    },
+    {
+      "id": "opsx:apply",
+      "title": "Apply",
+      "parallelizable": true,
+      "notes": "Parallelize implementation tasks only after artifacts are stable."
+    },
+    {
+      "id": "opsx:verify",
+      "title": "Verify",
+      "parallelizable": false,
+      "notes": "Validate work against artifacts before closeout."
+    },
+    {
+      "id": "opsx:sync",
+      "title": "Sync",
+      "parallelizable": false,
+      "notes": "Sync delta specs to the main spec set."
+    },
+    {
+      "id": "opsx:archive",
+      "title": "Archive",
+      "parallelizable": false,
+      "notes": "Archive after verification and sync decisions."
+    }
+  ],
+  "workflow_integrations": [
+    {
+      "id": "opsx:explore",
+      "type": "command",
+      "phase": "discovery",
+      "summary": "Think through requirements and options before planning."
+    },
+    {
+      "id": "opsx:new",
+      "type": "command",
+      "phase": "planning",
+      "summary": "Scaffold a new change without filling every artifact at once."
+    },
+    {
+      "id": "opsx:continue",
+      "type": "command",
+      "phase": "planning",
+      "summary": "Create the next artifact when its dependencies are ready."
+    },
+    {
+      "id": "opsx:ff",
+      "type": "command",
+      "phase": "planning",
+      "summary": "Fast-forward planning artifacts when the scope is already clear."
+    },
+    {
+      "id": "opsx:apply",
+      "type": "command",
+      "phase": "execution",
+      "summary": "Implement tasks while keeping artifacts in sync."
+    },
+    {
+      "id": "opsx:verify",
+      "type": "command",
+      "phase": "verification",
+      "summary": "Validate implementation against artifacts."
+    },
+    {
+      "id": "opsx:sync",
+      "type": "command",
+      "phase": "sync",
+      "summary": "Sync delta specs to the main spec set when needed."
+    },
+    {
+      "id": "opsx:archive",
+      "type": "command",
+      "phase": "closeout",
+      "summary": "Archive the completed change."
+    }
+  ],
+  "assumptions": [
+    "Used openspec-input.md as the primary request source.",
+    "This first-pass plan uses keyword heuristics instead of a semantic dependency graph.",
+    "Generated .toml files are reviewable drafts and are not installed automatically.",
+    "Verification work was split into its own phase to avoid false parallelism.",
+    "Applied the openspec-expanded workflow profile to shape extra roles and workflow steps."
+  ],
+  "task_graph": [
+    {
+      "id": "research",
+      "title": "Research",
+      "role": "explorer",
+      "phase": "discovery",
+      "description": "Read the landscape and gather constraints before implementation starts.",
+      "parallelizable": true,
+      "reads_from": [
+        "brief",
+        "external-sources"
+      ],
+      "writes_to": [
+        "notes",
+        "findings"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "documentation",
+      "title": "Documentation",
+      "role": "default",
+      "phase": "synthesis",
+      "description": "Draft specs, user guides, or internal docs from the active workstream.",
+      "parallelizable": true,
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "implementation-status"
+      ],
+      "writes_to": [
+        "docs"
+      ],
+      "depends_on": [
+        "research",
+        "backend",
+        "database",
+        "frontend"
+      ]
+    },
+    {
+      "id": "database",
+      "title": "Database",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Design or implement persistence models, schemas, and migrations.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "research-notes"
+      ],
+      "writes_to": [
+        "database"
+      ],
+      "depends_on": [
+        "research"
+      ]
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Implement screens, components, and client-side behavior.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "design-assets",
+        "research-notes"
+      ],
+      "writes_to": [
+        "frontend"
+      ],
+      "depends_on": [
+        "research"
+      ]
+    },
+    {
+      "id": "backend",
+      "title": "Backend",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Implement APIs, services, and server-side orchestration.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "research-notes",
+        "database"
+      ],
+      "writes_to": [
+        "backend"
+      ],
+      "depends_on": [
+        "research"
+      ]
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "role": "worker",
+      "phase": "verification",
+      "description": "Add or run checks that verify the merged behavior.",
+      "parallelizable": false,
+      "reads_from": [
+        "frontend",
+        "backend",
+        "database"
+      ],
+      "writes_to": [
+        "tests",
+        "verification-results"
+      ],
+      "depends_on": [
+        "backend",
+        "database",
+        "frontend"
+      ]
+    }
+  ],
+  "parallel_groups": [
+    {
+      "group_id": "discovery-batch",
+      "goal": "Discovery",
+      "tasks": [
+        "research"
+      ],
+      "max_concurrency": 1,
+      "why_parallelizable": "These tasks share the same phase and do not require one another's immediate writes.",
+      "merge_point": "Review outputs from this batch before handing off to the next phase."
+    },
+    {
+      "group_id": "implementation-batch",
+      "goal": "Implementation",
+      "tasks": [
+        "database",
+        "frontend",
+        "backend"
+      ],
+      "max_concurrency": 3,
+      "why_parallelizable": "These tasks share the same phase and do not require one another's immediate writes.",
+      "merge_point": "Review outputs from this batch before handing off to the next phase."
+    },
+    {
+      "group_id": "synthesis-batch",
+      "goal": "Synthesis",
+      "tasks": [
+        "documentation"
+      ],
+      "max_concurrency": 1,
+      "why_parallelizable": "These tasks share the same phase and do not require one another's immediate writes.",
+      "merge_point": "Review outputs from this batch before handing off to the next phase."
+    }
+  ],
+  "agents": [
+    {
+      "name": "default",
+      "role": "default",
+      "purpose": "Fallback synthesis, documentation, and integration support.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Atlas",
+        "Delta",
+        "Echo"
+      ],
+      "developer_instructions": "Answer in the user's working language. Preserve code, commands, and logs verbatim. Handle synthesis, planning, and cross-task cleanup without drifting into unrelated work.",
+      "owns_tasks": [
+        "documentation"
+      ],
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "implementation-status"
+      ],
+      "writes_to": [
+        "docs",
+        "summaries",
+        "handoff-notes"
+      ]
+    },
+    {
+      "name": "worker",
+      "role": "worker",
+      "purpose": "Execution-focused implementation and fixes.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Forge",
+        "Relay",
+        "Nova"
+      ],
+      "developer_instructions": "Implement only the assigned scope. Validate touched files. Do not revert work owned by other agents. Call out blocked dependencies instead of guessing.",
+      "owns_tasks": [
+        "backend",
+        "database",
+        "frontend",
+        "testing"
+      ],
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "existing-code"
+      ],
+      "writes_to": [
+        "source-code",
+        "tests",
+        "fixes"
+      ]
+    },
+    {
+      "name": "explorer",
+      "role": "explorer",
+      "purpose": "Read-heavy exploration, mapping, and evidence gathering.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Scout",
+        "Trace",
+        "Lens"
+      ],
+      "developer_instructions": "Stay in exploration mode. Read, map, and report findings without editing files. Surface uncertainty and likely next reads.",
+      "owns_tasks": [
+        "research"
+      ],
+      "reads_from": [
+        "brief",
+        "repositories",
+        "docs",
+        "public-sources"
+      ],
+      "writes_to": [
+        "findings",
+        "indices",
+        "research-notes"
+      ]
+    },
+    {
+      "name": "reviewer",
+      "role": "reviewer",
+      "purpose": "Review and regression-focused quality pass.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Audit",
+        "Guard",
+        "Pulse"
+      ],
+      "developer_instructions": "Review outputs for regressions, missing tests, and unsafe assumptions. Prefer targeted verification and concise findings.",
+      "owns_tasks": [
+        "testing"
+      ],
+      "reads_from": [
+        "diff",
+        "tests",
+        "logs"
+      ],
+      "writes_to": [
+        "review-findings",
+        "regression-tests"
+      ]
+    },
+    {
+      "name": "proposal-writer",
+      "role": "planner",
+      "purpose": "Own the proposal and change framing for OpenSpec propose.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Pitch",
+        "Frame",
+        "Intent"
+      ],
+      "developer_instructions": "Write a clear proposal that captures intent, scope, and approach without prematurely implementing.",
+      "owns_tasks": [
+        "proposal"
+      ],
+      "reads_from": [
+        "brief",
+        "project-context"
+      ],
+      "writes_to": [
+        "proposal.md"
+      ]
+    },
+    {
+      "name": "spec-author",
+      "role": "planner",
+      "purpose": "Define requirement-level artifacts and scenarios.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Spec",
+        "Scenario",
+        "Clause"
+      ],
+      "developer_instructions": "Convert the proposal into concrete requirements and scenarios without collapsing into implementation chatter.",
+      "owns_tasks": [
+        "specs"
+      ],
+      "reads_from": [
+        "proposal"
+      ],
+      "writes_to": [
+        "specs"
+      ]
+    },
+    {
+      "name": "design-author",
+      "role": "planner",
+      "purpose": "Write or refine the technical design for the change.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Design",
+        "Flow",
+        "Bridge"
+      ],
+      "developer_instructions": "Translate requirements into a concrete technical approach and call out dependencies or risks.",
+      "owns_tasks": [
+        "design"
+      ],
+      "reads_from": [
+        "proposal",
+        "specs"
+      ],
+      "writes_to": [
+        "design.md"
+      ]
+    },
+    {
+      "name": "task-planner",
+      "role": "planner",
+      "purpose": "Break the approved design into implementation tasks.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Task",
+        "Grid",
+        "Sprint"
+      ],
+      "developer_instructions": "Write tasks that are executable, verifiable, and review-friendly. Keep dependencies explicit.",
+      "owns_tasks": [
+        "tasks"
+      ],
+      "reads_from": [
+        "design",
+        "specs"
+      ],
+      "writes_to": [
+        "tasks.md"
+      ]
+    },
+    {
+      "name": "archiver",
+      "role": "archiver",
+      "purpose": "Close the OpenSpec change cleanly after verification.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Archive",
+        "Vault",
+        "Ledger"
+      ],
+      "developer_instructions": "Archive only after implementation and verification are complete. Preserve artifact integrity and sync decisions.",
+      "owns_tasks": [
+        "archive"
+      ],
+      "reads_from": [
+        "change-artifacts",
+        "verification-results"
+      ],
+      "writes_to": [
+        "archive"
+      ]
+    },
+    {
+      "name": "workflow-explorer",
+      "role": "explorer",
+      "purpose": "Own the exploratory OpenSpec steps before artifacts are written.",
+      "model": "gpt-5.4-mini",
+      "reasoning_effort": "medium",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Explore",
+        "Scout",
+        "Lens"
+      ],
+      "developer_instructions": "Investigate options, edge cases, and repository context without editing files.",
+      "owns_tasks": [
+        "explore"
+      ],
+      "reads_from": [
+        "brief",
+        "repo"
+      ],
+      "writes_to": [
+        "findings"
+      ]
+    },
+    {
+      "name": "verifier",
+      "role": "reviewer",
+      "purpose": "Run the OpenSpec verify pass against artifacts and implementation.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Verify",
+        "Check",
+        "Proof"
+      ],
+      "developer_instructions": "Compare implementation against artifacts and report any mismatch before archive.",
+      "owns_tasks": [
+        "verify"
+      ],
+      "reads_from": [
+        "artifacts",
+        "diff",
+        "tests"
+      ],
+      "writes_to": [
+        "verification-results"
+      ]
+    },
+    {
+      "name": "sync-manager",
+      "role": "planner",
+      "purpose": "Manage spec sync decisions before archiving expanded OpenSpec changes.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Sync",
+        "Merge",
+        "Align"
+      ],
+      "developer_instructions": "Sync delta specs into the main spec set carefully and avoid losing artifact intent.",
+      "owns_tasks": [
+        "sync"
+      ],
+      "reads_from": [
+        "delta-specs",
+        "main-specs"
+      ],
+      "writes_to": [
+        "synced-specs"
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "agent": "default",
+      "prompt": "Use the default agent to handle Documentation. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "worker",
+      "prompt": "Use the worker agent to handle Backend, Database, Frontend, Testing. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "explorer",
+      "prompt": "Use the explorer agent to handle Research. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "reviewer",
+      "prompt": "Use the reviewer agent to handle Testing. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "proposal-writer",
+      "prompt": "Use the proposal-writer agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "spec-author",
+      "prompt": "Use the spec-author agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "design-author",
+      "prompt": "Use the design-author agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "task-planner",
+      "prompt": "Use the task-planner agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "archiver",
+      "prompt": "Use the archiver agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "workflow-explorer",
+      "prompt": "Use the workflow-explorer agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "verifier",
+      "prompt": "Use the verifier agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "sync-manager",
+      "prompt": "Use the sync-manager agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    }
+  ],
+  "toml_files": {
+    "default.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\default.toml",
+      "role": "default",
+      "content": "name = \"default\"\ndescription = \"Fallback synthesis, documentation, and integration support.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Atlas\", \"Delta\", \"Echo\"]\ndeveloper_instructions = \"\"\"\nAnswer in the user's working language. Preserve code, commands, and logs verbatim. Handle synthesis, planning, and cross-task cleanup without drifting into unrelated work.\n\"\"\"\n"
+    },
+    "worker.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\worker.toml",
+      "role": "worker",
+      "content": "name = \"worker\"\ndescription = \"Execution-focused implementation and fixes.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Forge\", \"Relay\", \"Nova\"]\ndeveloper_instructions = \"\"\"\nImplement only the assigned scope. Validate touched files. Do not revert work owned by other agents. Call out blocked dependencies instead of guessing.\n\"\"\"\n"
+    },
+    "explorer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\explorer.toml",
+      "role": "explorer",
+      "content": "name = \"explorer\"\ndescription = \"Read-heavy exploration, mapping, and evidence gathering.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Scout\", \"Trace\", \"Lens\"]\ndeveloper_instructions = \"\"\"\nStay in exploration mode. Read, map, and report findings without editing files. Surface uncertainty and likely next reads.\n\"\"\"\n"
+    },
+    "reviewer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\reviewer.toml",
+      "role": "reviewer",
+      "content": "name = \"reviewer\"\ndescription = \"Review and regression-focused quality pass.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Audit\", \"Guard\", \"Pulse\"]\ndeveloper_instructions = \"\"\"\nReview outputs for regressions, missing tests, and unsafe assumptions. Prefer targeted verification and concise findings.\n\"\"\"\n"
+    },
+    "proposal-writer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\proposal-writer.toml",
+      "role": "planner",
+      "content": "name = \"proposal-writer\"\ndescription = \"Own the proposal and change framing for OpenSpec propose.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Pitch\", \"Frame\", \"Intent\"]\ndeveloper_instructions = \"\"\"\nWrite a clear proposal that captures intent, scope, and approach without prematurely implementing.\n\"\"\"\n"
+    },
+    "spec-author.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\spec-author.toml",
+      "role": "planner",
+      "content": "name = \"spec-author\"\ndescription = \"Define requirement-level artifacts and scenarios.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Spec\", \"Scenario\", \"Clause\"]\ndeveloper_instructions = \"\"\"\nConvert the proposal into concrete requirements and scenarios without collapsing into implementation chatter.\n\"\"\"\n"
+    },
+    "design-author.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\design-author.toml",
+      "role": "planner",
+      "content": "name = \"design-author\"\ndescription = \"Write or refine the technical design for the change.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Design\", \"Flow\", \"Bridge\"]\ndeveloper_instructions = \"\"\"\nTranslate requirements into a concrete technical approach and call out dependencies or risks.\n\"\"\"\n"
+    },
+    "task-planner.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\task-planner.toml",
+      "role": "planner",
+      "content": "name = \"task-planner\"\ndescription = \"Break the approved design into implementation tasks.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Task\", \"Grid\", \"Sprint\"]\ndeveloper_instructions = \"\"\"\nWrite tasks that are executable, verifiable, and review-friendly. Keep dependencies explicit.\n\"\"\"\n"
+    },
+    "archiver.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\archiver.toml",
+      "role": "archiver",
+      "content": "name = \"archiver\"\ndescription = \"Close the OpenSpec change cleanly after verification.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Archive\", \"Vault\", \"Ledger\"]\ndeveloper_instructions = \"\"\"\nArchive only after implementation and verification are complete. Preserve artifact integrity and sync decisions.\n\"\"\"\n"
+    },
+    "workflow-explorer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\workflow-explorer.toml",
+      "role": "explorer",
+      "content": "name = \"workflow-explorer\"\ndescription = \"Own the exploratory OpenSpec steps before artifacts are written.\"\nmodel = \"gpt-5.4-mini\"\nmodel_reasoning_effort = \"medium\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Explore\", \"Scout\", \"Lens\"]\ndeveloper_instructions = \"\"\"\nInvestigate options, edge cases, and repository context without editing files.\n\"\"\"\n"
+    },
+    "verifier.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\verifier.toml",
+      "role": "reviewer",
+      "content": "name = \"verifier\"\ndescription = \"Run the OpenSpec verify pass against artifacts and implementation.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Verify\", \"Check\", \"Proof\"]\ndeveloper_instructions = \"\"\"\nCompare implementation against artifacts and report any mismatch before archive.\n\"\"\"\n"
+    },
+    "sync-manager.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\sync-manager.toml",
+      "role": "planner",
+      "content": "name = \"sync-manager\"\ndescription = \"Manage spec sync decisions before archiving expanded OpenSpec changes.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Sync\", \"Merge\", \"Align\"]\ndeveloper_instructions = \"\"\"\nSync delta specs into the main spec set carefully and avoid losing artifact intent.\n\"\"\"\n"
+    }
+  },
+  "execution_plan": [
+    {
+      "step": 1,
+      "task_id": "research",
+      "title": "Research",
+      "phase": "discovery",
+      "depends_on": [],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 2,
+      "task_id": "backend",
+      "title": "Backend",
+      "phase": "implementation",
+      "depends_on": [
+        "research"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 3,
+      "task_id": "database",
+      "title": "Database",
+      "phase": "implementation",
+      "depends_on": [
+        "research"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 4,
+      "task_id": "frontend",
+      "title": "Frontend",
+      "phase": "implementation",
+      "depends_on": [
+        "research"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 5,
+      "task_id": "documentation",
+      "title": "Documentation",
+      "phase": "synthesis",
+      "depends_on": [
+        "research",
+        "backend",
+        "database",
+        "frontend"
+      ],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 6,
+      "task_id": "testing",
+      "title": "Testing",
+      "phase": "verification",
+      "depends_on": [
+        "backend",
+        "database",
+        "frontend"
+      ],
+      "handoff": "Complete and verify before proceeding."
+    }
+  ],
+  "risks": [
+    "Too many write-capable agents on overlapping files will erase the value of parallelization.",
+    "If a task's immediate next action depends on another task's output, it should stay serial.",
+    "Generated model and prompt choices are defaults, not guarantees of actual runtime selection.",
+    "Frontend, backend, and database work need an explicit merge point before debugging or QA.",
+    "Do not parallelize artifact-authoring commands and implementation in the same uncontrolled batch.",
+    "Verify and sync are closeout gates; they should not run concurrently with active feature implementation."
+  ],
+  "open_questions": [
+    "Should any custom agents be promoted from drafts into persistent ~/.codex/agents/*.toml files?",
+    "Are there repository-specific instructions that should be merged into developer_instructions?",
+    "Does this repository use the core OpenSpec profile or the expanded OPSX command set in practice?"
+  ],
+  "install_manifest": {},
+  "installed_files": [],
+  "install_actions": []
+}

@@ -1,0 +1,13 @@
+name = "task-planner"
+description = "Break the approved design into implementation tasks."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Task", "Grid", "Sprint"]
+developer_instructions = """
+Write tasks that are executable, verifiable, and review-friendly. Keep dependencies explicit.
+"""

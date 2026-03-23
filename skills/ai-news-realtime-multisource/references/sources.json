@@ -1,0 +1,137 @@
+{
+  "sources": [
+    {
+      "id": "openai-news",
+      "name": "OpenAI News",
+      "region": "global",
+      "urls": [
+        "https://openai.com/news/rss.xml"
+      ]
+    },
+    {
+      "id": "anthropic-news",
+      "name": "Anthropic News",
+      "region": "global",
+      "urls": [
+        "https://www.anthropic.com/news/rss.xml",
+        "https://www.anthropic.com/news/rss"
+      ]
+    },
+    {
+      "id": "google-ai-blog",
+      "name": "Google AI Blog",
+      "region": "global",
+      "urls": [
+        "https://blog.google/technology/ai/rss/",
+        "https://blog.google/technology/ai/rss.xml"
+      ]
+    },
+    {
+      "id": "huggingface-blog",
+      "name": "Hugging Face Blog",
+      "region": "global",
+      "urls": [
+        "https://huggingface.co/blog/feed.xml"
+      ]
+    },
+    {
+      "id": "venturebeat-ai",
+      "name": "VentureBeat AI",
+      "region": "global",
+      "urls": [
+        "https://venturebeat.com/category/ai/feed/"
+      ]
+    },
+    {
+      "id": "mit-technology-review-ai",
+      "name": "MIT Technology Review AI",
+      "region": "global",
+      "urls": [
+        "https://www.technologyreview.com/topic/artificial-intelligence/feed/"
+      ]
+    },
+    {
+      "id": "the-verge-ai",
+      "name": "The Verge AI",
+      "region": "global",
+      "urls": [
+        "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+      ]
+    },
+    {
+      "id": "artificial-intelligence-news",
+      "name": "Artificial Intelligence News",
+      "region": "global",
+      "urls": [
+        "https://artificialintelligence-news.com/feed/"
+      ]
+    },
+    {
+      "id": "arxiv-cs-ai",
+      "name": "arXiv cs.AI",
+      "region": "global",
+      "urls": [
+        "https://export.arxiv.org/rss/cs.AI"
+      ]
+    },
+    {
+      "id": "reddit-machine-learning",
+      "name": "Reddit r/MachineLearning",
+      "region": "global",
+      "urls": [
+        "https://www.reddit.com/r/MachineLearning/.rss"
+      ]
+    },
+    {
+      "id": "jiqizhixin",
+      "name": "Jiqizhixin",
+      "region": "cn",
+      "urls": [
+        "https://www.jiqizhixin.com/rss",
+        "https://rsshub.app/jiqizhixin/home"
+      ]
+    },
+    {
+      "id": "qbitai",
+      "name": "QbitAI",
+      "region": "cn",
+      "urls": [
+        "https://www.qbitai.com/feed",
+        "https://rsshub.app/qbitai/home"
+      ]
+    },
+    {
+      "id": "leiphone-ai",
+      "name": "Leiphone AI",
+      "region": "cn",
+      "urls": [
+        "https://www.leiphone.com/category/ai/feed",
+        "https://rsshub.app/leiphone/special/ai"
+      ]
+    },
+    {
+      "id": "36kr-ai",
+      "name": "36Kr AI",
+      "region": "cn",
+      "urls": [
+        "https://rsshub.app/36kr/category/artificial-intelligence"
+      ]
+    },
+    {
+      "id": "infoq-ai-cn",
+      "name": "InfoQ China AI",
+      "region": "cn",
+      "urls": [
+        "https://www.infoq.cn/topic/AI/rss"
+      ]
+    },
+    {
+      "id": "pingwest",
+      "name": "PingWest",
+      "region": "cn",
+      "urls": [
+        "https://www.pingwest.com/feed"
+      ]
+    }
+  ]
+}

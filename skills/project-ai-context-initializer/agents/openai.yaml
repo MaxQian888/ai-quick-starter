@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project AI Context Initializer"
+  short_description: "Scan repos and generate AI context docs."
+  default_prompt: "Use $project-ai-context-initializer to scan this repository and generate root-level and module-level AI context docs."

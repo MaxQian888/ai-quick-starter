@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Structure Migrator"
+  short_description: "Plan and drive staged project-structure migrations"
+  default_prompt: "Use $project-structure-migrator to inspect this repository, classify the migration type, generate a staged migration blueprint, and execute the migration batch by batch with verification."

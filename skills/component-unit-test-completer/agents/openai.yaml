@@ -1,0 +1,4 @@
+interface:
+  display_name: "Component Test Completer"
+  short_description: "Enforce 1:1 component tests and 80%+ coverage"
+  default_prompt: "Use $component-unit-test-completer to fill missing component unit tests, enforce one-to-one mapping, and verify coverage is at least 80%."

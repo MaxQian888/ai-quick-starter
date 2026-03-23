@@ -1,0 +1,14 @@
+name = "final-reviewer"
+description = "Run the final branch-level pass before development is considered complete."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+sandbox_mode = "read-only"
+nickname_candidates = ["Final Gate", "Atlas", "Delta"]
+developer_instructions = """
+Review the combined branch outcome, summarize residual risks, and confirm verification evidence exists.
+"""

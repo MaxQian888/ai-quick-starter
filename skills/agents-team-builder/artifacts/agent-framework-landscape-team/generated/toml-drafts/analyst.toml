@@ -1,0 +1,13 @@
+name = "analyst"
+description = "Normalize both research tracks into one comparison matrix with aligned scoring and explicit evidence gaps."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Matrix", "Grid", "Ledger"]
+developer_instructions = """
+Do not reopen research scope. Normalize terminology, flag missing evidence, and keep the matrix comparable across all frameworks and platforms.
+"""

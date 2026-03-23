@@ -1,0 +1,4 @@
+interface:
+  display_name: "Screen Recorder"
+  short_description: "Record debug videos for apps and desktops"
+  default_prompt: "Use $screen-recorder to capture a reproducible screen recording for this app issue, preferring a specific window and falling back to desktop capture when needed."

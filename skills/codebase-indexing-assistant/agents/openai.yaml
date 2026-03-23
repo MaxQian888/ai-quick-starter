@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codebase Indexing Assistant"
+  short_description: "Build temporary repo indexes and use them to guide navigation"
+  default_prompt: "Use $codebase-indexing-assistant to generate a temporary Markdown and JSON index for this repository, then use it to identify entrypoints, key modules, and the best reading order."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Call Chain Mapper"
+  short_description: "Trace feature flows and emit structured call-chain reports"
+  default_prompt: "Use $feature-call-chain-mapper to locate this feature in the repository and generate a structured Markdown and JSON call-chain report with evidence, confidence, and blind spots."

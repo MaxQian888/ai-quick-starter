@@ -1,0 +1,1149 @@
+{
+  "root": "D:\\Project\\skills-test",
+  "total_top_level_entries": 46,
+  "total_top_level_directories": 42,
+  "total_top_level_files": 4,
+  "scanned_directories": [
+    {
+      "name": "_tmp_claude_code_templates",
+      "path": "D:\\Project\\skills-test\\_tmp_claude_code_templates",
+      "kind": "template-or-temp",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 13,
+      "child_file_count": 14,
+      "sample_dirs": [
+        ".claude",
+        ".claude-plugin",
+        ".git",
+        ".github",
+        ".vscode",
+        "api",
+        "cli-tool",
+        "cloudflare-workers"
+      ],
+      "sample_files": [
+        ".env.example",
+        ".gitignore",
+        ".mcp.json",
+        "CHANGELOG.md",
+        "CLAUDE.md",
+        "CODE_OF_CONDUCT.md",
+        "CONTRIBUTING.md",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "_tmp_modern_cpp_skills",
+      "path": "D:\\Project\\skills-test\\_tmp_modern_cpp_skills",
+      "kind": "template-or-temp",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 17,
+      "child_file_count": 3,
+      "sample_dirs": [
+        ".git",
+        "_references",
+        "cpp-skill-creator",
+        "m01-ownership",
+        "m02-resource",
+        "m03-mutability",
+        "m04-zero-cost",
+        "m05-type-driven"
+      ],
+      "sample_files": [
+        "LICENSE",
+        "README.md",
+        "README_zh.md"
+      ]
+    },
+    {
+      "name": "agent-tool-benchmark-builder",
+      "path": "D:\\Project\\skills-test\\agent-tool-benchmark-builder",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": true,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "assets",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "agents-team-builder",
+      "path": "D:\\Project\\skills-test\\agents-team-builder",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": true,
+      "child_dir_count": 6,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "artifacts",
+        "assets",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "ai-news-realtime-multisource",
+      "path": "D:\\Project\\skills-test\\ai-news-realtime-multisource",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "build-project-fixer",
+      "path": "D:\\Project\\skills-test\\build-project-fixer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "china-exchange-daily-brief",
+      "path": "D:\\Project\\skills-test\\china-exchange-daily-brief",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 3,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md",
+        "debug-20260310.json",
+        "sample-report.md"
+      ]
+    },
+    {
+      "name": "codebase-indexing-assistant",
+      "path": "D:\\Project\\skills-test\\codebase-indexing-assistant",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "commit-quality-fixer",
+      "path": "D:\\Project\\skills-test\\commit-quality-fixer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "component-unit-test-completer",
+      "path": "D:\\Project\\skills-test\\component-unit-test-completer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "configuring-commit-checks",
+      "path": "D:\\Project\\skills-test\\configuring-commit-checks",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "cpp-teaching-code-generator",
+      "path": "D:\\Project\\skills-test\\cpp-teaching-code-generator",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "daily-news-multisource-brief",
+      "path": "D:\\Project\\skills-test\\daily-news-multisource-brief",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "docs",
+      "path": "D:\\Project\\skills-test\\docs",
+      "kind": "docs",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 1,
+      "child_file_count": 0,
+      "sample_dirs": [
+        "superpowers"
+      ],
+      "sample_files": []
+    },
+    {
+      "name": "draw-mermaid-diagrams",
+      "path": "D:\\Project\\skills-test\\draw-mermaid-diagrams",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "draw-vega-lite-charts",
+        "explain-programming-knowledge",
+        "references"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "feature-call-chain-mapper",
+      "path": "D:\\Project\\skills-test\\feature-call-chain-mapper",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "gitignore-curator",
+      "path": "D:\\Project\\skills-test\\gitignore-curator",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "guarded-component-i18n-fix",
+      "path": "D:\\Project\\skills-test\\guarded-component-i18n-fix",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 5,
+      "child_file_count": 2,
+      "sample_dirs": [
+        ".tmp-tests",
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "ink-cli",
+      "path": "D:\\Project\\skills-test\\ink-cli",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": false,
+      "has_references": true,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 1,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "references"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "ink-expert",
+      "path": "D:\\Project\\skills-test\\ink-expert",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 2,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "ink-skill-main",
+      "path": "D:\\Project\\skills-test\\ink-skill-main",
+      "kind": "directory",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 1,
+      "child_file_count": 3,
+      "sample_dirs": [
+        "ink"
+      ],
+      "sample_files": [
+        "LICENSE",
+        "README.md",
+        "validate-correctness.sh"
+      ]
+    },
+    {
+      "name": "local-ci-fixer",
+      "path": "D:\\Project\\skills-test\\local-ci-fixer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "manim_skill",
+      "path": "D:\\Project\\skills-test\\manim_skill",
+      "kind": "directory",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 3,
+      "sample_dirs": [
+        ".git",
+        "skills",
+        "tests"
+      ],
+      "sample_files": [
+        ".gitignore",
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "market-research-skill",
+      "path": "D:\\Project\\skills-test\\market-research-skill",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "modern-cpp-skills-enhanced",
+      "path": "D:\\Project\\skills-test\\modern-cpp-skills-enhanced",
+      "kind": "directory",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 15,
+      "child_file_count": 4,
+      "sample_dirs": [
+        "cpp-skill-creator",
+        "m01-ownership",
+        "m02-resource",
+        "m03-mutability",
+        "m04-zero-cost",
+        "m05-type-driven",
+        "m06-error-handling",
+        "m07-concurrency"
+      ],
+      "sample_files": [
+        "LICENSE",
+        "README.md",
+        "README_zh.md",
+        "skill-routing-catalog.md"
+      ]
+    },
+    {
+      "name": "openspec",
+      "path": "D:\\Project\\skills-test\\openspec",
+      "kind": "directory",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 1,
+      "child_file_count": 0,
+      "sample_dirs": [
+        "changes"
+      ],
+      "sample_files": []
+    },
+    {
+      "name": "powershell-writing-assistant",
+      "path": "D:\\Project\\skills-test\\powershell-writing-assistant",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "project-ai-context-initializer",
+      "path": "D:\\Project\\skills-test\\project-ai-context-initializer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": true,
+      "child_dir_count": 6,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "artifacts",
+        "assets",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "project-prompt-optimizer",
+      "path": "D:\\Project\\skills-test\\project-prompt-optimizer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "python-component-splitter",
+      "path": "D:\\Project\\skills-test\\python-component-splitter",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "react-cli-quick-starter",
+      "path": "D:\\Project\\skills-test\\react-cli-quick-starter",
+      "kind": "directory",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 2,
+      "child_file_count": 7,
+      "sample_dirs": [
+        "node_modules",
+        "source"
+      ],
+      "sample_files": [
+        ".editorconfig",
+        ".gitattributes",
+        ".gitignore",
+        ".prettierignore",
+        "package.json",
+        "readme.md",
+        "test.js"
+      ]
+    },
+    {
+      "name": "react-component-splitter",
+      "path": "D:\\Project\\skills-test\\react-component-splitter",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "screen-recorder",
+      "path": "D:\\Project\\skills-test\\screen-recorder",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "screenshot",
+      "path": "D:\\Project\\skills-test\\screenshot",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": false,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": true,
+      "child_dir_count": 3,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "assets",
+        "scripts"
+      ],
+      "sample_files": [
+        "LICENSE.txt",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "stock-analyzer-skill",
+      "path": "D:\\Project\\skills-test\\stock-analyzer-skill",
+      "kind": "directory",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 7,
+      "child_file_count": 6,
+      "sample_dirs": [
+        ".codebuddy",
+        ".git",
+        ".test-tmp",
+        ".uv-cache-codex",
+        "bin",
+        "skill",
+        "tests"
+      ],
+      "sample_files": [
+        ".gitignore",
+        "301362_\u6c11\u7206\u5149\u7535_\u5206\u6790\u62a5\u544a_20260305.html",
+        "LICENSE",
+        "README.md",
+        "agent.md",
+        "package.json"
+      ]
+    },
+    {
+      "name": "tauri-v2",
+      "path": "D:\\Project\\skills-test\\tauri-v2",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": true,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "assets",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "vscode-extension-expert",
+      "path": "D:\\Project\\skills-test\\vscode-extension-expert",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 2,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "writing-safe-shell-commands",
+      "path": "D:\\Project\\skills-test\\writing-safe-shell-commands",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 2,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    }
+  ],
+  "skipped_directories": [
+    {
+      "name": ".uv-cache",
+      "reason": "generated, cache, or temp"
+    },
+    {
+      "name": ".uv-python",
+      "reason": "generated, cache, or temp"
+    },
+    {
+      "name": "_tmp_validate",
+      "reason": "generated, cache, or temp"
+    },
+    {
+      "name": "tmp",
+      "reason": "generated, cache, or temp"
+    }
+  ],
+  "suggested_modules": [
+    {
+      "name": "docs",
+      "path": "D:\\Project\\skills-test\\docs",
+      "kind": "docs",
+      "has_skill_md": false,
+      "has_agents_openai_yaml": false,
+      "has_references": false,
+      "has_scripts": false,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 1,
+      "child_file_count": 0,
+      "sample_dirs": [
+        "superpowers"
+      ],
+      "sample_files": []
+    },
+    {
+      "name": "agents-team-builder",
+      "path": "D:\\Project\\skills-test\\agents-team-builder",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": true,
+      "child_dir_count": 6,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "artifacts",
+        "assets",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "build-project-fixer",
+      "path": "D:\\Project\\skills-test\\build-project-fixer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "codebase-indexing-assistant",
+      "path": "D:\\Project\\skills-test\\codebase-indexing-assistant",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "configuring-commit-checks",
+      "path": "D:\\Project\\skills-test\\configuring-commit-checks",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "feature-call-chain-mapper",
+      "path": "D:\\Project\\skills-test\\feature-call-chain-mapper",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "gitignore-curator",
+      "path": "D:\\Project\\skills-test\\gitignore-curator",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "guarded-component-i18n-fix",
+      "path": "D:\\Project\\skills-test\\guarded-component-i18n-fix",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 5,
+      "child_file_count": 2,
+      "sample_dirs": [
+        ".tmp-tests",
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "local-ci-fixer",
+      "path": "D:\\Project\\skills-test\\local-ci-fixer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": false,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "project-ai-context-initializer",
+      "path": "D:\\Project\\skills-test\\project-ai-context-initializer",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": true,
+      "has_assets": true,
+      "child_dir_count": 6,
+      "child_file_count": 2,
+      "sample_dirs": [
+        "agents",
+        "artifacts",
+        "assets",
+        "references",
+        "scripts",
+        "tests"
+      ],
+      "sample_files": [
+        "CLAUDE.md",
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "agent-tool-benchmark-builder",
+      "path": "D:\\Project\\skills-test\\agent-tool-benchmark-builder",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": true,
+      "child_dir_count": 4,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "assets",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "ai-news-realtime-multisource",
+      "path": "D:\\Project\\skills-test\\ai-news-realtime-multisource",
+      "kind": "skill",
+      "has_skill_md": true,
+      "has_agents_openai_yaml": true,
+      "has_references": true,
+      "has_scripts": true,
+      "has_tests": false,
+      "has_assets": false,
+      "child_dir_count": 3,
+      "child_file_count": 1,
+      "sample_dirs": [
+        "agents",
+        "references",
+        "scripts"
+      ],
+      "sample_files": [
+        "SKILL.md"
+      ]
+    }
+  ]
+}

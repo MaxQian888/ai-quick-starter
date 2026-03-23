@@ -1,0 +1,30 @@
+benchmark_id: sample-tool-selection-pack
+focus: tool-selection-and-arg-correctness
+tasks:
+  - task_id: t001
+    user_request: ""
+    context: ""
+    available_tools:
+      - name: search_docs
+        purpose: "Search indexed documentation."
+        required_args:
+          - query
+    expected:
+      primary_tool: search_docs
+      required_args:
+        query: ""
+      allowed_alternatives: []
+      forbidden_tools: []
+      preconditions: []
+    scoring:
+      tool_choice_weight: 0.5
+      arg_correctness_weight: 0.3
+      format_weight: 0.1
+      overcall_penalty_weight: 0.1
+    evidence:
+      rationale: ""
+      oracle_signals: []
+    failure_modes:
+      - wrong-tool
+      - missing-required-arg
+      - speculative-call
