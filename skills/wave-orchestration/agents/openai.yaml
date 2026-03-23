@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wave Orchestration"
+  short_description: "Run complex work as iterative parallel agent waves"
+  default_prompt: "Use $wave-orchestration to decompose this task into iterative waves of parallel Codex or Claude subagents, keep the blocking work local to the coordinator, merge results between waves, and stop only when the completion criteria are met."

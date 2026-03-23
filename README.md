@@ -12,6 +12,11 @@ An open, bilingual repository of reusable Claude Code skills for repository engi
 
 `ai-quick-starter` 是一个面向 Claude Code / 类 Claude 插件生态的技能仓库。仓库根目录本身可以作为一个 Claude 插件使用，并通过 `.claude-plugin/marketplace.json` 作为公开市场入口分发。
 
+公开市场会同时暴露：
+
+- 一个完整打包插件：`ai-quick-starter`
+- 多个可单独安装的 skill 插件：例如 `screenshot`、`build-project-fixer`、`stock-analyzer-skill`
+
 它不是单一应用，而是一组可复用的 skill 模块。每个技能通常围绕一个明确任务组织，常见内容包括：
 
 - `SKILL.md`：技能说明与触发条件
@@ -54,11 +59,18 @@ claude --plugin-dir .
 
 ```text
 /plugin marketplace add AstroAir/ai-quick-starter
+/plugin install screenshot@astroair-skills
+```
+
+如果你想一次安装整套技能，也可以继续安装 bundle：
+
+```text
 /plugin install ai-quick-starter@astroair-skills
 ```
 
 当前市场名：`astroair-skills`
-当前插件名：`ai-quick-starter`
+当前完整插件名：`ai-quick-starter`
+当前 skill 插件名：对应各自 skill 目录名，例如 `screenshot`
 
 ### 仓库结构
 
@@ -66,7 +78,8 @@ claude --plugin-dir .
 .
 ├── .claude-plugin/          # Claude 插件与 marketplace 元数据
 ├── .github/                 # Issue / PR 模板
-├── skills/                  # 技能集合
+├── plugins/                 # 由脚本生成的独立 Claude 插件包装层（默认 link，不复制 skill 内容）
+├── skills/                  # 技能集合源码
 ├── CHANGELOG.md             # 版本记录
 ├── CONTRIBUTING.md          # 贡献指南
 ├── LICENSE                  # MIT 许可证
@@ -96,6 +109,7 @@ claude --plugin-dir .
 | Skill | 用途 |
 | --- | --- |
 | `component-unit-test-completer` | 为 UI 组件补齐一一对应的单元测试 |
+| `code-simplifier` | 在不改变行为的前提下精简最近改动代码 |
 | `python-component-splitter` | 拆分大型 Python 模块 |
 | `react-component-splitter` | 拆分大型 React / Next.js 组件 |
 | `cpp-teaching-code-generator` | 生成教学用 C++ 示例与练习代码 |
@@ -127,6 +141,24 @@ claude --plugin-dir .
 - 如需报告安全问题，请阅读 [SECURITY.md](SECURITY.md)
 - 如需使用帮助或分流说明，请阅读 [SUPPORT.md](SUPPORT.md)
 
+### Marketplace 生成
+
+独立插件目录 `plugins/` 和 marketplace 清单由脚本生成，不建议手工逐个维护。
+
+`skills/` 是标准 skills CLI 与仓库维护时的唯一事实源。默认生成模式会在 `plugins/` 下创建 link/junction 包装层，让 Claude marketplace 能识别独立插件，同时避免把每个 skill 再复制一份。
+
+如在 `skills/` 下新增或调整技能后需要刷新公开市场内容，可运行：
+
+```bash
+uv run --python 3.11 scripts/build_marketplace_plugins.py --repo-root .
+```
+
+如果你需要生成一个真实复制文件的发布快照，例如用于单独发布 marketplace 包，可显式使用：
+
+```bash
+uv run --python 3.11 scripts/build_marketplace_plugins.py --repo-root . --materialize copy
+```
+
 ### 说明与边界
 
 - 这个仓库优先服务于公开可分发的技能集合，不保证每个技能都适合作为通用生产方案直接使用。
@@ -138,6 +170,11 @@ claude --plugin-dir .
 ### What This Repository Is
 
 `ai-quick-starter` is a public, bilingual-first Claude Code skills collection. The repository root can be used as a Claude plugin, and it also exposes a marketplace catalog through `.claude-plugin/marketplace.json`.
+
+The public marketplace exposes both:
+
+- a full bundle plugin: `ai-quick-starter`
+- individually installable skill plugins such as `screenshot`, `build-project-fixer`, and `stock-analyzer-skill`
 
 This is not a single application. It is a curated set of reusable task-focused skills. Each skill usually includes:
 
@@ -181,11 +218,18 @@ Based on the official Claude Code marketplace docs, GitHub repositories can be a
 
 ```text
 /plugin marketplace add AstroAir/ai-quick-starter
+/plugin install screenshot@astroair-skills
+```
+
+If you want the entire collection in one install, the bundle is still available:
+
+```text
 /plugin install ai-quick-starter@astroair-skills
 ```
 
 Current marketplace name: `astroair-skills`
-Current plugin name: `ai-quick-starter`
+Current bundle plugin name: `ai-quick-starter`
+Current skill plugin names: each top-level skill directory name, such as `screenshot`
 
 ### Repository Layout
 
@@ -193,7 +237,8 @@ Current plugin name: `ai-quick-starter`
 .
 ├── .claude-plugin/          # Claude plugin and marketplace metadata
 ├── .github/                 # Issue and pull request templates
-├── skills/                  # Reusable skill modules
+├── plugins/                 # Generated standalone plugin wrappers (link mode by default)
+├── skills/                  # Reusable skill source modules
 ├── CHANGELOG.md             # Version history
 ├── CONTRIBUTING.md          # Contribution guide
 ├── LICENSE                  # MIT license
@@ -223,6 +268,7 @@ Current plugin name: `ai-quick-starter`
 | Skill | Summary |
 | --- | --- |
 | `component-unit-test-completer` | Fill in one-to-one component unit tests |
+| `code-simplifier` | Simplify recently changed code without changing behavior |
 | `python-component-splitter` | Split oversized Python modules |
 | `react-component-splitter` | Split oversized React or Next.js components |
 | `cpp-teaching-code-generator` | Generate instructional C++ code and exercises |
@@ -253,6 +299,24 @@ Current plugin name: `ai-quick-starter`
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR
 - Review [SECURITY.md](SECURITY.md) for vulnerability reporting
 - Use [SUPPORT.md](SUPPORT.md) for support routing and expectations
+
+### Marketplace Generation
+
+The standalone plugin directories under `plugins/` and the marketplace catalog are generated artifacts and should not be maintained one-by-one by hand.
+
+`skills/` remains the single source of truth for standard skills CLI installs and for repository maintenance. By default, the generator creates link or junction wrappers under `plugins/` so Claude marketplace can expose per-skill plugins without duplicating each skill tree on disk.
+
+After adding or updating skills under `skills/`, regenerate the marketplace payload with:
+
+```bash
+uv run --python 3.11 scripts/build_marketplace_plugins.py --repo-root .
+```
+
+If you need a materialized publish snapshot with copied files instead of links, use:
+
+```bash
+uv run --python 3.11 scripts/build_marketplace_plugins.py --repo-root . --materialize copy
+```
 
 ### Notes And Boundaries
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Simplifier"
+  short_description: "Simplify changed code without changing behavior"
+  default_prompt: "Use $code-simplifier to simplify the code I just changed, preserve behavior exactly, follow the repository's coding standards, and report any risky areas before editing."
