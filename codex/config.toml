@@ -1,0 +1,106 @@
+model_provider = "custom"
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+disable_response_storage = true
+max_context = 1000000
+context_compact_limit = 800000
+approvals_reviewer = "user"
+
+[model_providers.custom]
+name = "custom"
+wire_api = "responses"
+requires_openai_auth = true
+base_url = ""
+web_search = "live"
+sandbox_mode = "workspace-write"
+approvals_reviewer = "user"
+
+[features]
+multi_agent = true
+memories = true
+responses_websockets_v2 = true
+js_repl = true
+apps = true
+guardian_approval = true
+prevent_idle_sleep = true
+
+[sandbox_workspace_write]
+network_access = true
+
+[agents]
+max_threads = 5
+max_depth = 1
+
+[memories]
+extract_model = "gpt-5.4"
+consolidation_model = "gpt-5.4"
+
+[windows]
+sandbox = "elevated"
+
+[notice]
+hide_full_access_warning = true
+
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
+
+[mcp_servers.exa]
+url = "https://mcp.exa.ai/mcp"
+
+[mcp_servers.playwright]
+type = "stdio"
+command = "npx"
+args = ["@playwright/mcp@latest"]
+
+[mcp_servers.sequential-thinking]
+type = "stdio"
+command = "cmd"
+args = ["/c", "npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
+
+[mcp_servers.fetch]
+type = "stdio"
+command = "uvx"
+args = ["mcp-server-fetch"]
+
+[mcp_servers.context7]
+type = "stdio"
+command = "cmd"
+args = ["/c", "npx", "-y", "@upstash/context7-mcp"]
+
+[mcp_servers.memory]
+type = "stdio"
+command = "cmd"
+args = ["/c", "npx", "-y", "@modelcontextprotocol/server-memory"]
+
+[mcp_servers.next-devtools]
+type = "stdio"
+command = "npx"
+args = ["-y", "next-devtools-mcp@latest"]
+
+[mcp_servers.heroui-native]
+type = "stdio"
+command = "npx"
+args = ["-y", "@heroui/native-mcp@latest"]
+
+[mcp_servers.shadcn]
+type = "stdio"
+command = "npx"
+args = ["shadcn@latest", "mcp"]
+
+[mcp_servers.time]
+type = "stdio"
+command = "cmd"
+args = ["/c", "npx", "-y", "@modelcontextprotocol/server-time"]
+
+[mcp_servers.augment-context-engine]
+type = "stdio"
+command = "auggie"
+args = ["--mcp", "--mcp-auto-workspace"]
+
+[mcp_servers.augment-context-engine.env]
+AUGMENT_API_TOKEN = ""
+AUGMENT_API_URL = ""
+
+[mcp_servers.deepwiki]
+type = "http"
+url = "https://mcp.deepwiki.com/mcp"

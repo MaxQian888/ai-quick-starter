@@ -1,0 +1,4 @@
+[submodule "skills/stock-analyzer-skill"]
+	path = skills/stock-analyzer-skill
+	url = https://github.com/AltenLi/stock-analyzer-skill.git
+	branch = main

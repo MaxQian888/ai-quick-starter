@@ -1,0 +1,63 @@
+name: Bug Report
+description: Report a reproducible repository, skill, script, or marketplace issue. / 提交可复现的仓库、技能、脚本或市场问题。
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug report.
+        感谢提交问题，请尽量提供可复现信息。
+  - type: input
+    id: skill_path
+    attributes:
+      label: Skill Path / 技能路径
+      description: Which skill or file path is affected? / 哪个技能或文件路径受影响？
+      placeholder: skills/build-project-fixer
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary / 问题概述
+      description: What happened, and what did you expect? / 实际发生了什么，你的预期是什么？
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction Steps / 复现步骤
+      description: Provide a minimal repro. / 请给出最小复现步骤。
+      placeholder: |
+        1. Open ...
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 环境信息
+      description: OS, shell, Claude/Codex version, Python/Node/uv if relevant. / 请提供操作系统、shell、Claude/Codex 版本，以及相关 Python/Node/uv 版本。
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs Or Screenshots / 日志或截图
+      description: Paste logs or attach screenshots if useful. / 如有帮助，请粘贴日志或附截图。
+      render: shell
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist / 自查清单
+      options:
+        - label: I searched existing issues first. / 我已经先搜索过现有 issue。
+          required: true
+        - label: I removed secrets or personal data from logs. / 我已经从日志中移除了密钥和个人数据。
+          required: true

@@ -1,0 +1,39 @@
+{
+  "name": "astroair-skills",
+  "owner": {
+    "name": "Max Qian",
+    "email": "astro_air@126.com"
+  },
+  "metadata": {
+    "description": "Bilingual public marketplace for reusable Claude Code skills from the ai-quick-starter repository.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "ai-quick-starter",
+      "source": "./",
+      "description": "A bilingual Claude Code plugin that bundles reusable skills for repo maintenance, analysis, refactoring, diagrams, news aggregation, and desktop capture.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Max Qian",
+        "email": "astro_air@126.com"
+      },
+      "homepage": "https://github.com/AstroAir/ai-quick-starter",
+      "repository": "https://github.com/AstroAir/ai-quick-starter",
+      "license": "MIT",
+      "keywords": [
+        "claude-code",
+        "skills",
+        "automation",
+        "bilingual"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "repo-engineering",
+        "research",
+        "refactoring",
+        "documentation"
+      ]
+    }
+  ]
+}

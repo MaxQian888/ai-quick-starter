@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage Questions / 使用问题
+    url: https://github.com/AstroAir/ai-quick-starter/blob/main/SUPPORT.md
+    about: Read the support guide before opening a broad support request. / 广泛支持请求前请先阅读支持说明。
+  - name: Security Reports / 安全报告
+    url: https://github.com/AstroAir/ai-quick-starter/blob/main/SECURITY.md
+    about: Please report vulnerabilities privately. / 漏洞请通过私密渠道报告。

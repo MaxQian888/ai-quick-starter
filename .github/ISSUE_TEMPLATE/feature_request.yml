@@ -1,0 +1,60 @@
+name: Feature Request
+description: Suggest a new skill, repository improvement, or marketplace enhancement. / 提交新技能、仓库改进或市场增强建议。
+title: "[Feature]: "
+labels:
+  - enhancement
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing an idea.
+        感谢提供想法，请尽量把场景和收益写具体。
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request Type / 请求类型
+      options:
+        - New skill / 新技能
+        - Improve an existing skill / 改进现有技能
+        - Repository documentation / 仓库文档
+        - Claude marketplace metadata / Claude 市场元数据
+        - Other / 其他
+    validations:
+      required: true
+  - type: input
+    id: related_path
+    attributes:
+      label: Related Skill Or Path / 相关技能或路径
+      description: Optional, but useful for existing scopes. / 可选，但对现有范围会很有帮助。
+      placeholder: skills/project-ai-context-initializer
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem To Solve / 想解决的问题
+      description: What user need or workflow gap does this address? / 这个建议要解决什么用户需求或流程缺口？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution / 期望方案
+      description: Describe the shape of the improvement. / 描述你希望的改进方式。
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered / 考虑过的替代方案
+      description: What else did you consider? / 你还考虑过哪些替代方案？
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist / 自查清单
+      options:
+        - label: I checked the README and existing skills first. / 我已经先检查过 README 和现有技能。
+          required: true

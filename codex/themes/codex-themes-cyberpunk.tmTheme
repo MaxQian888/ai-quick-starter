@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>name</key><string>Codex Themes / Cyberpunk</string><key>settings</key><array>
+<dict><key>settings</key><dict><key>activeGuide</key><string>#00F5FF</string><key>background</key><string>#0B0F14</string><key>caret</key><string>#00F5FF</string><key>findHighlight</key><string>#09383E</string><key>foreground</key><string>#E7F7FF</string><key>guide</key><string>#101722</string><key>invisibles</key><string>#7CA6C1</string><key>lineHighlight</key><string>#101722</string><key>selection</key><string>#104F60</string><key>selectionForeground</key><string>#E7F7FF</string></dict></dict>
+<dict><key>scope</key><string>comment, punctuation.definition.comment</string><key>settings</key><dict><key>foreground</key><string>#7CA6C1</string></dict></dict>
+<dict><key>scope</key><string>keyword, storage, keyword.control</string><key>settings</key><dict><key>foreground</key><string>#FF2BD6</string></dict></dict>
+<dict><key>scope</key><string>string, constant.other.symbol, markup.inline.raw.string</string><key>settings</key><dict><key>foreground</key><string>#72F1B8</string></dict></dict>
+<dict><key>scope</key><string>constant.numeric, constant.language, constant.character</string><key>settings</key><dict><key>foreground</key><string>#FFD166</string></dict></dict>
+<dict><key>scope</key><string>entity.name.function, support.function, meta.function-call</string><key>settings</key><dict><key>foreground</key><string>#35A7FF</string></dict></dict>
+<dict><key>scope</key><string>entity.name.type, support.type, storage.type, support.class</string><key>settings</key><dict><key>foreground</key><string>#00F5FF</string></dict></dict>
+<dict><key>scope</key><string>variable, support.variable, meta.definition.variable</string><key>settings</key><dict><key>foreground</key><string>#E7F7FF</string></dict></dict>
+<dict><key>scope</key><string>keyword.operator, punctuation.separator, punctuation.accessor</string><key>settings</key><dict><key>foreground</key><string>#FF2BD6</string></dict></dict>
+<dict><key>scope</key><string>markup.bold</string><key>settings</key><dict><key>fontStyle</key><string>bold</string><key>foreground</key><string>#00F5FF</string></dict></dict>
+<dict><key>scope</key><string>markup.italic</string><key>settings</key><dict><key>fontStyle</key><string>italic</string><key>foreground</key><string>#FF2BD6</string></dict></dict>
+<dict><key>scope</key><string>markup.inserted, diff.inserted</string><key>settings</key><dict><key>background</key><string>#1B332E</string><key>foreground</key><string>#72F1B8</string></dict></dict>
+<dict><key>scope</key><string>markup.deleted, diff.deleted</string><key>settings</key><dict><key>background</key><string>#321B27</string><key>foreground</key><string>#FF5C8A</string></dict></dict>
+<dict><key>scope</key><string>markup.changed, diff.changed</string><key>settings</key><dict><key>background</key><string>#322E21</string><key>foreground</key><string>#FFD166</string></dict></dict>
+</array>
+</dict></plist>
