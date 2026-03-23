@@ -12,4 +12,4 @@ This project follows a simple Keep a Changelog style and semantic versioning for
 - Claude Code plugin manifest at `.claude-plugin/plugin.json`
 - Claude Code marketplace catalog at `.claude-plugin/marketplace.json`
 - GitHub issue templates and pull request template
-- `.gitmodules` entry for `skills/stock-analyzer-skill`
+- In-repo `skills/stock-analyzer-skill` skill content

@@ -21,12 +21,12 @@ Thank you for helping improve `ai-quick-starter`.
 1. Read the root [README.md](README.md).
 2. Check whether a similar skill already exists under `skills/`.
 3. Open an issue first for large additions, restructuring, or marketplace metadata changes.
-4. If your change touches `skills/stock-analyzer-skill`, remember it is tracked as a submodule-backed path.
+4. If your change touches `skills/stock-analyzer-skill`, treat it like any other first-party skill directory in this repository.
 
 1. 先阅读根目录的 [README.md](README.md)。
 2. 先确认 `skills/` 下是否已经有相似能力。
 3. 如果是大型新增、结构调整或市场元数据变更，优先先开 issue。
-4. 如果修改 `skills/stock-analyzer-skill`，请注意它是一个带子模块属性的路径。
+4. 如果修改 `skills/stock-analyzer-skill`，按仓库内普通一方技能目录处理即可。
 
 ## Skill Contribution Checklist / 技能贡献检查清单
 

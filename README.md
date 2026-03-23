@@ -31,17 +31,11 @@ An open, bilingual repository of reusable Claude Code skills for repository engi
 
 #### 1. 克隆仓库
 
-仓库当前包含一个子模块路径 `skills/stock-analyzer-skill`，建议递归克隆：
+直接正常克隆即可，`skills/stock-analyzer-skill` 现在作为仓库内普通目录维护：
 
 ```bash
-git clone --recurse-submodules https://github.com/AstroAir/ai-quick-starter.git
+git clone https://github.com/AstroAir/ai-quick-starter.git
 cd ai-quick-starter
-```
-
-如果你已经克隆过仓库：
-
-```bash
-git submodule update --init --recursive
 ```
 
 #### 2. 作为本地插件测试
@@ -137,7 +131,7 @@ claude --plugin-dir .
 
 - 这个仓库优先服务于公开可分发的技能集合，不保证每个技能都适合作为通用生产方案直接使用。
 - 某些技能会依赖 Python、Node.js、`uv`、网络访问或第三方站点，具体依赖请看各技能自己的 `SKILL.md` 与脚本说明。
-- `skills/stock-analyzer-skill` 当前通过子模块路径接入，使用前请确保已经初始化子模块。
+- `skills/stock-analyzer-skill` 当前作为仓库内普通技能目录维护，不再依赖子模块初始化。
 
 ## English
 
@@ -164,17 +158,11 @@ This is not a single application. It is a curated set of reusable task-focused s
 
 #### 1. Clone The Repository
 
-This repository currently includes a submodule-backed path at `skills/stock-analyzer-skill`, so recursive clone is recommended:
+Clone the repository normally. `skills/stock-analyzer-skill` is now maintained as a regular in-repo directory:
 
 ```bash
-git clone --recurse-submodules https://github.com/AstroAir/ai-quick-starter.git
+git clone https://github.com/AstroAir/ai-quick-starter.git
 cd ai-quick-starter
-```
-
-If you already cloned the repository:
-
-```bash
-git submodule update --init --recursive
 ```
 
 #### 2. Test As A Local Plugin
@@ -270,4 +258,4 @@ Current plugin name: `ai-quick-starter`
 
 - This repository is optimized as a public, distributable skills collection, not as a guarantee that every skill is production-ready for every environment.
 - Some skills depend on Python, Node.js, `uv`, network access, or third-party services. Check each skill's own `SKILL.md` and helper scripts for exact requirements.
-- `skills/stock-analyzer-skill` is currently linked through a submodule-backed path, so initialize submodules before relying on it.
+- `skills/stock-analyzer-skill` is maintained directly in this repository and no longer depends on submodule initialization.
