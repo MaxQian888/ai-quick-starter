@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tauri v2"
+  short_description: "Guide Tauri v2 IPC, permissions, plugins"
+  default_prompt: "Use $tauri-v2 to wire commands, capabilities, plugin permissions, and desktop/mobile config in this Tauri v2 app."

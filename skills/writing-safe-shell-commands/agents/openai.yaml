@@ -1,0 +1,4 @@
+interface:
+  display_name: "Safe Shell Commands"
+  short_description: "Generate safer shell commands with preview and risk staging"
+  default_prompt: "Use $writing-safe-shell-commands to turn this task into stable shell commands, choose the right shell, and stage risky operations with pre-check, preview, execute, and verify steps."
