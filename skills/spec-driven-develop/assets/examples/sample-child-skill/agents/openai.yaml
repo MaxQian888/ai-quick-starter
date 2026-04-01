@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sample Migration Dev"
+  short_description: "Resume an active migration phase safely"
+  default_prompt: "Use $sample-migration-dev to resume the current phase from docs/progress/MASTER.md, execute the next task, and keep MASTER reconciliation on the main thread."

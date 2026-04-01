@@ -1,0 +1,4 @@
+interface:
+  display_name: "PowerShell Terminal Config Sync"
+  short_description: "Discover and sync PowerShell and Windows Terminal config"
+  default_prompt: "Use $powershell-terminal-config-sync to inspect my current PowerShell profile and Windows Terminal settings, capture dependent files, and generate a safe sync plan."

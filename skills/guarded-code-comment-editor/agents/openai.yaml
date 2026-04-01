@@ -1,0 +1,4 @@
+interface:
+  display_name: "Guarded Code Comment Editor"
+  short_description: "Edit code comments without breaking local style"
+  default_prompt: "Use $guarded-code-comment-editor to sample the local comment style, detect weak or AI-sounding comments, and directly update code comments so they read like a human wrote them."

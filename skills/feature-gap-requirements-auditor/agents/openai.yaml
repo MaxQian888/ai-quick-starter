@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Gap Auditor"
+  short_description: "Audit docs against code and list missing requirements"
+  default_prompt: "Use $feature-gap-requirements-auditor to inspect this repository's docs and a target folder or component, identify likely missing functionality, and produce a detailed requirements checklist with evidence and assumptions."

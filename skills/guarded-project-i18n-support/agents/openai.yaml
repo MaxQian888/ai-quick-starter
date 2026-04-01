@@ -1,0 +1,4 @@
+interface:
+  display_name: "Guarded Project I18n Support"
+  short_description: "Plan safe project-level i18n support"
+  default_prompt: "Use $guarded-project-i18n-support to inspect a repository and plan the safest way to add or extend i18n support."

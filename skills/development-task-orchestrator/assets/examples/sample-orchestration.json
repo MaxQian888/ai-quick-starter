@@ -1,0 +1,214 @@
+{
+  "input_summary": {
+    "source_path": "D:\\Project\\skills-test\\development-task-orchestrator\\assets\\examples\\sample-input.md",
+    "format": "checklist",
+    "work_item_count": 5
+  },
+  "work_items": [
+    {
+      "id": "finalize-api-contract",
+      "title": "Finalize API Contract",
+      "source_text": "- [ ] Finalize API contract (writes: src/api/contracts.ts)",
+      "status": "pending",
+      "write_scope": [
+        "src/api/contracts.ts"
+      ],
+      "verification_expectation": "Run the relevant targeted verification for this work item.",
+      "notes": []
+    },
+    {
+      "id": "implement-backend-handler",
+      "title": "Implement Backend Handler",
+      "source_text": "- [ ] Implement backend handler after Finalize API contract (writes: src/server/handler.ts)",
+      "status": "pending",
+      "write_scope": [
+        "src/server/handler.ts"
+      ],
+      "verification_expectation": "Run the relevant targeted verification for this work item.",
+      "notes": []
+    },
+    {
+      "id": "wire-settings-page",
+      "title": "Wire Settings Page",
+      "source_text": "- [ ] Wire settings page after Implement backend handler (writes: src/app/settings/page.tsx)",
+      "status": "pending",
+      "write_scope": [
+        "src/app/settings/page.tsx"
+      ],
+      "verification_expectation": "Run the relevant targeted verification for this work item.",
+      "notes": []
+    },
+    {
+      "id": "add-settings-regression-test",
+      "title": "Add Settings Regression Test",
+      "source_text": "- [ ] Add settings regression test after Wire settings page (writes: tests/settings-page.test.ts)",
+      "status": "pending",
+      "write_scope": [
+        "tests/settings-page.test.ts"
+      ],
+      "verification_expectation": "Run the targeted tests covering this work item.",
+      "notes": []
+    },
+    {
+      "id": "draft-release-notes",
+      "title": "Draft Release Notes",
+      "source_text": "- [ ] Draft release notes (writes: docs/settings-release.md)",
+      "status": "pending",
+      "write_scope": [
+        "docs/settings-release.md"
+      ],
+      "verification_expectation": "Run the relevant targeted verification for this work item.",
+      "notes": []
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "finalize-api-contract",
+      "to": "implement-backend-handler"
+    },
+    {
+      "from": "implement-backend-handler",
+      "to": "wire-settings-page"
+    },
+    {
+      "from": "wire-settings-page",
+      "to": "add-settings-regression-test"
+    }
+  ],
+  "blocked_items": [
+    {
+      "id": "implement-backend-handler",
+      "blocked_by": [
+        "finalize-api-contract"
+      ]
+    },
+    {
+      "id": "wire-settings-page",
+      "blocked_by": [
+        "implement-backend-handler"
+      ]
+    },
+    {
+      "id": "add-settings-regression-test",
+      "blocked_by": [
+        "wire-settings-page"
+      ]
+    }
+  ],
+  "parallel_batches": [
+    {
+      "id": "batch-1",
+      "objective": "Execute ready work items with non-conflicting write scopes.",
+      "tasks": [
+        "draft-release-notes",
+        "finalize-api-contract"
+      ],
+      "return_condition": "Return changed files, verification run, and open blockers for checkpoint review."
+    },
+    {
+      "id": "batch-2",
+      "objective": "Execute ready work items with non-conflicting write scopes.",
+      "tasks": [
+        "implement-backend-handler"
+      ],
+      "return_condition": "Return changed files, verification run, and open blockers for checkpoint review."
+    },
+    {
+      "id": "batch-3",
+      "objective": "Execute ready work items with non-conflicting write scopes.",
+      "tasks": [
+        "wire-settings-page"
+      ],
+      "return_condition": "Return changed files, verification run, and open blockers for checkpoint review."
+    },
+    {
+      "id": "batch-4",
+      "objective": "Execute ready work items with non-conflicting write scopes.",
+      "tasks": [
+        "add-settings-regression-test"
+      ],
+      "return_condition": "Return changed files, verification run, and open blockers for checkpoint review."
+    }
+  ],
+  "main_thread_duties": [
+    "Own critical-path blockers and dependency clarification.",
+    "Review each checkpoint before launching the next wave.",
+    "Handle integration, merge conflicts, and final verification."
+  ],
+  "merge_points": [
+    {
+      "batch": "batch-1",
+      "checkpoint": "checkpoint-1"
+    },
+    {
+      "batch": "batch-2",
+      "checkpoint": "checkpoint-2"
+    },
+    {
+      "batch": "batch-3",
+      "checkpoint": "checkpoint-3"
+    },
+    {
+      "batch": "batch-4",
+      "checkpoint": "checkpoint-4"
+    }
+  ],
+  "checkpoint_sequence": [
+    {
+      "id": "checkpoint-1",
+      "after_batch": "batch-1",
+      "questions": [
+        "What completed?",
+        "What drifted out of scope?",
+        "What verification ran?",
+        "What new blockers appeared?",
+        "Do the remaining batches still have valid assumptions?"
+      ]
+    },
+    {
+      "id": "checkpoint-2",
+      "after_batch": "batch-2",
+      "questions": [
+        "What completed?",
+        "What drifted out of scope?",
+        "What verification ran?",
+        "What new blockers appeared?",
+        "Do the remaining batches still have valid assumptions?"
+      ]
+    },
+    {
+      "id": "checkpoint-3",
+      "after_batch": "batch-3",
+      "questions": [
+        "What completed?",
+        "What drifted out of scope?",
+        "What verification ran?",
+        "What new blockers appeared?",
+        "Do the remaining batches still have valid assumptions?"
+      ]
+    },
+    {
+      "id": "checkpoint-4",
+      "after_batch": "batch-4",
+      "questions": [
+        "What completed?",
+        "What drifted out of scope?",
+        "What verification ran?",
+        "What new blockers appeared?",
+        "Do the remaining batches still have valid assumptions?"
+      ]
+    }
+  ],
+  "assumptions": [
+    "Dependency extraction relies on explicit 'after ...' phrases in the source text.",
+    "Write-scope conflicts are inferred from exact scope-string overlap."
+  ],
+  "risks": [
+    "Hidden shared files can still reduce the safety of parallel batches.",
+    "Freeform input may omit dependencies that require manual correction."
+  ],
+  "verification_boundaries": [
+    "Generated artifacts describe expected verification; they do not prove commands were run.",
+    "Later waves remain provisional until checkpoint review confirms the assumptions still hold."
+  ]
+}

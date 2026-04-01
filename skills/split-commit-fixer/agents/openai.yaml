@@ -1,0 +1,4 @@
+interface:
+  display_name: "Split Commit Fixer"
+  short_description: "Split large worktrees into safe commit batches"
+  default_prompt: "Use $split-commit-fixer to split this repository's uncommitted changes into functional commit batches, surface risky couplings, and fix commit-time blockers batch by batch."

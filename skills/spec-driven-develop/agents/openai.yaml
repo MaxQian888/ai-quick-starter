@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec-Driven Develop"
+  short_description: "Plan and track large transformation work"
+  default_prompt: "Use $spec-driven-develop before implementation to analyze this large change, break it into tracked phases, and prepare progress documents plus a focused execution skill."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Local JavaScript Scripting"
+  short_description: "Author and validate local Node.js scripts"
+  default_prompt: "Use $local-javascript-scripting to write a local Node.js script that scans folders, transforms files, or wraps a CLI on this machine."

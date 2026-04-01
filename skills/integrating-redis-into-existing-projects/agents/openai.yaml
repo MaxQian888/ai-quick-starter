@@ -1,0 +1,4 @@
+interface:
+  display_name: "Redis Integration Guide"
+  short_description: "Audit projects and wire Redis safely"
+  default_prompt: "Use $integrating-redis-into-existing-projects to inspect this codebase, choose the right Redis role, and integrate Redis into the existing architecture without bypassing established seams."

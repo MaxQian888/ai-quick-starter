@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configuring K8s"
+  short_description: "Inspect repo K8s config and guide safe changes."
+  default_prompt: "Use $configuring-k8s to inspect this repository's Kubernetes configuration surface, then prepare or review the needed kubeconfig, manifests, Helm values, or Kustomize overlays safely."

@@ -1,0 +1,43 @@
+{
+  "software": "Acme CLI",
+  "versions": [
+    "1.2.0"
+  ],
+  "platforms": [
+    "windows"
+  ],
+  "prerequisites": [
+    "Python 3.11"
+  ],
+  "core_concepts": [],
+  "command_inventory": [
+    "uv tool install acme-cli",
+    "$env:ACME_HOME=\"$HOME\\.acme\""
+  ],
+  "source_inventory": [
+    {
+      "track": "official",
+      "source": "Official docs",
+      "url": "https://example.com/docs/install"
+    },
+    {
+      "track": "community",
+      "source": "Community blog",
+      "url": "https://example.com/blog/acme-cli-windows"
+    }
+  ],
+  "verified_claims": [
+    "Install with uv tool install acme-cli."
+  ],
+  "unresolved_questions": [
+    "Confirm whether ACME_HOME is still needed on macOS."
+  ],
+  "topic_notes": {
+    "installation": [
+      "Install with uv tool install acme-cli."
+    ],
+    "troubleshooting": [
+      "Set ACME_HOME before the first run on Windows."
+    ]
+  }
+}

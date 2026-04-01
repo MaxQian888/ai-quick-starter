@@ -1,0 +1,4 @@
+interface:
+  display_name: "Software Research Tutorial Builder"
+  short_description: "Parallel software research to practical tutorials"
+  default_prompt: "Use $software-research-tutorial-builder to research this software with parallel evidence gathering and produce a practical tutorial plus runnable support materials."

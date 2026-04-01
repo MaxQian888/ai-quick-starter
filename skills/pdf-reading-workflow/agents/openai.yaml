@@ -1,0 +1,4 @@
+interface:
+  display_name: "PDF Reading Workflow"
+  short_description: "Inspect, extract, and render PDFs across mixed environments."
+  default_prompt: "Use $pdf-reading-workflow to inspect a PDF, extract text, and render pages when text extraction is weak."

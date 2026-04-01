@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Debug Script Generator"
+  short_description: "Generate repo build and quick-debug scripts"
+  default_prompt: "Use $build-debug-script-generator to inspect this repository, choose the most credible build and quick-debug commands, and generate repo-local PowerShell scripts plus a matching plan without guessing past the repository evidence."

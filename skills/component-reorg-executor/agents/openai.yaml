@@ -1,0 +1,4 @@
+interface:
+  display_name: "Component Reorg Executor"
+  short_description: "Apply an approved component reorg plan safely"
+  default_prompt: "Use $component-reorg-executor to apply an approved component reorganization plan and repair local imports."

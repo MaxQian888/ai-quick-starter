@@ -1,0 +1,4 @@
+interface:
+  display_name: "React Flow Project Assistant"
+  short_description: "Build, extend, and debug React Flow apps"
+  default_prompt: "Use $develop-react-flow-projects to build or improve this React Flow project, including custom nodes, edges, layout, state, and performance."

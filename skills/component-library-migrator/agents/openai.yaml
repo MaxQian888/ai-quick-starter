@@ -1,0 +1,4 @@
+interface:
+  display_name: "Component Library Migrator"
+  short_description: "Audit and safely migrate React components to a target UI library."
+  default_prompt: "Use $component-library-migrator to inspect this React component directory, find safe replacement opportunities for the target UI library, and apply only the evidence-backed edits that fit the audit plan."

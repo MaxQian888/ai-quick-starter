@@ -1,0 +1,24 @@
+{
+  "phases": [
+    {
+      "name": "Project Analysis",
+      "summary": "Map the current repository, identify migration blockers, and capture enough evidence to plan execution safely.",
+      "tasks": [
+        "Inventory entrypoints",
+        { "text": "Record migration blockers", "priority": "P0" }
+      ],
+      "verification": "Analysis reviewed and linked from MASTER.md"
+    },
+    {
+      "name": "Execution Prep",
+      "summary": "Prepare the child-skill handoff and execution boundary so development can resume from the current phase.",
+      "tasks": [
+        "Create child skill"
+      ],
+      "verification": "Child skill path reviewed and execution boundary confirmed",
+      "depends_on": [
+        "Phase 1 complete"
+      ]
+    }
+  ]
+}

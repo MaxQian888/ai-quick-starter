@@ -1,0 +1,4 @@
+interface:
+  display_name: "Development Task Orchestrator"
+  short_description: "Turn existing plans into execution waves."
+  default_prompt: "Use $development-task-orchestrator to turn this existing plan into parallel execution batches, checkpoints, and main-thread duties."

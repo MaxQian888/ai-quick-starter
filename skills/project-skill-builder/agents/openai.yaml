@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Skill Builder"
+  short_description: "Analyze a repo and scaffold a reusable skill"
+  default_prompt: "Use $project-skill-builder to analyze this repository and scaffold a reusable project-specific skill package with local guidance and reference files."

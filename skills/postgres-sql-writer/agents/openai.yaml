@@ -1,0 +1,4 @@
+interface:
+  display_name: "PostgreSQL SQL Writer"
+  short_description: "Draft PostgreSQL SQL with safe placeholders"
+  default_prompt: "Use $postgres-sql-writer to write, rewrite, explain, or review PostgreSQL SQL, EXPLAIN output, and business queries with editable placeholder tables and columns when the schema is incomplete."

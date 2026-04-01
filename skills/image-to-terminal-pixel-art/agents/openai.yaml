@@ -1,0 +1,4 @@
+interface:
+  display_name: "Terminal Pixel Art"
+  short_description: "Render images as ANSI or grayscale terminal pixel art"
+  default_prompt: "Use $image-to-terminal-pixel-art to turn a local image or screenshot into terminal-friendly pixel art with an appropriate width and color mode."

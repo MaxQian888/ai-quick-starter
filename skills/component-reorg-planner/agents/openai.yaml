@@ -1,0 +1,4 @@
+interface:
+  display_name: "Component Reorg Planner"
+  short_description: "Audit a component directory and draft a functional reorg plan"
+  default_prompt: "Use $component-reorg-planner to audit a React or Next.js component directory and produce a project-aligned reorganization plan."
