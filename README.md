@@ -1,6 +1,6 @@
 # AI Quick Starter
 
-[English](#english) | [中文](#中文)
+[English](#english) | [中文](#中文) | [中文独立版](README_zh.md)
 
 An open, bilingual repository of reusable Claude Code skills for repository engineering, refactoring, research, documentation, automation, and capture workflows.
 
@@ -78,6 +78,7 @@ claude --plugin-dir .
 .
 ├── .claude-plugin/          # Claude 插件与 marketplace 元数据
 ├── .github/                 # Issue / PR 模板
+├── codex/                   # Codex 配置与主题
 ├── plugins/                 # 由脚本生成的独立 Claude 插件包装层（默认 link，不复制 skill 内容）
 ├── skills/                  # 技能集合源码
 ├── CHANGELOG.md             # 版本记录
@@ -102,13 +103,29 @@ claude --plugin-dir .
 | `feature-call-chain-mapper` | 追踪功能从入口到跨模块交接的调用链 |
 | `project-ai-context-initializer` | 为仓库生成 AI 协作文档与导航上下文 |
 | `project-structure-migrator` | 规划和执行项目结构迁移 |
-| `project-prompt-optimizer` | 面向项目提示词优化，当前仍需进一步完善说明 |
+| `project-prompt-optimizer` | 面向项目提示词优化 |
+| `build-debug-script-generator` | 生成构建与调试辅助脚本 |
+| `component-library-migrator` | 规划和执行组件库迁移审计 |
+| `component-reorg-executor` | 执行组件重组计划 |
+| `component-reorg-planner` | 规划组件目录重组方案 |
+| `component-unit-test-completer` | 为 UI 组件补齐一一对应的单元测试 |
+| `e2e-test-completer` | 同步并修复 Playwright / Cypress E2E 测试 |
+| `github-actions-ci-builder` | 构建和调优 GitHub Actions CI 工作流 |
+| `local-ci-fixer` | 本地复现和修复 GitHub Actions CI 故障 |
+| `project-architecture-design-analyzer` | 分析项目架构设计并提出改进建议 |
+| `project-docs-sync` | 同步项目文档与最新代码实现 |
+| `project-optimization-opportunity-auditor` | 审计项目优化机会并生成改进计划 |
+| `project-skill-builder` | 为特定项目构建定制化技能 |
+| `rust-lint-fixer` | 修复 Rust 代码的 lint 和格式化问题 |
+| `skill-safety-auditor` | 审计技能的安全性与合规性 |
+| `spec-driven-develop` | 大型重构或迁移的规范驱动开发工作流 |
+| `openspec-change-cleaner` | 审计和清理 OpenSpec 变更记录 |
+| `split-commit-fixer` | 将大体积工作区拆分为可审查的提交批次，逐批修复质量门禁，并将检查点提交整合为干净历史 |
 
 #### 代码重构与产出生成
 
 | Skill | 用途 |
 | --- | --- |
-| `component-unit-test-completer` | 为 UI 组件补齐一一对应的单元测试 |
 | `code-simplifier` | 在不改变行为的前提下精简最近改动代码 |
 | `python-component-splitter` | 拆分大型 Python 模块 |
 | `react-component-splitter` | 拆分大型 React / Next.js 组件 |
@@ -117,6 +134,27 @@ claude --plugin-dir .
 | `fumadocs-ui-css-design` | 构建或定制 Fumadocs 文档站 |
 | `agent-tool-benchmark-builder` | 设计和构建 agent 工具评测集 |
 | `agents-team-builder` | 为复杂任务生成 agent 团队方案与草稿配置 |
+| `create-mcp-server` | 从零搭建 MCP (Model Context Protocol) 服务器 |
+| `design-md` | 为 Stitch 项目生成 DESIGN.md 设计系统文档 |
+| `develop-react-flow-projects` | 开发 React Flow 流程图项目 |
+| `development-task-orchestrator` | 编排开发任务的执行顺序与依赖关系 |
+| `firefly-blog-framework-assistant` | Firefly 博客框架的配置、定制与部署 |
+| `image-to-terminal-pixel-art` | 将图片转为终端像素艺术预览 |
+| `ink-cli` | 使用 Ink 构建终端 CLI 应用 |
+| `ink-expert` | Ink v6 生产级 CLI 开发与迁移 |
+| `pdf-reading-workflow` | PDF 文档阅读与结构化提取工作流 |
+| `pig-skill-master` | 从 QQ 群聊记录生成可复用的朋友人格技能 |
+| `pptx-generator` | 生成 PowerPoint 演示文稿 |
+| `react-components` | 将 Stitch 设计转换为模块化 React 组件 |
+| `remotion` | 使用 Remotion 将 Stitch 设计转为演示视频 |
+| `shadcn-ui` | 使用和维护 shadcn/ui 组件库 |
+| `software-research-tutorial-builder` | 构建基于证据的软件研究教程 |
+| `stitch-design` | Stitch 设计工作流：提示增强、设计系统与屏幕生成 |
+| `stitch-loop` | Stitch 迭代式网站生成与自主构建循环 |
+| `taste-design` | 生成 Stitch 高级 DESIGN.md 品味系统 |
+| `tauri-rust-component-splitter` | 拆分大型 Tauri + Rust 组件 |
+| `tauri-v2` | Tauri v2 桌面/移动端应用开发 |
+| `vscode-extension-expert` | VS Code 扩展开发、调试与发布 |
 
 #### 研究、资讯与数据
 
@@ -126,6 +164,8 @@ claude --plugin-dir .
 | `daily-news-multisource-brief` | 生成跨区域日度新闻简报 |
 | `china-exchange-daily-brief` | 聚合中国主要交易所最新动态 |
 | `stock-analyzer-skill` | 面向 A/H/美股等市场的综合股票分析 |
+| `ai-research-writing` | AI 辅助的研究写作与内容生成 |
+| `market-research-skill` | 结构化市场研究与竞品分析 |
 
 #### 调试与桌面采集
 
@@ -134,6 +174,37 @@ claude --plugin-dir .
 | `pua-debugging` | 在 agent 多次失败或陷入被动态时强制提升推进强度 |
 | `screenshot` | 采集桌面、窗口或区域截图 |
 | `screen-recorder` | 录制桌面或复现视频 |
+| `vision-analysis` | 视觉分析与图像内容理解 |
+
+#### 系统运维与基础设施
+
+| Skill | 用途 |
+| --- | --- |
+| `configuring-k8s` | 检查、编辑和验证 Kubernetes 配置 |
+| `integrating-redis-into-existing-projects` | 在现有项目中集成 Redis 缓存/队列/限流 |
+| `redis-maintenance-script-builder` | 生成 Redis 运维诊断与维护脚本 |
+| `writing-safe-shell-commands` | 生成和加固安全的跨平台 shell 命令 |
+| `powershell-terminal-config-sync` | 同步 PowerShell 和 Windows Terminal 配置 |
+| `powershell-writing-assistant` | 编写和重构生产级 PowerShell 脚本 |
+| `fetch-skill-main` | 抓取网页、提取元数据、批量下载内容 |
+| `postgres-sql-writer` | 编写和审查 PostgreSQL SQL/DDL/DML |
+| `local-javascript-scripting` | 编写本地 Node.js/JavaScript 自动化脚本 |
+
+#### 质量门禁与规范优化
+
+| Skill | 用途 |
+| --- | --- |
+| `guarded-code-comment-editor` | 在保持本地风格的前提下编辑代码注释 |
+| `guarded-component-i18n-fix` | 审计和修复组件级国际化问题 |
+| `guarded-log-editor` | 在保持约定前提下增删改日志 |
+| `guarded-project-i18n-support` | 为项目规划和添加国际化支持 |
+| `feature-gap-requirements-auditor` | 对比文档与实现，发现功能缺口 |
+| `feature-optimization-planner` | 审计特定模块并生成优化计划 |
+| `enhance-prompt` | 将模糊的 UI 生成请求优化为结构化提示词 |
+| `session-context-optimizer` | 从本地技能构建精简的会话上下文包 |
+| `wave-orchestration` | 大规模任务的迭代式并行 agent 编排 |
+| `autonomous-loops` | 自主 agent 循环与无人值守工作流 |
+| `vengeful-ghost-skill` | 检测并阻止将真实同事克隆为 AI 替身 |
 
 ### 贡献与维护
 
@@ -158,6 +229,8 @@ uv run --python 3.11 scripts/build_marketplace_plugins.py --repo-root .
 ```bash
 uv run --python 3.11 scripts/build_marketplace_plugins.py --repo-root . --materialize copy
 ```
+
+> 注：`scripts/build_marketplace_plugins.py` 当前在仓库中尚未提供，相关功能正在规划中。如需手动维护 `plugins/` 或 marketplace 清单，请参考 `.claude-plugin/marketplace.json` 的格式直接编辑。
 
 ### 说明与边界
 
@@ -237,6 +310,7 @@ Current skill plugin names: each top-level skill directory name, such as `screen
 .
 ├── .claude-plugin/          # Claude plugin and marketplace metadata
 ├── .github/                 # Issue and pull request templates
+├── codex/                   # Codex configuration and themes
 ├── plugins/                 # Generated standalone plugin wrappers (link mode by default)
 ├── skills/                  # Reusable skill source modules
 ├── CHANGELOG.md             # Version history
@@ -261,13 +335,29 @@ Current skill plugin names: each top-level skill directory name, such as `screen
 | `feature-call-chain-mapper` | Trace feature entrypoints and cross-module handoffs |
 | `project-ai-context-initializer` | Generate AI-facing repository context docs |
 | `project-structure-migrator` | Plan and guide project-structure migrations |
-| `project-prompt-optimizer` | Prompt optimization skill that still needs fuller repository-specific polish |
+| `project-prompt-optimizer` | Prompt optimization for project-specific workflows |
+| `build-debug-script-generator` | Generate build and debug helper scripts |
+| `component-library-migrator` | Plan and execute component-library migration audits |
+| `component-reorg-executor` | Execute component reorganization plans |
+| `component-reorg-planner` | Plan component-directory reorganization |
+| `component-unit-test-completer` | Fill in one-to-one component unit tests |
+| `e2e-test-completer` | Sync and repair Playwright / Cypress E2E tests |
+| `github-actions-ci-builder` | Build and tune GitHub Actions CI workflows |
+| `local-ci-fixer` | Reproduce and fix GitHub Actions CI failures locally |
+| `project-architecture-design-analyzer` | Analyze project architecture and suggest improvements |
+| `project-docs-sync` | Sync project docs with the latest codebase |
+| `project-optimization-opportunity-auditor` | Audit optimization opportunities and build improvement plans |
+| `project-skill-builder` | Build project-specific custom skills |
+| `rust-lint-fixer` | Fix Rust lint and formatting issues |
+| `skill-safety-auditor` | Audit skill security and compliance |
+| `spec-driven-develop` | Spec-driven development workflow for large refactors or migrations |
+| `openspec-change-cleaner` | Audit and clean up OpenSpec change records |
+| `split-commit-fixer` | Split a large dirty worktree into reviewable commit batches, fix quality gates incrementally, and collapse checkpoint commits into clean history |
 
 #### Refactoring And Output Generation
 
 | Skill | Summary |
 | --- | --- |
-| `component-unit-test-completer` | Fill in one-to-one component unit tests |
 | `code-simplifier` | Simplify recently changed code without changing behavior |
 | `python-component-splitter` | Split oversized Python modules |
 | `react-component-splitter` | Split oversized React or Next.js components |
@@ -276,6 +366,27 @@ Current skill plugin names: each top-level skill directory name, such as `screen
 | `fumadocs-ui-css-design` | Build or customize Fumadocs sites |
 | `agent-tool-benchmark-builder` | Build benchmark suites for tool-using agents |
 | `agents-team-builder` | Generate agent-team plans and draft configs |
+| `create-mcp-server` | Scaffold a new Model Context Protocol (MCP) server |
+| `design-md` | Generate DESIGN.md design-system docs for Stitch projects |
+| `develop-react-flow-projects` | Develop React Flow diagram projects |
+| `development-task-orchestrator` | Orchestrate development task execution and dependencies |
+| `firefly-blog-framework-assistant` | Configure, customize, and deploy Firefly blog projects |
+| `image-to-terminal-pixel-art` | Convert images to terminal-friendly pixel art |
+| `ink-cli` | Build terminal CLI apps with Ink and React |
+| `ink-expert` | Production-grade Ink v6 CLI development and migration |
+| `pdf-reading-workflow` | PDF reading and structured extraction workflow |
+| `pig-skill-master` | Generate reusable friend personas from QQ chat records |
+| `pptx-generator` | Generate PowerPoint presentations |
+| `react-components` | Convert Stitch designs into modular React components |
+| `remotion` | Turn Stitch designs into walkthrough videos with Remotion |
+| `shadcn-ui` | Use and maintain the shadcn/ui component library |
+| `software-research-tutorial-builder` | Build evidence-backed software research tutorials |
+| `stitch-design` | Stitch design workflow: prompt enhancement, design system, screen generation |
+| `stitch-loop` | Iterative Stitch website generation with autonomous build loops |
+| `taste-design` | Generate premium Stitch DESIGN.md taste systems |
+| `tauri-rust-component-splitter` | Split oversized Tauri + Rust components |
+| `tauri-v2` | Tauri v2 desktop and mobile application development |
+| `vscode-extension-expert` | VS Code extension development, debugging, and release |
 
 #### Research, News, And Data
 
@@ -285,6 +396,8 @@ Current skill plugin names: each top-level skill directory name, such as `screen
 | `daily-news-multisource-brief` | Produce cross-region daily news briefs |
 | `china-exchange-daily-brief` | Summarize major China exchange updates |
 | `stock-analyzer-skill` | Analyze stocks across China, Hong Kong, and US markets |
+| `ai-research-writing` | AI-assisted research writing and content generation |
+| `market-research-skill` | Structured market research and competitor analysis |
 
 #### Debugging And Desktop Capture
 
@@ -293,6 +406,37 @@ Current skill plugin names: each top-level skill directory name, such as `screen
 | `pua-debugging` | Force higher-agency debugging behavior when an agent stalls repeatedly |
 | `screenshot` | Capture desktop, window, or region screenshots |
 | `screen-recorder` | Record repro videos and desktop flows |
+| `vision-analysis` | Visual analysis and image content understanding |
+
+#### DevOps And Infrastructure
+
+| Skill | Summary |
+| --- | --- |
+| `configuring-k8s` | Inspect, edit, and validate Kubernetes configuration |
+| `integrating-redis-into-existing-projects` | Integrate Redis as cache, session, queue, or rate limiter |
+| `redis-maintenance-script-builder` | Generate Redis diagnostic and maintenance scripts |
+| `writing-safe-shell-commands` | Generate and harden safe cross-platform shell commands |
+| `powershell-terminal-config-sync` | Sync PowerShell and Windows Terminal configuration |
+| `powershell-writing-assistant` | Write and refactor production-grade PowerShell scripts |
+| `fetch-skill-main` | Fetch web pages, extract metadata, batch-download content |
+| `postgres-sql-writer` | Write and review PostgreSQL SQL, DDL, and DML |
+| `local-javascript-scripting` | Write local Node.js / JavaScript automation scripts |
+
+#### Guardrails And Optimization
+
+| Skill | Summary |
+| --- | --- |
+| `guarded-code-comment-editor` | Edit code comments while preserving local style |
+| `guarded-component-i18n-fix` | Audit and fix component-level internationalization |
+| `guarded-log-editor` | Add, remove, or rewrite logs while preserving conventions |
+| `guarded-project-i18n-support` | Plan and add internationalization support to a project |
+| `feature-gap-requirements-auditor` | Compare docs against implementation to find missing features |
+| `feature-optimization-planner` | Audit a module and generate an optimization plan |
+| `enhance-prompt` | Turn vague UI generation requests into structured prompts |
+| `session-context-optimizer` | Build concise session context packs from local skills |
+| `wave-orchestration` | Iterative parallel-agent orchestration for large tasks |
+| `autonomous-loops` | Autonomous agent loops and unattended workflows |
+| `vengeful-ghost-skill` | Detect and block cloning real colleagues into AI stand-ins |
 
 ### Contributing And Maintenance
 
@@ -318,8 +462,11 @@ If you need a materialized publish snapshot with copied files instead of links, 
 uv run --python 3.11 scripts/build_marketplace_plugins.py --repo-root . --materialize copy
 ```
 
+> Note: `scripts/build_marketplace_plugins.py` is not currently present in the repository; this functionality is planned. To maintain `plugins/` or the marketplace catalog manually, edit `.claude-plugin/marketplace.json` directly.
+
 ### Notes And Boundaries
 
 - This repository is optimized as a public, distributable skills collection, not as a guarantee that every skill is production-ready for every environment.
 - Some skills depend on Python, Node.js, `uv`, network access, or third-party services. Check each skill's own `SKILL.md` and helper scripts for exact requirements.
 - `skills/stock-analyzer-skill` is maintained directly in this repository and no longer depends on submodule initialization.
+

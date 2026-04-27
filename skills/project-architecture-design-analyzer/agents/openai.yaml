@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Architecture Design Analyzer"
+  short_description: "Analyze architecture, design seams, and drift risks"
+  default_prompt: "Use $project-architecture-design-analyzer to inspect this repository, generate an architecture and design snapshot, and recommend the right linked skills for deeper work."

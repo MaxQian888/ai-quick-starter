@@ -1,0 +1,21 @@
+{
+  "skill": "firefly-blog-framework-assistant",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "config-customization",
+      "prompt": "How do I customize the navbar in my Firefly blog?",
+      "criteria": ["Reads firefly-docs references", "Points to navbar config", "Gives exact file paths"]
+    },
+    {
+      "id": "deployment-guide",
+      "prompt": "Deploy my Firefly blog to Vercel",
+      "criteria": ["Reads deploy docs", "Provides workflow steps", "Mentions required env vars"]
+    },
+    {
+      "id": "theme-setup",
+      "prompt": "Set up a custom wallpaper and font in Firefly",
+      "criteria": ["Routes to theme docs", "Preserves existing config", "Uses official option names"]
+    }
+  ]
+}

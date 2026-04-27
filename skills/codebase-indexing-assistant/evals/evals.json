@@ -1,0 +1,23 @@
+{
+  "skill_name": "codebase-indexing-assistant",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just cloned a large repository and need to understand its structure before making changes. Can you help me orient myself?",
+      "expected_output": "Runs the indexer script, reads the Markdown summary and JSON output, uses summary.docs, summary.manifests, commands, and entry_candidates to narrow reading, and opens only the smallest file set needed.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Where is the authentication logic in this codebase?",
+      "expected_output": "Re-runs the indexer with --focus auth, inspects promoted files and import clues, and reports the likely authentication module locations with heuristic confidence.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "What should I read first to understand how this project starts up?",
+      "expected_output": "Reads summary.docs, summary.manifests, commands, then entry_candidates from the index, and provides a justified reading order rather than guessing.",
+      "files": []
+    }
+  ]
+}

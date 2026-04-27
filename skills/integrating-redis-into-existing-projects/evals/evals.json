@@ -1,0 +1,21 @@
+{
+  "skill": "integrating-redis-into-existing-projects",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "cache-integration",
+      "prompt": "Add Redis caching to my Express app",
+      "criteria": ["Runs discovery script", "Identifies cache seam", "Creates shared client factory"]
+    },
+    {
+      "id": "session-store",
+      "prompt": "Use Redis for session storage in my Node.js app",
+      "criteria": ["Detects session middleware", "Reuses connect-redis if present", "Configures REDIS_URL"]
+    },
+    {
+      "id": "queue-worker",
+      "prompt": "Set up a Redis-backed job queue in my Python project",
+      "criteria": ["Identifies worker seam", "Reuses celery/bullmq if present", "Defines failure modes"]
+    }
+  ]
+}

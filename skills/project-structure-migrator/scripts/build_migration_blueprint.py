@@ -117,6 +117,30 @@ def classify_stack(signals: RepoSignals, stack_override: str) -> tuple[str, list
     return "unknown", ["no strong language manifest detected"]
 
 
+def structural_concern_dirs(signals: RepoSignals) -> list[str]:
+    primary_dirs = signals.src_dirs if signals.src_dirs else signals.top_level_dirs
+    return sorted(set(primary_dirs) & MIXED_CONCERN_DIRS)
+
+
+def root_package_declares_workspaces(signals: RepoSignals) -> bool:
+    root_package_json = signals.project_root / "package.json"
+    if not root_package_json.exists():
+        return False
+    try:
+        payload = json.loads(root_package_json.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return False
+    if not isinstance(payload, dict):
+        return False
+    workspaces = payload.get("workspaces")
+    if isinstance(workspaces, list):
+        return len(workspaces) > 0
+    if isinstance(workspaces, dict):
+        packages = workspaces.get("packages")
+        return isinstance(packages, list) and len(packages) > 0
+    return False
+
+
 def classify_migration(signals: RepoSignals, migration_override: str) -> dict[str, object]:
     evidence: list[str] = []
     ambiguities: list[str] = []
@@ -129,13 +153,16 @@ def classify_migration(signals: RepoSignals, migration_override: str) -> dict[st
         }
 
     has_workspace = bool(signals.workspace_files)
+    has_root_workspaces = root_package_declares_workspaces(signals)
     has_workspace_packages = any("apps" in path.parts or "packages" in path.parts for path in signals.package_jsons[1:])
-    mixed_concerns = len(set(signals.src_dirs) & MIXED_CONCERN_DIRS) >= 3
+    mixed_concerns = len(structural_concern_dirs(signals)) >= 3
     app_roots = [name for name in signals.top_level_dirs if name in {"apps", "packages", "services", "projects"}]
 
-    if has_workspace or has_workspace_packages:
+    if has_workspace or has_root_workspaces or has_workspace_packages:
         if has_workspace:
             evidence.extend(f"workspace config: {path.name}" for path in signals.workspace_files)
+        if has_root_workspaces:
+            evidence.append("root package.json declares workspaces")
         if has_workspace_packages:
             evidence.append("detected nested package manifests under apps/ or packages/")
         return {
@@ -173,7 +200,7 @@ def classify_migration(signals: RepoSignals, migration_override: str) -> dict[st
 
 
 def build_current_structure(signals: RepoSignals) -> dict[str, object]:
-    mixed_dirs = sorted(set(signals.src_dirs) & MIXED_CONCERN_DIRS)
+    mixed_dirs = structural_concern_dirs(signals)
     return {
         "top_level_directories": signals.top_level_dirs,
         "manifests": signals.manifests,
@@ -429,6 +456,8 @@ def main() -> int:
 
     json_path = Path(args.json_out) if args.json_out else output_dir / "migration-blueprint.json"
     markdown_path = Path(args.markdown_out) if args.markdown_out else output_dir / "migration-blueprint.md"
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    markdown_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
     markdown_path.write_text(render_markdown(payload), encoding="utf-8")
 

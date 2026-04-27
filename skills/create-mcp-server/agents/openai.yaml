@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create MCP Server"
+  short_description: "Scaffold a minimal MCP server"
+  default_prompt: "Use $create-mcp-server to scaffold a minimal MCP server, default to TypeScript unless I ask for Python, and generate a runnable stdio starter with one example tool."

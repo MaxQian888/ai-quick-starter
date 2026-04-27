@@ -1,0 +1,10 @@
+{
+  "skill": "screen-recorder",
+  "evaluations": [
+    {
+      "name": "record-bug-repro",
+      "prompt": "Record a 20-second video of this app window for a bug report",
+      "criteria": ["Prefers ffmpeg when available", "Uses -ListWindows when multiple match", "Falls back safely to desktop or PSR", "Specifies output location"]
+    }
+  ]
+}

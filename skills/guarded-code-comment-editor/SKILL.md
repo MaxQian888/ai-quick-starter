@@ -1,11 +1,27 @@
 ---
 name: guarded-code-comment-editor
-description: Use when Codex needs to add missing code comments or rewrite machine-sounding comments inside existing source files while preserving the repository's local comment density, terminology, docstring shape, and language-specific style. Trigger for requests to make comments sound human, clean up AI comments, annotate non-obvious logic, or improve comments in mixed-language repositories without turning the code into tutorial prose.
+description: |
+  Use this skill whenever you need to add, rewrite, or clean up code comments while preserving the repository's local style.
+  Make sure to use this skill whenever the user asks to make comments sound human, remove AI-sounding comments,
+  annotate non-obvious logic, improve documentation, or clean up comments in any source file.
+  Also trigger for requests like "add docstrings", "explain this function", "comment this code",
+  "humanize these comments", or "remove redundant comments" — even in mixed-language repositories.
+  Covers TypeScript, JavaScript, Python, Rust, Go, Shell, PowerShell, and any language with inline or block comments.
 ---
 
 # Guarded Code Comment Editor
 
 Edit comments conservatively. Sample the local style first, then add, rewrite, or delete comments so the result reads like it belongs in the repository instead of sounding templated or tutorial-heavy.
+
+## Adaptive Detection
+
+Before editing comments, detect the local conventions:
+
+1. **Languages present**: run the audit script to see which languages dominate the target area.
+2. **Comment density**: determine if the area is `sparse`, `moderate`, or `dense`/`docstring-heavy`.
+3. **Style exemplars**: identify 2-3 representative files that set the local tone, terminology, and docstring shape.
+4. **Existing issues**: look for machine-sounding comments, redundant narration, or missing explanations of intent.
+5. **Forbidden actions**: respect any `forbidden_actions` from the audit (e.g., do not add JSDoc where inline comments are preferred).
 
 ## Workflow
 
@@ -18,6 +34,20 @@ Edit comments conservatively. Sample the local style first, then add, rewrite, o
 7. Keep the local language, punctuation, docstring form, and comment density unless the user explicitly asks for a broader rewrite.
 8. Re-check changed files for over-commenting, stale wording, and accidental code edits.
 9. Run the narrowest available verification for the touched files or package, then report what was and was not verified.
+
+## Examples
+
+**Humanize comments in a utility file:**
+```bash
+uv run --python 3.11 scripts/audit_comment_surface.py --root . --target src/utils.ts --json
+# Rewrite machine-sounding comments to match local style; preserve code exactly.
+```
+
+**Add missing docstrings to Python modules:**
+```bash
+uv run --python 3.11 scripts/audit_comment_surface.py --root . --target src/services/ --json
+# Add docstrings only where intent or edge cases are non-obvious; keep sparse areas sparse.
+```
 
 ## Editing Rules
 

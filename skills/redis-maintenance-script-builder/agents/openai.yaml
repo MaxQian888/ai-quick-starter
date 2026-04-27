@@ -1,0 +1,4 @@
+interface:
+  display_name: "Redis Maintenance Script Builder"
+  short_description: "Generate safe Redis maintenance script bundles"
+  default_prompt: "Use $redis-maintenance-script-builder to choose the safest Redis maintenance task, generate a PowerShell, Bash, or Python script bundle, and review the dry-run guardrails before touching live data."

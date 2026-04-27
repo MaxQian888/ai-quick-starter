@@ -1,0 +1,23 @@
+{
+  "skill_name": "component-library-migrator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to migrate my React components to shadcn/ui. Can you audit src/components and tell me what's safe to migrate?",
+      "expected_output": "Runs the audit script, reads JSON output, reports safe_fix_plan, blocked_reasons, and forbidden_actions. Does not edit files marked blocked.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Audit my app/ui directory for MUI migration opportunities and show me the report.",
+      "expected_output": "Runs audit with --library mui, produces JSON and Markdown reports, identifies candidate_mappings for native elements like button and input.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Can you replace all my native buttons with shadcn/ui Button components?",
+      "expected_output": "Runs audit first, only edits files in safe_fix_plan, skips overlays/dialogs/stateful widgets, and re-runs targeted checks after edits.",
+      "files": []
+    }
+  ]
+}

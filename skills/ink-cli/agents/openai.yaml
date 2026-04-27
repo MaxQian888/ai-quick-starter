@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ink CLI"
+  short_description: "Build interactive Ink terminal UIs with React"
+  default_prompt: "Use $ink-cli to scaffold or debug an interactive Ink-based CLI with React components and terminal layout patterns."

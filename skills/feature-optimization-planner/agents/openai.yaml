@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Optimization Planner"
+  short_description: "Audit one feature and draft an evidence-backed plan"
+  default_prompt: "Use $feature-optimization-planner to inspect this feature surface, compare it with current best practices when needed, and produce a scoped optimization plan before any code changes."

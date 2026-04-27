@@ -1,0 +1,20 @@
+{
+  "skill": "vision-analysis",
+  "evaluations": [
+    {
+      "name": "describe-screenshot",
+      "prompt": "What do you see in this screenshot?",
+      "criteria": ["Auto-detects image path", "Selects describe mode", "Uses correct MCP tool", "Returns structured description"]
+    },
+    {
+      "name": "extract-text-from-image",
+      "prompt": "Read all the text from this document image",
+      "criteria": ["Selects OCR mode", "Preserves text structure", "Handles no-text case gracefully", "Uses correct prompt template"]
+    },
+    {
+      "name": "ui-mockup-review",
+      "prompt": "Review this UI mockup and suggest improvements",
+      "criteria": ["Selects ui-review mode", "Provides strengths, issues, and suggestions", "Uses structured critique format", "Is constructive and detailed"]
+    }
+  ]
+}

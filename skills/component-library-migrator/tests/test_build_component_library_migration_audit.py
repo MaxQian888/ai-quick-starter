@@ -185,6 +185,28 @@ class BuildComponentLibraryMigrationAuditTests(unittest.TestCase):
         self.assertIn("## Safe Fix Plan", markdown)
         self.assertIn("## Forbidden Actions", markdown)
 
+    def test_rejects_target_path_outside_requested_root(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "src/components/ButtonRow.tsx": (
+                    "export function ButtonRow() {\n"
+                    "  return <button>Save</button>;\n"
+                    "}\n"
+                )
+            }
+        )
+        outside_dir = repo_root.parent / f"outside-{repo_root.name}"
+        outside_dir.mkdir(parents=True, exist_ok=True)
+        (outside_dir / "OutsideButton.tsx").write_text(
+            "export function OutsideButton() { return <button>Outside</button>; }\n",
+            encoding="utf-8",
+        )
+
+        result = self.run_cli(repo_root, f"../{outside_dir.name}", "mui")
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("target must stay within root", (result.stderr + result.stdout).lower())
+
 
 if __name__ == "__main__":
     unittest.main()

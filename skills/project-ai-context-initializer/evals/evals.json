@@ -1,0 +1,23 @@
+{
+  "skill_name": "project-ai-context-initializer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can you generate AI context documentation for this repository so future agents can understand it faster?",
+      "expected_output": "Dispatches a datetime subagent first, then an architect subagent, generates root AGENTS.md and CLAUDE.md, creates 3-8 module-level CLAUDE.md files with Mermaid diagrams and breadcrumbs, and prints an honest coverage summary.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We added three new modules since the last context docs were written. Can you update them without losing the existing good documentation?",
+      "expected_output": "Runs the inventory script, identifies the three new modules, merges incremental updates into existing docs rather than blind rewrites, and reports what was added versus what was preserved.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "This mono-repo has 50 packages. Can you document all of them?",
+      "expected_output": "Selects 3-8 high-value modules only, explains the selection rationale, names skipped areas explicitly in the summary, and avoids documenting every directory.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "skill": "fetch-skill-main",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "fetch-single-url",
+      "prompt": "Fetch the content from https://example.com and summarize it",
+      "criteria": ["Identifies URL type", "Runs fetch script", "Produces readable output"]
+    },
+    {
+      "id": "batch-fetch",
+      "prompt": "Fetch articles from 5 URLs and save results to a directory",
+      "criteria": ["Uses batch mode", "Sets output directory", "Generates summary JSON"]
+    },
+    {
+      "id": "youtube-metadata",
+      "prompt": "Extract metadata from a YouTube video URL",
+      "criteria": ["Routes to YouTube backend", "Returns structured metadata", "Handles text-only option"]
+    }
+  ]
+}

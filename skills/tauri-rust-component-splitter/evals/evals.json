@@ -1,0 +1,10 @@
+{
+  "skill": "tauri-rust-component-splitter",
+  "evaluations": [
+    {
+      "name": "split-app-rs",
+      "prompt": "Split this oversized src-tauri/src/app.rs into maintainable modules",
+      "criteria": ["Runs plan_tauri_rust_split.py first", "Stays inside src-tauri", "Preserves command signatures", "Scaffolds only after plan is accepted"]
+    }
+  ]
+}

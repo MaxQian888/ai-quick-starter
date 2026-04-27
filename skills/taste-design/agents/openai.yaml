@@ -1,0 +1,4 @@
+interface:
+  display_name: "Taste Design"
+  short_description: "Generate premium DESIGN.md taste systems for Stitch"
+  default_prompt: "Use $taste-design to produce a high-agency Stitch DESIGN.md with enforceable typography, color, layout, and motion rules."

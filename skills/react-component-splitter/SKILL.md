@@ -1,6 +1,7 @@
 ---
 name: react-component-splitter
-description: Split large React or Next.js components into maintainable small components while preserving behavior and matching the repository's existing structure. Use when a .tsx/.jsx file mixes UI, state, side effects, and data fetching, when users ask to refactor or decompose components, or when a component becomes hard to test and reuse.
+description: |
+  Use whenever you need to split large React or Next.js components into maintainable smaller components while preserving behavior and matching existing repository structure, especially when a .tsx or .jsx file mixes UI, state, side effects, and data fetching or becomes hard to test and reuse. Make sure to use this skill whenever the user says "split this component", "refactor React", "component too big", "extract hook", "break into smaller files", or "make this testable" — even for partial extractions or when only one concern (like a hook or utility) should be pulled out. Also trigger when a component exceeds 300 lines, has deeply nested JSX, or mixes presentation with data fetching. Covers React, Next.js, Vite, CRA, and feature-based or layer-based repositories.
 ---
 
 # React Component Splitter
@@ -9,6 +10,18 @@ description: Split large React or Next.js components into maintainable small com
 
 Refactor monolithic React components into focused files with clear responsibilities.
 Detect local project conventions first, then place extracted files where the repository already expects them.
+
+## Adaptive Detection
+
+Before splitting, detect project conventions:
+
+1. **Framework**: Check for Next.js (`app/`, `pages/`), Vite, CRA, or Remix.
+2. **Folder structure**: Look for feature-based (`features/`), layer-based (`components/`, `hooks/`, `utils/`), or domain-based organization.
+3. **Styling**: Note CSS Modules, Styled Components, Tailwind, or inline styles.
+4. **State management**: Identify Redux, Zustand, Context API, or local state patterns.
+5. **Testing**: Check for Jest, Vitest, React Testing Library, or Playwright conventions.
+
+Use these signals to match the split plan to existing conventions.
 
 ## Workflow
 
@@ -68,6 +81,15 @@ Return these items in the final response:
 2. List of created/updated files and each file's responsibility.
 3. Validation summary and residual risks.
 4. Optional: attach analysis JSON summaries when the refactor is large or high risk.
+
+## Examples
+
+### Example 1: Detect layout and analyze a large page
+
+```bash
+python scripts/detect_react_layout.py --root . --target src/features/orders/OrdersPage.tsx --pretty > .tmp.layout.json
+python scripts/analyze_component_split.py --file src/features/orders/OrdersPage.tsx --layout-json .tmp.layout.json --pretty > .tmp.split.json
+```
 
 ## Reference Files
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Research Writing"
+  short_description: "Academic writing prompts and skill routing"
+  default_prompt: "Use $ai-research-writing to choose the right academic writing workflow, install the supporting components, and apply the matching prompt or skill for this paper-writing task."

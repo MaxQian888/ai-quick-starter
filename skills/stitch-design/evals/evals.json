@@ -1,0 +1,15 @@
+{
+  "skill": "stitch-design",
+  "evaluations": [
+    {
+      "name": "text-to-design",
+      "prompt": "Design a landing page for a developer portfolio using Stitch",
+      "criteria": ["Enhances prompt with professional terminology", "Includes DESIGN SYSTEM block", "Downloads assets to .stitch/designs/", "Surfaces outputComponents"]
+    },
+    {
+      "name": "generate-design-md",
+      "prompt": "Create a DESIGN.md from my existing Stitch project",
+      "criteria": ["Analyzes existing screens", "Extracts colors, typography, and styles", "Produces reusable source of truth", "Suggests consistency rules"]
+    }
+  ]
+}

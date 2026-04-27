@@ -1,0 +1,4 @@
+interface:
+  display_name: "PPTX Generator"
+  short_description: "Create, inspect, and edit PowerPoint decks."
+  default_prompt: "Use $pptx-generator to inspect an existing PPTX, update a template deck, or generate a new presentation with PptxGenJS and MarkItDown."

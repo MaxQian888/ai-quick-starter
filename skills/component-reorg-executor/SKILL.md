@@ -1,11 +1,30 @@
 ---
 name: component-reorg-executor
-description: Use when applying an approved component-reorg-planner JSON report to move React or Next.js components into already-approved functional subfolders while repairing local relative imports and barrel exports without re-planning the structure.
+description: >
+  Make sure to use this skill whenever the user wants to execute an approved
+  component reorganization plan, move React or Next.js components into new
+  subfolders, apply a planner JSON report, or reorganize a component directory
+  after planning. Also trigger for "move these components," "apply the reorg
+  plan," "execute component moves," "restructure my components folder," or
+  "implement the approved component layout." Covers synonyms like "component
+  reorganization," "folder restructuring," "apply migration plan," "execute
+  moves," and "component directory cleanup." Use it only when a planner JSON
+  already exists or the user explicitly approves the move plan.
 ---
 
 # Component Reorg Executor
 
 Execute an approved component reorganization plan exactly as written. Move only the planner-approved files, then repair local relative imports and barrel exports inside the audited directory.
+
+## Adaptive Detection
+
+Before executing, verify the execution context:
+
+- Confirm the planner JSON exists and is approved by the user.
+- Check that the planner JSON matches the current repository state (no stale paths).
+- Detect the framework: React, Next.js, or other.
+- Identify the target directory scope; do not widen beyond the planned boundary.
+- Check for barrel files (`index.ts`, `index.js`) that may need export rewrites.
 
 ## Workflow
 
@@ -42,6 +61,18 @@ python scripts/apply_component_reorg_plan.py --plan <path-to-component-reorg-pla
 - `applied_moves`: the exact old-to-new path graph
 - `rewritten_files`: files whose relative imports or exports changed
 - `skipped_entries`: planner entries intentionally left untouched by execution
+
+## Examples
+
+**Execute an approved plan:**
+```bash
+python scripts/apply_component_reorg_plan.py --plan ./plans/component-reorg-plan.json
+```
+
+**Execute with custom project root:**
+```bash
+python scripts/apply_component_reorg_plan.py --plan ./plans/reorg.json --root ./my-app
+```
 
 ## References
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { writeFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 
 const DEFAULT_TIMEOUT_MS = 25000;
 const DEFAULT_MAX_ITEMS = 3;
@@ -777,7 +778,22 @@ function escapeRegex(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-main().catch((error) => {
-  process.stderr.write(`ERROR: ${error.message}\n`);
-  process.exitCode = 1;
-});
+export {
+  buildMarkdown,
+  parseSseList,
+  parseSzseList,
+  parseHkexList,
+  parseBseList,
+  normalizeDate,
+  summarizeText,
+};
+
+const isDirectRun =
+  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  main().catch((error) => {
+    process.stderr.write(`ERROR: ${error.message}\n`);
+    process.exitCode = 1;
+  });
+}

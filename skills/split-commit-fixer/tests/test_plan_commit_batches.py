@@ -125,6 +125,62 @@ class PlanCommitBatchesTests(unittest.TestCase):
             payload["batches"][2]["quality_gate_plan"]["narrow_commands"],
             ["pnpm lint"],
         )
+        consolidation = payload["post_commit_consolidation"]
+        self.assertTrue(consolidation["enabled_by_default"])
+        self.assertEqual(consolidation["strategy"], "checkpoint-then-final-squash")
+        self.assertEqual(consolidation["default_granularity"], "final")
+        self.assertEqual(consolidation["selected_granularity"], "final")
+        self.assertEqual(
+            consolidation["available_granularities"],
+            ["final", "scoped", "checkpoint"],
+        )
+        self.assertEqual(consolidation["required_completed_batch_count"], 3)
+        self.assertEqual(
+            consolidation["checkpoint"]["capture_command"],
+            "git rev-parse HEAD",
+        )
+        self.assertEqual(
+            consolidation["verification_commands"],
+            [
+                "git status --short",
+                "git rev-list --count <base_commit>..HEAD",
+                "git merge-base <base_commit> HEAD",
+            ],
+        )
+        self.assertEqual(
+            consolidation["execution_steps"],
+            [
+                "git reset --soft <base_commit>",
+                "git commit -m \"<final conventional commit>\"",
+            ],
+        )
+        final_plan = consolidation["granularity_plans"]["final"]
+        self.assertEqual(final_plan["commit_count"], 1)
+        self.assertEqual(
+            final_plan["execution_steps"],
+            [
+                "git reset --soft <base_commit>",
+                "git commit -m \"<final conventional commit>\"",
+            ],
+        )
+        scoped_plan = consolidation["granularity_plans"]["scoped"]
+        self.assertEqual(scoped_plan["commit_count"], 3)
+        self.assertEqual(
+            [group["label"] for group in scoped_plan["consolidation_groups"]],
+            [batch["label"] for batch in payload["batches"]],
+        )
+        self.assertEqual(
+            scoped_plan["consolidation_groups"][0]["batch_keys"],
+            ["auth"],
+        )
+        self.assertEqual(
+            scoped_plan["consolidation_groups"][0]["final_commit"]["scope"],
+            "auth",
+        )
+        checkpoint_plan = consolidation["granularity_plans"]["checkpoint"]
+        self.assertEqual(checkpoint_plan["commit_count"], 3)
+        self.assertEqual(checkpoint_plan["execution_steps"], [])
+        self.assertIn("keep the checkpoint commits", consolidation["fallback"])
 
     def test_keeps_matching_tests_with_feature_scope(self) -> None:
         repo_root = self.init_repo(
@@ -159,6 +215,19 @@ class PlanCommitBatchesTests(unittest.TestCase):
         self.assertEqual(
             batch["quality_gate_plan"]["narrow_commands"],
             ["python -m ruff check .", "python -m pytest"],
+        )
+        consolidation = payload["post_commit_consolidation"]
+        self.assertEqual(consolidation["default_granularity"], "final")
+        scoped_plan = consolidation["granularity_plans"]["scoped"]
+        self.assertEqual(scoped_plan["commit_count"], 1)
+        self.assertEqual(len(scoped_plan["consolidation_groups"]), 1)
+        self.assertEqual(
+            scoped_plan["consolidation_groups"][0]["batch_keys"],
+            [payload["batches"][0]["key"]],
+        )
+        self.assertEqual(
+            scoped_plan["consolidation_groups"][0]["final_commit"]["type"],
+            "feat",
         )
 
     def test_shared_root_config_stays_separate_when_multiple_features_are_dirty(self) -> None:

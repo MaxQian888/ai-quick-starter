@@ -1,0 +1,10 @@
+{
+  "skill": "session-context-optimizer",
+  "evaluations": [
+    {
+      "name": "optimize-for-task",
+      "prompt": "Build a focused session context pack for improving this skill's test coverage",
+      "criteria": ["Runs helper script first", "Selects 2-5 representative examples", "Reads highest-signal files only", "Returns Successful Patterns, Session Context Pack, and Next Action Guide"]
+    }
+  ]
+}

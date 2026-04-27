@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Safety Auditor"
+  short_description: "Audit one skill folder for risky instructions and guardrails"
+  default_prompt: "Use $skill-safety-auditor to inspect this skill folder, detect risky instructions or assets, and produce a conservative safety report with a safe_fix_plan."

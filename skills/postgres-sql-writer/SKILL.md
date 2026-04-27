@@ -1,11 +1,24 @@
 ---
 name: postgres-sql-writer
-description: Use when Codex needs to write, rewrite, explain, parameterize, or review PostgreSQL SQL, DDL, DML, EXPLAIN plans, or light index advice; translate natural-language data requirements into PostgreSQL queries; or draft editable placeholder SQL when table or column names are incomplete or unknown.
+description: |
+  Use whenever you need to write, rewrite, explain, parameterize, or review PostgreSQL SQL, DDL, DML, EXPLAIN plans, or light index advice. Make sure to use this skill whenever the user asks for "SQL", "query", "database", "PostgreSQL", "Postgres", "schema", "table design", "index", "migration", "upsert", "CTE", "JSONB", or "analytics query" — even if they only provide partial requirements or vague descriptions. Also trigger for translating natural-language data requirements into SQL, drafting placeholder SQL when table names are unknown, reviewing slow query performance, or building business reports with explicit grain and dedup rules. Covers transactional queries, analytics, schema changes, and performance tuning.
 ---
 
 # PostgreSQL SQL Writer
 
 Use this skill for PostgreSQL authoring and review tasks, not for running SQL against a live database. Default to a useful first draft even when the schema is incomplete, and keep `EXPLAIN` or index advice lightweight unless the user explicitly asks for deep tuning.
+
+## Adaptive Detection
+
+Before writing SQL, detect the project context:
+
+1. **Schema source**: Look for `schema.sql`, `migrations/`, `prisma/schema.prisma`, `drizzle.config.ts`, or ORM files.
+2. **PostgreSQL version**: Check `docker-compose.yml`, `package.json`, or docs for version constraints.
+3. **Query type**: Determine if the need is transactional (OLTP), analytical (OLAP), or schema migration.
+4. **Business grain**: Identify the expected result grain (user, order, event, day, week, month).
+5. **Safety context**: Note if the environment is production, staging, or local development.
+
+Use these signals to choose appropriate features, safety warnings, and placeholder conventions.
 
 ## Workflow
 
@@ -68,6 +81,38 @@ When reviewing an `EXPLAIN` or `EXPLAIN ANALYZE`, answer in this order:
 - Flag when an index may be needed, but keep indexing advice brief unless the user asks for tuning.
 - Do not recommend a new index without naming the query pattern it serves.
 - Do not treat `EXPLAIN ANALYZE` timing numbers as globally stable; interpret them as workload-specific evidence.
+
+## Examples
+
+### Example 1: Write a tenant-aware analytics query
+
+```sql
+-- Assumptions: orders table has tenant_id, created_at, amount, status
+-- Grain: one row per tenant per day
+SELECT
+  tenant_id,
+  date_trunc('day', created_at) AS day,
+  COUNT(*) FILTER (WHERE status = 'completed') AS completed_orders,
+  SUM(amount) FILTER (WHERE status = 'completed') AS daily_revenue
+FROM orders
+WHERE created_at >= $1 AND created_at < $2
+  AND deleted_at IS NULL
+GROUP BY tenant_id, date_trunc('day', created_at)
+ORDER BY tenant_id, day;
+```
+
+### Example 2: Safe upsert with RETURNING
+
+```sql
+-- Assumptions: users table has email as unique key
+INSERT INTO users (email, name, updated_at)
+VALUES ($1, $2, NOW())
+ON CONFLICT (email)
+DO UPDATE SET
+  name = EXCLUDED.name,
+  updated_at = NOW()
+RETURNING id, email, name, updated_at;
+```
 
 ## References
 

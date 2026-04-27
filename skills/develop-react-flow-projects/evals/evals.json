@@ -1,0 +1,16 @@
+{
+  "skill": "develop-react-flow-projects",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "blank-canvas-fix",
+      "description": "Diagnose and fix a blank React Flow canvas.",
+      "criteria": ["CSS import order checked", "parent sizing verified", "version compatibility confirmed"]
+    },
+    {
+      "id": "custom-node-implementation",
+      "description": "Add a custom node type with proper wiring and state management.",
+      "criteria": ["nodeTypes declared outside render", "immutable updates used", "store action preferred over callbacks"]
+    }
+  ]
+}

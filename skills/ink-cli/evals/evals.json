@@ -1,0 +1,21 @@
+{
+  "skill": "ink-cli",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "scaffold-ink-app",
+      "prompt": "Create a new CLI app using Ink with TypeScript",
+      "criteria": ["Uses create-ink-app", "Enables ESM", "Includes basic Box/Text layout"]
+    },
+    {
+      "id": "debug-layout",
+      "prompt": "My Ink component layout is broken, help me fix it",
+      "criteria": ["Inspects Box props", "Checks flexDirection", "Suggests debug flags"]
+    },
+    {
+      "id": "keyboard-navigation",
+      "prompt": "Add arrow-key navigation to my Ink list component",
+      "criteria": ["Uses useInput", "Handles up/down arrows", "Highlights selected item"]
+    }
+  ]
+}

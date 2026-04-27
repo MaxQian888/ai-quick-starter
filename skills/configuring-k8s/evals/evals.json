@@ -1,0 +1,23 @@
+{
+  "skill_name": "configuring-k8s",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to update the resource limits and add liveness probes to my Kubernetes deployment. Where do I make these changes?",
+      "expected_output": "Runs discover_k8s_surface.py, identifies the owning manifest/Helm values/Kustomize patch, prefers values.yaml for Helm or a small patch for Kustomize, and renders before applying.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My repo has both Helm charts and Kustomize overlays. How do I know which one to edit for a ConfigMap change?",
+      "expected_output": "Discovers both toolchains, preserves the existing ownership boundary, directs the edit to the correct layer, and explains why cross-wiring is avoided.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I need to switch my kubectl context to the staging cluster before editing workloads.",
+      "expected_output": "Inspects kubeconfig, validates the staging context and namespace, and only proceeds to workload edits after confirming cluster access.",
+      "files": []
+    }
+  ]
+}

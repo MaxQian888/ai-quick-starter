@@ -1,0 +1,16 @@
+{
+  "skill": "daily-news-multisource-brief",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "core-brief-generation",
+      "description": "Generate a daily brief using the all-core preset with proper source attribution.",
+      "criteria": ["headlines with links", "source names and timestamps", "grouped by region and topic", "failed sources reported"]
+    },
+    {
+      "id": "filtered-brief",
+      "description": "Generate a technology-focused brief with region and category filters.",
+      "criteria": ["correct preset applied", "filters applied correctly", "relevant items only", "format matches request"]
+    }
+  ]
+}

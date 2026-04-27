@@ -1,49 +1,81 @@
 ---
 name: gitignore-curator
-description: Inspect a git repository and update `.gitignore` plus related ignore files conservatively. Use when the user asks to review, repair, or refresh ignore rules based on current `git status`, recent commits, generated artifacts, local environment files, or repository-specific ignore files such as `.git/info/exclude` and `.dockerignore`.
+description: |
+  Curate `.gitignore` and related ignore files with stack-aware, evidence-based rules.
+  Make sure to use this skill whenever the user mentions `.gitignore`, ignore files, untracked files, generated artifacts,
+  workspace cleanup, or wants to keep certain files out of version control — even if they don't use those exact words.
+  Also use for non-git workspaces that need ignore rules, Docker context filtering, or when the user says things like
+  "my repo is messy", "too many untracked files", "what should I ignore?", "clean up untracked files",
+  or "hide these from git". Covers Docker `.dockerignore`, ESLint `.eslintignore`, Prettier `.prettierignore`,
+  and `.npmignore` scenarios. Trigger on any request to audit, generate, update, or fix ignore rules.
 ---
 
 # Gitignore Curator
 
-Inspect the current git project, explain safe ignore-rule additions with evidence, and update the target ignore files only after the user confirms.
+Inspect a repository or workspace, figure out what generated and local-only artifacts are lying around, and add safe ignore rules with clear evidence. Work conservatively: explain first, then edit only when the user says go (or has already asked for a direct cleanup).
+
+## Adaptive Detection
+
+Before analyzing, detect the workspace shape:
+
+1. **VCS type**: git repo (check for `.git/`) vs plain workspace.
+2. **Stack signals**: look for `package.json`, `Cargo.toml`, `pyproject.toml`, `Dockerfile`, `.csproj`, `go.mod` to determine relevant ignore patterns.
+3. **Existing ignores**: read `.gitignore`, `.git/info/exclude`, `.dockerignore`, `.eslintignore`, `.prettierignore`.
+4. **Untracked files**: run `git status` in git repos to see what artifacts are already present.
+5. **Target files**: determine whether the user cares about VCS ignore, Docker context ignore, or linter ignore rules.
 
 ## Workflow
 
-1. Confirm the target path is inside a git repository. Stop if it is not.
-2. Read the existing `.gitignore`, `.git/info/exclude`, and any already-present related ignore files before proposing anything new.
-3. Run `scripts/gitignore_curator.py --project-root <path> --json` to inspect detected stacks, candidate rules, and reasons.
-4. Review `candidate_rules`, `skipped_rules`, and the evidence fields. Base your judgment on current `git status`, recent commit paths, existing ignore rules, and whether the repo already tracks matching files.
-5. Group the proposed additions by `target_file`, explain why each rule belongs there, and call out skipped or ambiguous patterns. Ask for confirmation before editing any ignore file.
-6. After confirmation, run `scripts/gitignore_curator.py --project-root <path> --apply --json`.
-7. Re-check `git status`, inspect the touched ignore files, and call out anything that still needs human judgment.
+1. **Find the workspace root.** If the path sits inside a git repo, use the git root. Otherwise treat the requested directory as a plain workspace.
+2. **Read what's already there.** Check `.gitignore`, `.git/info/exclude`, and any other ignore files already present so you don't duplicate or contradict existing rules.
+3. **Run the analysis script.**
+   ```bash
+   python scripts/gitignore_curator.py --project-root <path> --json
+   ```
+   This gives you detected stacks, candidate rules, and the evidence behind each one.
+4. **Review the output.** Look at `candidate_rules`, `skipped_rules`, and their evidence. In a git repo, weigh `git status`, recent commit paths, existing rules, and whether matching files are already tracked. In a plain workspace, lean on what you can actually see — directory names, stack signals, and current ignore files.
+5. **Propose the changes.** Group additions by `target_file`, explain why each rule fits there, and surface any skipped or ambiguous patterns so the user sees the full picture.
+6. **Confirm before editing.** If the user asked for a review or proposal, pause for approval. If they explicitly asked you to "clean up", "fix", or "update" ignore files directly, you can apply after the analysis.
+7. **Apply when authorized.**
+   ```bash
+   python scripts/gitignore_curator.py --project-root <path> --apply --json
+   ```
+8. **Double-check the result.** Look at the files that were touched and flag anything that still needs a human eye — no automation is perfect.
 
 ## Guardrails
 
-- Add only generated or local-only artifacts backed by repository evidence.
-- Preserve existing user rules and append only missing lines.
-- Prefer `.gitignore` for shared generated artifacts and local environment files.
-- Prefer `.git/info/exclude` for editor or OS-specific local noise that should stay machine-local.
-- Extend into `.dockerignore`, `.eslintignore`, `.prettierignore`, or `.ignore` only when the repository already uses them or there is direct Docker context evidence.
-- Inspect `.npmignore` if it exists, but treat it as higher risk and avoid auto-adding rules there unless the user explicitly asks.
+- Only add rules for generated or local-only artifacts, and only when the repository itself provides evidence.
+- Keep every existing user rule intact; append only what's missing.
+- Route shared generated artifacts and local environment files to `.gitignore`.
+- Route editor or OS noise (like IDE metadata) to `.git/info/exclude` when a git repo is available. In plain workspaces, send everything to `.gitignore` since `exclude` isn't an option.
+- Only touch `.dockerignore`, `.eslintignore`, `.prettierignore`, or `.ignore` if the repo already uses them or Docker context is clearly relevant.
+- If `.npmignore` exists, inspect it but treat it as higher risk — don't auto-add publishing filters without explicit user intent.
 - Never add a pattern that would hide files already tracked by git.
-- Do not auto-ignore source directories, migrations, fixtures, examples, public assets, docs, deployment manifests, or business configuration.
-- Treat `.env.example`, `.env.sample`, and similar template files as commit-worthy unless the user explicitly says otherwise.
-- Prefer exact local environment filenames observed in the repo instead of broad wildcard rules when that keeps the result safer.
-- Do not run `git add`, `git commit`, or any destructive git command as part of this skill.
+- In non-git workspaces, stay extra conservative. Stick to cache, temp, build, virtualenv, and editor-noise patterns where the evidence is obvious.
+- Never auto-ignore source directories, migrations, fixtures, examples, public assets, docs, deployment manifests, or business configuration files.
+- Treat `.env.example`, `.env.sample`, and similar template files as commit-worthy unless the user says otherwise.
+- Prefer exact observed filenames for local env files rather than broad wildcards, when that keeps the result safer.
+- Only suggest `_tmp*`, `.tmp-tests/`, `.uv-cache*/`, `.uv-python/`, and similar scratch directories when they actually exist in the workspace.
+- Do not run `git add`, `git commit`, or any other destructive git command as part of this skill.
+
+## Examples
+
+**Review and propose ignore rules:**
+```bash
+python scripts/gitignore_curator.py --project-root ./my-repo --json
+```
+
+**Apply after review:**
+```bash
+python scripts/gitignore_curator.py --project-root ./my-repo --apply --json
+```
 
 ## Helper Script
 
-Use `scripts/gitignore_curator.py` for deterministic analysis and apply mode.
+`scripts/gitignore_curator.py` handles deterministic analysis and apply mode.
 
-Recommended commands:
-
-```bash
-python scripts/gitignore_curator.py --project-root . --json
-python scripts/gitignore_curator.py --project-root . --apply --json
-```
-
-If plain `python` is unavailable in the current environment, use `uv run --python 3.11 ...` or a repo-local interpreter instead.
+If plain `python` isn't available, fall back to `uv run --no-cache --python 3.11 ...` or a repo-local interpreter.
 
 ## Reference
 
-Use `references/patterns.md` when you need safe default patterns, target-file routing guidance, or exclusion rules that explain why some paths must never be auto-added to ignore files.
+Read `references/patterns.md` when you need safe default patterns, guidance on routing rules to the right target file, or the exclusion list that explains why certain paths should never be auto-ignored.

@@ -12,6 +12,7 @@ CHECK_BUCKETS = ("lint", "test", "typecheck")
 DEBUG_SCRIPT_NAMES = ("dev", "start:dev", "debug", "serve", "start")
 BUILD_SCRIPT_NAMES = ("build", "build:prod", "compile")
 MAKE_DEBUG_TARGETS = ("debug", "dev", "run", "start", "serve")
+BLOCK_SCALAR_TOKENS = {"|", "|-", ">", ">-"}
 
 
 @dataclass
@@ -136,10 +137,46 @@ def extract_ci_run_commands(project_root: Path) -> list[str]:
     if not workflow_root.exists():
         return commands
     for workflow in sorted(workflow_root.glob("*.y*ml")):
+        block_parent_indent: int | None = None
+        block_content_indent: int | None = None
+        block_lines: list[str] = []
         for raw_line in workflow.read_text(encoding="utf-8").splitlines():
+            stripped = raw_line.strip()
+            indent = len(raw_line) - len(raw_line.lstrip(" "))
+
+            if block_parent_indent is not None:
+                if stripped == "" and block_content_indent is not None and indent >= block_content_indent:
+                    block_lines.append("")
+                    continue
+                if indent > block_parent_indent:
+                    if block_content_indent is None and stripped:
+                        block_content_indent = indent
+                    if block_content_indent is None:
+                        block_lines.append("")
+                    else:
+                        block_lines.append(raw_line[block_content_indent:])
+                    continue
+
+                command = "\n".join(block_lines).rstrip()
+                if command:
+                    commands.append(command)
+                block_parent_indent = None
+                block_content_indent = None
+                block_lines = []
+
             match = re.match(r"^\s*-\s*run:\s*(.+?)\s*$", raw_line)
             if match:
-                commands.append(match.group(1).strip())
+                value = match.group(1).strip()
+                if value in BLOCK_SCALAR_TOKENS:
+                    block_parent_indent = indent
+                    block_content_indent = None
+                    block_lines = []
+                else:
+                    commands.append(value)
+        if block_parent_indent is not None:
+            command = "\n".join(block_lines).rstrip()
+            if command:
+                commands.append(command)
     return commands
 
 
@@ -149,7 +186,10 @@ def add_candidate(candidates: dict[str, list[Candidate]], candidate: Candidate) 
 
 def classify_ci_bucket(command: str) -> str | None:
     normalized = command.lower()
-    if any(token in normalized for token in (" runserver", " uvicorn ", "--reload", " debugpy ", " pnpm dev", " npm run dev", " yarn dev", " bun run dev", " make debug", " make dev")):
+    if normalized.startswith(("pnpm dev", "npm run dev", "yarn dev", "bun run dev", "make debug", "make dev", "uvicorn ")) or any(
+        token in normalized
+        for token in (" runserver", " uvicorn ", "--reload", " debugpy ", " pnpm dev", " npm run dev", " yarn dev", " bun run dev", " make debug", " make dev")
+    ):
         return "debug"
     if " build" in normalized or normalized.startswith("build ") or normalized.endswith(" build") or "vite build" in normalized or "next build" in normalized:
         return "build"

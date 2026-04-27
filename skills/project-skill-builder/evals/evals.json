@@ -1,0 +1,10 @@
+{
+  "skill": "project-skill-builder",
+  "evaluations": [
+    {
+      "name": "scaffold-repo-skill",
+      "prompt": "Turn this repository into a reusable skill package for future sessions",
+      "criteria": ["Runs build_project_skill.py", "Reviews generated SKILL.md and CLAUDE.md", "Keeps package lightweight", "Does not overwrite without --force"]
+    }
+  ]
+}

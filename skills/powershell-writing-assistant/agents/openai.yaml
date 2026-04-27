@@ -1,0 +1,4 @@
+interface:
+  display_name: "PowerShell Writing Assistant"
+  short_description: "Draft, review, and debug PowerShell scripts with guardrails"
+  default_prompt: "Use $powershell-writing-assistant to draft or fix a PowerShell script with parameter validation and safe error handling."

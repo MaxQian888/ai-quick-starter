@@ -1,0 +1,15 @@
+{
+  "skill": "redis-maintenance-script-builder",
+  "evaluations": [
+    {
+      "name": "memory-audit",
+      "prompt": "Audit Redis memory usage and find oversized keys",
+      "criteria": ["Chooses smallest useful task", "Generates script bundle", "Reviews safety notes before running", "Runs dry-run first"]
+    },
+    {
+      "name": "health-check",
+      "prompt": "Generate a Redis health check script for production",
+      "criteria": ["Uses helper script", "Reviews JSON bundle", "Fills REDIS_URL placeholder", "Reports exactly what was run"]
+    }
+  ]
+}

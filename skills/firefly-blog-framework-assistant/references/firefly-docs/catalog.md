@@ -1,0 +1,55 @@
+# Firefly Docs Catalog
+
+- Start URL: https://docs-firefly.cuteleaf.cn/
+
+- [Firefly Docs](https://docs-firefly.cuteleaf.cn/) -> `pages/index.md`
+- [Firefly Docs](https://docs-firefly.cuteleaf.cn/en/) -> `pages/en/index.md`
+- [Advertisement | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/ad.html) -> `pages/en/guide/ad.md`
+- [Announcement | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/announcement.html) -> `pages/en/guide/announcement.md`
+- [Code Block | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/code-block.html) -> `pages/en/guide/code-block.md`
+- [Comment System | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/comment.html) -> `pages/en/guide/comment.md`
+- [Cover Image | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/cover-image.html) -> `pages/en/guide/cover-image.md`
+- [Deployment Guide | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/deploy.html) -> `pages/en/guide/deploy.md`
+- [Font | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/font.html) -> `pages/en/guide/font.md`
+- [Footer | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/footer.html) -> `pages/en/guide/footer.md`
+- [Friends | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/friends.html) -> `pages/en/guide/friends.md`
+- [Gallery | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/gallery.html) -> `pages/en/guide/gallery.md`
+- [Getting Started | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/getting-started.html) -> `pages/en/guide/getting-started.md`
+- [License | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/license.html) -> `pages/en/guide/license.md`
+- [Music Player | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/music.html) -> `pages/en/guide/music.md`
+- [Navbar | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/navbar.html) -> `pages/en/guide/navbar.md`
+- [Encryption Post | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/password.html) -> `pages/en/guide/password.md`
+- [Live2D / Spine Model | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/pio.html) -> `pages/en/guide/pio.md`
+- [Profile | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/profile.html) -> `pages/en/guide/profile.md`
+- [Sakura Effect | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/sakura.html) -> `pages/en/guide/sakura.md`
+- [Sidebar | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/sidebar.html) -> `pages/en/guide/sidebar.md`
+- [Site Configuration | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/site.html) -> `pages/en/guide/site.md`
+- [Sponsor | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/sponsor.html) -> `pages/en/guide/sponsor.md`
+- [Updating the template | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/update.html) -> `pages/en/guide/update.md`
+- [Background Wallpaper | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/wallpaper.html) -> `pages/en/guide/wallpaper.md`
+- [Writing Posts | Firefly Docs](https://docs-firefly.cuteleaf.cn/en/guide/writing.html) -> `pages/en/guide/writing.md`
+- [Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/) -> `pages/zh/index.md`
+- [广告 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/ad.html) -> `pages/zh/guide/ad.md`
+- [公告 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/announcement.html) -> `pages/zh/guide/announcement.md`
+- [代码块 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/code-block.html) -> `pages/zh/guide/code-block.md`
+- [评论系统 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/comment.html) -> `pages/zh/guide/comment.md`
+- [封面图片 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/cover-image.html) -> `pages/zh/guide/cover-image.md`
+- [部署指南 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/deploy.html) -> `pages/zh/guide/deploy.md`
+- [字体 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/font.html) -> `pages/zh/guide/font.md`
+- [页脚 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/footer.html) -> `pages/zh/guide/footer.md`
+- [友链 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/friends.html) -> `pages/zh/guide/friends.md`
+- [相册 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/gallery.html) -> `pages/zh/guide/gallery.md`
+- [快速开始 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/getting-started.html) -> `pages/zh/guide/getting-started.md`
+- [许可证 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/license.html) -> `pages/zh/guide/license.md`
+- [音乐播放器 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/music.html) -> `pages/zh/guide/music.md`
+- [导航栏 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/navbar.html) -> `pages/zh/guide/navbar.md`
+- [文章加密 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/password.html) -> `pages/zh/guide/password.md`
+- [Live2D / Spine 模型 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/pio.html) -> `pages/zh/guide/pio.md`
+- [个人资料 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/profile.html) -> `pages/zh/guide/profile.md`
+- [樱花特效 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/sakura.html) -> `pages/zh/guide/sakura.md`
+- [侧边栏 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/sidebar.html) -> `pages/zh/guide/sidebar.md`
+- [站点配置 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/site.html) -> `pages/zh/guide/site.md`
+- [赞助 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/sponsor.html) -> `pages/zh/guide/sponsor.md`
+- [更新模板 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/update.html) -> `pages/zh/guide/update.md`
+- [背景壁纸 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/wallpaper.html) -> `pages/zh/guide/wallpaper.md`
+- [编写文章 | Firefly Docs](https://docs-firefly.cuteleaf.cn/zh/guide/writing.html) -> `pages/zh/guide/writing.md`

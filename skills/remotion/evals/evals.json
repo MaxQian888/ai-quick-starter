@@ -1,0 +1,23 @@
+{
+  "skill_name": "remotion",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a Stitch project called 'Calculator App' with 5 screens. Can you build a Remotion walkthrough video that shows all screens with smooth transitions?",
+      "expected_output": "Lists Stitch projects, retrieves screens, downloads screenshots, creates a screens.json manifest, generates Remotion components with transitions and overlays, previews in Studio, and renders the final video.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The walkthrough video I rendered last week needs a new screen added in the middle. Can you update the composition?",
+      "expected_output": "Reads the existing manifest and composition, inserts the new screen with appropriate timing and transitions, updates the sequence offsets, and re-renders the video.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Can you create a feature highlight video that zooms into specific UI elements on each screen?",
+      "expected_output": "Builds a Remotion composition with zoom effects, animated hotspots, and text callouts for specific UI elements, using spring animations for smooth motion.",
+      "files": []
+    }
+  ]
+}

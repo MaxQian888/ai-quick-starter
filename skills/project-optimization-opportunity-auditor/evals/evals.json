@@ -1,0 +1,10 @@
+{
+  "skill": "project-optimization-opportunity-auditor",
+  "evaluations": [
+    {
+      "name": "full-repo-audit",
+      "prompt": "Analyze this repository and produce a prioritized optimization backlog",
+      "criteria": ["Runs helper script first", "Separates observed evidence from recommendations", "Reports blind spots and limits", "Routes to linked skills appropriately"]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "skill_name": "china-exchange-daily-brief",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Give me today's China exchange daily brief covering SSE, SZSE, and HKEX.",
+      "expected_output": "Runs the collector with default coverage, returns a markdown brief grouped by exchange with title, date, summary, source link, and image per item.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need the exchange brief for 2026-04-15 in JSON format, including BSE.",
+      "expected_output": "Runs with --date 2026-04-15 --include-bse --format json, produces structured JSON output and handles any BSE 403 gracefully.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "What's new from the Chinese stock exchanges today? Just the headlines and summaries.",
+      "expected_output": "Runs the collector with default settings, formats a user-facing brief with absolute date in title, groups by exchange, and keeps failure notes explicit.",
+      "files": []
+    }
+  ]
+}

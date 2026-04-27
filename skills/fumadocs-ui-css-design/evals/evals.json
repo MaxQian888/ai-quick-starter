@@ -1,0 +1,21 @@
+{
+  "skill": "fumadocs-ui-css-design",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "scaffold-new-docs",
+      "prompt": "Create a new Fumadocs documentation site",
+      "criteria": ["Classifies task as scaffold", "Uses official create-fumadocs-app", "Preserves package manager choice"]
+    },
+    {
+      "id": "manual-next-integration",
+      "prompt": "Add Fumadocs to my existing Next.js app",
+      "criteria": ["Confirms Next.js version", "Wires source.config.ts", "Sets up RootProvider"]
+    },
+    {
+      "id": "theme-customization",
+      "prompt": "Customize the Fumadocs theme colors and layout",
+      "criteria": ["Uses CSS variables first", "Avoids global overrides", "Mentions CLI customization"]
+    }
+  ]
+}

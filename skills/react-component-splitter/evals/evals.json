@@ -1,0 +1,10 @@
+{
+  "skill": "react-component-splitter",
+  "evaluations": [
+    {
+      "name": "split-large-page",
+      "prompt": "Split this 800-line Next.js page component into smaller files",
+      "criteria": ["Detects repo layout first", "Preserves props/API stability", "Extracts hooks and utilities", "Verifies with lint/typecheck/tests"]
+    }
+  ]
+}

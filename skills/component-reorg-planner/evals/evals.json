@@ -1,0 +1,23 @@
+{
+  "skill_name": "component-reorg-planner",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My components folder is a mess. Can you help me reorganize src/components into functional groups?",
+      "expected_output": "Runs detect_component_context.py and build_component_reorg_plan.py, produces a conservative plan respecting existing layout signals, and treats keep-put as intentional.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Audit my Next.js app/components directory and suggest a reorganization plan.",
+      "expected_output": "Detects Next.js App Router context, proposes functional subfolders only for components with clear naming signals, keeps hooks/tests/stories in place unless co-location already exists.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Can you just move all my components into folders right now?",
+      "expected_output": "Explains this skill is planner-only, does not move files, and directs the user to component-reorg-executor for approved plans.",
+      "files": []
+    }
+  ]
+}

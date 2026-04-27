@@ -1,11 +1,27 @@
 ---
 name: development-task-orchestrator
-description: Use when Codex already has a spec, tasks doc, checklist, issue list, or implementation plan and needs to orchestrate execution into safe parallel batches, assign main-thread versus subagent responsibilities, define checkpoints and merge points, surface blockers, and preserve verification boundaries without redoing design work or generating agent-team config drafts.
+description: Use whenever orchestrating development tasks from an existing spec, implementation plan, checklist, issue list, or tasks document. Make sure to use this skill for parallel execution planning, subagent coordination, checkpoint definition, blocker surfacing, merge point planning, or turning a plan into actionable execution waves. Also triggers for sprint execution, task batching, cross-cutting integration planning, or any request involving structured task orchestration with verification boundaries.
 ---
 
 # Development Task Orchestrator
 
 Turn an existing plan into an execution-ready orchestration. Normalize the task source, keep parallelism honest, reserve the main thread for integration and blockers, and make every execution wave end at a checkpoint.
+
+## Adaptive Detection
+
+Before orchestrating, scan the workspace to understand the project context:
+
+1. Detect existing planning artifacts:
+   - Look for `spec.md`, `tasks.md`, `TODO.md`, `checklist.md`, or `plan.md`.
+   - Check for GitHub issues, project boards, or milestone files.
+2. Detect project structure:
+   - Look at root directories to understand monorepo vs single-package layout.
+   - Check for `package.json`, `Cargo.toml`, `pyproject.toml` to infer tech stack.
+3. Detect existing automation:
+   - Check for CI/CD configs (`.github/workflows/`, `.gitlab-ci.yml`) to align verification steps.
+   - Look for existing test scripts and lint commands.
+4. Detect team conventions:
+   - Check `AGENTS.md` or `CLAUDE.md` for project-specific orchestration rules.
 
 ## Start Here
 
@@ -90,6 +106,27 @@ The generated artifacts should include:
 - checkpoint sequence,
 - risks,
 - and verification boundaries.
+
+## Examples
+
+### Example 1: Feature Implementation Plan
+
+**Input:** A `spec.md` with 5 features to implement across frontend and backend.
+
+**Output:**
+- Normalized work items with dependencies.
+- Wave 1: Backend API changes (parallel, no frontend dependency).
+- Wave 2: Frontend components (depends on Wave 1 API contracts).
+- Wave 3: Integration and E2E tests (main thread, cross-cutting).
+
+### Example 2: Bug Fix Batch
+
+**Input:** A checklist of 10 bugs to fix.
+
+**Output:**
+- Grouped by file ownership and risk.
+- Low-risk fixes in parallel waves.
+- High-risk or cross-file fixes on the main thread with explicit verification.
 
 ## Guardrails
 

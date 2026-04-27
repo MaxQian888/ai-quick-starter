@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenSpec Change Cleaner"
+  short_description: "Audit and reconcile stale OpenSpec changes"
+  default_prompt: "Use $openspec-change-cleaner to audit stale OpenSpec changes, reconcile tasks with the latest implementation, and clean safe archive noise."

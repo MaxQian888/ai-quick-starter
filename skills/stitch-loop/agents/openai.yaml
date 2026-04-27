@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stitch Build Loop"
+  short_description: "Run one autonomous Stitch baton iteration"
+  default_prompt: "Use $stitch-loop to complete one Stitch baton iteration, integrate output pages, and prepare the next baton prompt."

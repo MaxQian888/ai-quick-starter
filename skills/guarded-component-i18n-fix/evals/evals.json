@@ -1,0 +1,35 @@
+{
+  "skill_name": "guarded-component-i18n-fix",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit the i18n setup in src/components/Hero. The repo uses next-intl. Check if there are hardcoded strings that should be localized and generate a safe fix plan.",
+      "expected_output": "A JSON audit report selecting next-intl with high confidence, listing hardcoded strings in Hero, and providing a safe fix plan that reuses the existing useTranslations hook.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need to localize the UserProfile component. The repo has both react-i18next and next-intl in package.json. Run a guarded audit first and tell me what to do.",
+      "expected_output": "A JSON audit report with low confidence because both react-i18next and next-intl are detected. The component findings should be marked as blocked, and the forbidden actions should warn against introducing either framework until the ambiguity is resolved.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The Banner component mixes useTranslation from react-i18next with raw English text. Audit it and suggest how to normalize safely.",
+      "expected_output": "A JSON audit report selecting react-i18next with high or medium confidence, marking Banner as mixed-patterns, and providing a normalize-existing-pattern safe fix plan.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Check if the new OnboardingWizard component needs i18n work. The repo uses a custom i18n hook called useLocaleMessages.",
+      "expected_output": "A JSON audit report detecting the custom hook with medium or high confidence, listing any hardcoded strings in OnboardingWizard, and recommending reuse of the existing custom hook pattern.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Audit src/components for i18n issues. The repo has no visible i18n framework installed.",
+      "expected_output": "A JSON audit report with selected_system as unknown and low confidence, blocking automatic fixes, and recommending evidence gathering before any i18n wiring.",
+      "files": []
+    }
+  ]
+}

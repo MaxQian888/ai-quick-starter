@@ -1,4 +1,4 @@
 interface:
   display_name: "VSCode Extension Expert"
-  short_description: "Template-aligned VS Code extension build and debug workflow"
+  short_description: "Build and debug VS Code extensions aligned with the vscode-extension-quick-starter template"
   default_prompt: "Use $vscode-extension-expert to implement or debug a vscode-extension-quick-starter style extension while preserving extension/webview wiring, tests, and VSIX packaging."

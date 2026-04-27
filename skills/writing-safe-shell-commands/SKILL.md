@@ -1,6 +1,7 @@
 ---
 name: writing-safe-shell-commands
-description: Generate, review, and harden shell commands for PowerShell, cmd, and bash. Use when Codex needs to turn natural-language tasks into executable commands, especially when commands may fail because of quoting, paths, globbing, shell differences, or when operations are destructive, high-impact, or need preview and confirmation steps before execution.
+description: |
+  Use whenever you need to generate, review, or harden shell commands for PowerShell, cmd, or bash with safety and cross-platform guardrails. Make sure to use this skill whenever the user asks for a "command", "shell command", "bash one-liner", "PowerShell command", "terminal command", "script", or "how do I" for any filesystem, process, network, or system operation — even for seemingly simple commands like "delete files" or "find and replace". Also trigger when the user needs to run destructive operations, recursive commands, or environment mutations. If the user actually needs a reusable PowerShell script or module, use `powershell-writing-assistant` instead. Covers command generation, risk classification, staged execution, and cross-platform safety.
 ---
 
 # Writing Safe Shell Commands
@@ -9,6 +10,18 @@ description: Generate, review, and harden shell commands for PowerShell, cmd, an
 
 Turn natural-language requests into shell-correct command sequences with explicit shell choice, risk staging, and verification.
 Use this skill for command generation and hardening. If the user actually needs a reusable PowerShell script or module, use `powershell-writing-assistant` instead.
+
+## Adaptive Detection
+
+Before generating commands, detect the context:
+
+1. **Target shell**: Determine if the user prefers PowerShell, cmd, bash, or zsh.
+2. **Operating system**: Note Windows, macOS, Linux, or WSL constraints.
+3. **Risk level**: Classify the request as read-only, state-changing, or destructive.
+4. **Environment**: Check for elevated privileges, restricted shells, or container contexts.
+5. **Existing tools**: Note if the user has `ripgrep`, `fd`, `fzf`, or other modern CLI tools installed.
+
+Use these signals to choose safe syntax and appropriate guardrails.
 
 ## Workflow
 
@@ -33,6 +46,30 @@ Use this skill for command generation and hardening. If the user actually needs 
 - For `high` risk, require `Pre-check`, `Preview`, `Execute`, and `Verify`. Do not lead with the destructive command.
 - For `blocked`, do not provide an execution command. Explain why the target is unsafe or underspecified and provide only boundary-discovery or read-only inspection commands.
 - Call out shell-specific traps when they matter: path separators, variable expansion, wildcard expansion, quoting, encoding, and privilege boundaries.
+
+## Examples
+
+### Example 1: Low-risk file listing
+
+```bash
+Shell: bash
+Risk: low
+Pre-check: ls -la /path/to/dir
+Execute: find /path/to/dir -name "*.log" -type f
+Verify: echo "Found $(find /path/to/dir -name '*.log' -type f | wc -l) log files"
+```
+
+### Example 2: High-risk recursive deletion
+
+```bash
+Shell: bash
+Risk: high
+Pre-check: find . -type d -name "node_modules" | head -5
+Preview: find . -type d -name "node_modules" | wc -l
+Execute: find . -type d -name "node_modules" -prune -exec rm -rf {} +
+Verify: find . -type d -name "node_modules" | wc -l  # should be 0
+Notes: Run from the project root. This is destructive and irreversible.
+```
 
 ## Reference Files
 

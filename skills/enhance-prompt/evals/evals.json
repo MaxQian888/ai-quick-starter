@@ -1,0 +1,16 @@
+{
+  "skill": "enhance-prompt",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "vague-to-structured",
+      "description": "Transform a vague UI request into a structured Stitch prompt.",
+      "criteria": ["platform specified", "page structure numbered", "design tokens included", "component names specific"]
+    },
+    {
+      "id": "design-system-integration",
+      "description": "Integrate an existing DESIGN.md into a prompt enhancement.",
+      "criteria": ["color palette extracted", "typography included", "component styles referenced", "tip added when missing"]
+    }
+  ]
+}

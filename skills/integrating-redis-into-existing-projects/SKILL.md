@@ -1,6 +1,12 @@
 ---
 name: integrating-redis-into-existing-projects
-description: Guide Redis integration into existing projects by discovering the current stack, locating cache, session, queue, and rate-limit seams, choosing a compatible Redis client or framework adapter, and planning safe verification. Use when Codex must add Redis to an established codebase, replace fragile in-memory state, or wire Redis-backed infrastructure without bypassing the repository's existing architecture.
+description: |
+  Use this skill whenever you need to integrate Redis into an existing project as a cache, session store, job queue, or rate limiter.
+  Make sure to use this skill whenever the user mentions Redis, caching, session store, job queue, bullmq, ioredis,
+  redis-py, celery, sidekiq, or adding a cache layer to an app. Also trigger for requests like "add Redis caching",
+  "use Redis for sessions", "set up a Redis queue", "cache API responses", "rate limit with Redis",
+  or "integrate Redis into my Node/Python/Go/Spring app". Covers cache, session, queue, and rate-limit roles
+  across Node.js, Python, Go, Java/Spring, and Ruby projects. Always discover existing seams before adding new ones.
 ---
 
 # Redis Integration In Existing Projects
@@ -10,6 +16,16 @@ description: Guide Redis integration into existing projects by discovering the c
 Integrate Redis by first discovering the repository's real seams, runtime boundaries, and deployment signals.
 
 Prefer adapting the current cache, session, queue, or rate-limit surface over scattering raw Redis calls across handlers, controllers, or jobs.
+
+## Adaptive Detection
+
+Before proposing Redis integration, detect the project shape:
+
+1. **Language and framework**: look for `package.json` (Node/Express/Nest/Next), `pyproject.toml` or `requirements.txt` (Python/Django/FastAPI/Flask), `go.mod` (Go), `pom.xml`/`build.gradle` (Java/Spring), or `Gemfile` (Ruby/Rails).
+2. **Existing Redis usage**: search for `redis`, `ioredis`, `bullmq`, `celery`, `sidekiq`, `spring-data-redis`, `connect-redis` in dependencies and source files.
+3. **Existing abstractions**: check if the project already has a cache service, session middleware, or queue worker.
+4. **Config patterns**: look for `REDIS_URL`, `REDIS_HOST`, or similar environment variables in `.env` files and config modules.
+5. **Deployment context**: check for Docker Compose, Kubernetes, or cloud platform signals that affect Redis connectivity.
 
 ## Workflow
 
@@ -52,12 +68,28 @@ Prefer adapting the current cache, session, queue, or rate-limit surface over sc
 - Read `references/integration-patterns.md` when you need role-specific guidance for cache, session, queue, or rate-limit use cases.
 - Read `references/framework-notes.md` when the repository is Node, Python, Spring, or Go and you need a stack-specific seam recommendation.
 
+## Examples
+
+**Add Redis caching to an Express app:**
+```powershell
+uv run --python 3.11 scripts/discover_redis_surface.py --project-root . --json
+# If no existing cache seam, create a shared Redis client factory in src/lib/redis.ts
+# Wire it into the API middleware with TTL and graceful degradation.
+```
+
+**Use Redis for session storage in a Node.js app:**
+```powershell
+uv run --python 3.11 scripts/discover_redis_surface.py --project-root . --json
+# If connect-redis is already a dependency, reuse it.
+# Configure session middleware with the existing Redis client.
+```
+
 ## Helper Script
 
 Run:
 
 ```powershell
-uv run --python 3.11 D:\Project\skills-test\integrating-redis-into-existing-projects\scripts\discover_redis_surface.py --project-root <repo> --json
+uv run --python 3.11 scripts/discover_redis_surface.py --project-root <repo> --json
 ```
 
 Use the JSON output to decide:

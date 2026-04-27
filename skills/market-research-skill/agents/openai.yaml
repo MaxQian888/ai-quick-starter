@@ -1,0 +1,4 @@
+interface:
+  display_name: "Market Research Copilot"
+  short_description: "Turn raw market signals into decision briefs"
+  default_prompt: "Use $market-research-skill to run a rapid market scan and produce an evidence-based brief."

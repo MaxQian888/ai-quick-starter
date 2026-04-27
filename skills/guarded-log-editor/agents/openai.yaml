@@ -1,0 +1,4 @@
+interface:
+  display_name: "Guarded Log Editor"
+  short_description: "Edit logs in one directory without breaking style."
+  default_prompt: "Use $guarded-log-editor to audit and update logs in a target directory while keeping the existing logging framework and signal level conventions."

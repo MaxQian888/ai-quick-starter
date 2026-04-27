@@ -1,6 +1,7 @@
 ---
 name: screen-recorder
-description: Capture desktop, window, or region recordings for software debugging and repro artifacts. Use when Codex needs a screen recording, bug repro video, UI workflow capture, or fallback click-trace on Windows; prefer ffmpeg-backed recording when available, otherwise fall back to built-in Windows tools.
+description: |
+  Use whenever you need to capture desktop or window or region recordings for software debugging and repro artifacts, record a bug repro video, capture a UI workflow, or fall back to Windows click-trace tooling when ffmpeg-backed recording is unavailable. Make sure to use this skill whenever the user says "record screen", "capture video", "bug repro", "screen recording", "record my app", "make a video", or "record this window" — even for short clips or single-window captures. Also trigger when the user needs to record a tutorial, document a UI bug, or capture a workflow for a pull request. Covers full desktop, single window, region capture, and audio recording on Windows.
 ---
 
 # Screen Recorder
@@ -8,6 +9,18 @@ description: Capture desktop, window, or region recordings for software debuggin
 ## Overview
 
 Record reproducible debug artifacts for desktop software. Prefer the bundled Windows PowerShell helper, which uses `ffmpeg` when present and otherwise falls back to Windows Problem Steps Recorder (PSR) plus manual system-tool guidance.
+
+## Adaptive Detection
+
+Before recording, detect the environment:
+
+1. **ffmpeg availability**: Check if `ffmpeg` is on PATH with `ffmpeg -version`.
+2. **Target window**: Determine if the user wants full desktop, a specific window, or a region.
+3. **Audio needs**: Ask if audio capture is required.
+4. **Output preference**: Note if the user needs a specific file path or format.
+5. **App type**: Identify if the target is a desktop app, browser window, or terminal.
+
+Use these signals to choose the best capture mode and fallback strategy.
 
 ## Quick Start
 
@@ -94,3 +107,17 @@ pwsh -ExecutionPolicy Bypass -File <path-to-skill>/scripts/record_screen.ps1 -Ca
 
 - Need stronger fallback guidance:
   - Read `references/windows-fallbacks.md`.
+
+## Examples
+
+### Example 1: List windows for an app
+
+```powershell
+pwsh -ExecutionPolicy Bypass -File scripts/record_screen.ps1 -ListWindows -App "Chrome"
+```
+
+### Example 2: Record desktop with audio
+
+```powershell
+pwsh -ExecutionPolicy Bypass -File scripts/record_screen.ps1 -Capture desktop -IncludeAudio -AudioDevice "Stereo Mix (Realtek(R) Audio)" -DurationSeconds 20
+```

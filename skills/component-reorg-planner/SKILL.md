@@ -1,11 +1,31 @@
 ---
 name: component-reorg-planner
-description: Use when auditing a React or Next.js component directory before reorganizing files into function-based subfolders, especially when Codex must follow the repository's existing structure instead of forcing a generic feature-first rewrite.
+description: >
+  Make sure to use this skill whenever the user wants to reorganize React or
+  Next.js components into functional subfolders, audit a component directory
+  for restructuring, plan a component directory cleanup, or group UI files by
+  purpose. Also trigger for "reorganize my components," "group components by
+  function," "audit component folder structure," "plan component moves," or
+  "clean up the components directory." Covers synonyms like "component
+  restructuring," "folder reorganization," "layout audit," "component grouping,"
+  "directory cleanup," and "component architecture review." Use it even when
+  the user only says "my components folder is a mess" or "help me organize
+  these components."
 ---
 
 # Component Reorg Planner
 
 Audit a component directory first. Produce a conservative reorganization plan that groups move-worthy components by function while preserving the repository's current structure signals.
+
+## Adaptive Detection
+
+Before planning, detect the project context:
+
+- Identify the framework: React, Next.js (App Router or Pages Router), Vue, or other.
+- Check the current directory layout: flat, feature-based, atomic-design, or mixed.
+- Detect existing functional subfolders and naming conventions.
+- Identify support files: hooks, tests, stories, styles, barrel files, type definitions.
+- Assess whether the target sits inside a feature or route boundary.
 
 ## Workflow
 
@@ -50,6 +70,19 @@ python scripts/build_component_reorg_plan.py --root <repo-root> --target <compon
 - Do not create a catch-all `shared` folder just to force movement.
 - Do not move barrel files before downstream imports are mapped.
 - Do not claim the plan is repo-aligned unless the detected layout signals support it.
+
+## Examples
+
+**Plan a component directory reorganization:**
+```bash
+python scripts/detect_component_context.py --root . --target src/components --pretty
+python scripts/build_component_reorg_plan.py --root . --target src/components
+```
+
+**Plan with JSON output for automation:**
+```bash
+python scripts/build_component_reorg_plan.py --root . --target app/components --json
+```
 
 ## References
 

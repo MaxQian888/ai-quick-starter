@@ -1,0 +1,16 @@
+{
+  "skill": "feature-gap-requirements-auditor",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "component-gap-audit",
+      "description": "Audit a component against documentation and report missing functionality.",
+      "criteria": ["missing features identified", "partial features flagged", "acceptance criteria generated", "blind spots listed"]
+    },
+    {
+      "id": "contract-audit",
+      "description": "Audit skill contract completeness including metadata and required files.",
+      "criteria": ["contract requirements checked", "metadata gaps reported", "file presence verified"]
+    }
+  ]
+}

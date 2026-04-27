@@ -1,0 +1,16 @@
+{
+  "skill": "development-task-orchestrator",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "plan-to-orchestration",
+      "description": "Convert a spec into parallel execution waves with checkpoints.",
+      "criteria": ["normalized work items", "dependency edges identified", "parallel batches defined", "main-thread duties reserved"]
+    },
+    {
+      "id": "blocker-handling",
+      "description": "Re-plan orchestration when a blocker is discovered mid-execution.",
+      "criteria": ["blocker surfaced explicitly", "remaining plan rebuilt", "no overlapping write scopes"]
+    }
+  ]
+}

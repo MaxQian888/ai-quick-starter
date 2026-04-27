@@ -1,4 +1,9 @@
 interface:
   display_name: "Tauri v2"
-  short_description: "Guide Tauri v2 IPC, permissions, plugins"
-  default_prompt: "Use $tauri-v2 to wire commands, capabilities, plugin permissions, and desktop/mobile config in this Tauri v2 app."
+  short_description: "Guide Tauri v2 development: commands, IPC, permissions, plugins, and desktop/mobile config"
+  default_prompt: |
+    Use $tauri-v2 to wire commands, capabilities, plugin permissions, and
+    desktop/mobile config in this Tauri v2 app. Follow the skill's First Pass
+    to inspect the current state, use the Symptom Map to diagnose issues, and
+    apply the six-step Workflow in order. Check the relevant references before
+    making IPC, plugin, or permission changes.

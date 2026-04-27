@@ -1,0 +1,15 @@
+{
+  "skill": "market-research-skill",
+  "evaluations": [
+    {
+      "name": "competitor-analysis",
+      "prompt": "Research the AI coding assistant market for enterprise buyers",
+      "criteria": ["Defines objective and constraints", "Uses fetch_market_signals.py", "Produces evidence table with sources", "Includes opportunity scorecard and recommendation"]
+    },
+    {
+      "name": "demand-validation",
+      "prompt": "Validate demand for a new B2B onboarding automation tool",
+      "criteria": ["Builds 2-6 focused queries", "Clusters findings by signal type", "Scores with rubric", "Includes decision and next steps"]
+    }
+  ]
+}

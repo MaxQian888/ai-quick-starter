@@ -1,0 +1,16 @@
+{
+  "skill": "cpp-teaching-code-generator",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "basic-lesson-generation",
+      "description": "Generate a beginner C++ lesson on loops with runnable code and practice tasks.",
+      "criteria": ["compilable code", "clear comments", "at least 2 practice tasks", "build instructions"]
+    },
+    {
+      "id": "advanced-algorithm-demo",
+      "description": "Generate an intermediate lesson on custom comparators with std::sort.",
+      "criteria": ["runnable code", "explanation of trade-offs", "acceptance criteria for practice"]
+    }
+  ]
+}

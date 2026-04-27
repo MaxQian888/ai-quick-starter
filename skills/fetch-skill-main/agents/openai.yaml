@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fetch Skill Main"
+  short_description: "Fetch readable content from web, X, and WeChat URLs."
+  default_prompt: "Use $fetch-skill-main to fetch readable content from one or more URLs, choose the right backend for web, X, or WeChat links, and save the results safely."

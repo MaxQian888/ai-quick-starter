@@ -1,0 +1,4 @@
+interface:
+  display_name: "React Components"
+  short_description: "Convert Stitch screens into modular React components"
+  default_prompt: "Use $react-components to turn Stitch screens into reusable React components with clean structure and implementation guidance."

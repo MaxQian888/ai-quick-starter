@@ -1,0 +1,10 @@
+{
+  "skill": "software-research-tutorial-builder",
+  "evaluations": [
+    {
+      "name": "build-redis-tutorial",
+      "prompt": "Research Redis 7 and build a getting-started tutorial with practical examples",
+      "criteria": ["Dispatches parallel research tracks", "Normalizes findings into shared brief", "Includes minimal, practical, and troubleshooting cases", "Marks unverified steps explicitly"]
+    }
+  ]
+}

@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import json
 import os
 import subprocess
 import sys
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from pathlib import Path, PurePosixPath
 
 
@@ -32,6 +33,13 @@ GENERATED_DIR_RULES = {
     "dist": ("dist/", "Build output is generated."),
     "build": ("build/", "Build output is generated."),
     "htmlcov": ("htmlcov/", "Coverage reports are generated."),
+    ".uv-python": (".uv-python/", "uv-managed Python runtimes are local-only."),
+    ".tmp-tests": (".tmp-tests/", "Module-local temporary test directories are scratch artifacts."),
+    "tmp": ("tmp/", "Temporary workspace output should stay local."),
+}
+PREFIX_DIR_RULES = {
+    ".uv-cache": (".uv-cache*/", "uv caches are local-only and can be regenerated."),
+    "_tmp": ("_tmp*/", "Directories named _tmp* are scratch artifacts and should stay local."),
 }
 EDITOR_LOCAL_DIR_RULES = {
     ".idea": (".idea/", "JetBrains project metadata is local-only."),
@@ -75,6 +83,30 @@ INSPECTED_IGNORE_FILES = (
     ".prettierignore",
     ".ignore",
 )
+PRUNED_DIR_NAMES = {
+    ".git",
+    "node_modules",
+    ".next",
+    ".nuxt",
+    ".svelte-kit",
+    ".venv",
+    "venv",
+    "target",
+    "dist",
+    "build",
+    "coverage",
+    "htmlcov",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".tox",
+    ".nox",
+    ".uv-python",
+    ".tmp-tests",
+    "tmp",
+}
+PRUNED_DIR_PREFIXES = (".uv-cache", "_tmp")
 
 
 @dataclass(frozen=True)
@@ -106,6 +138,7 @@ class StatusEntry:
 
 @dataclass
 class RepoSignals:
+    is_git_repo: bool
     detected_stacks: list[str]
     observed_dirs: set[str]
     observed_files: set[str]
@@ -144,7 +177,7 @@ def normalize_git_path(path: str) -> str:
     return path.strip().replace("\\", "/")
 
 
-def find_repo_root(start: Path) -> Path | None:
+def find_git_root(start: Path) -> Path | None:
     probe = start if start.is_dir() else start.parent
     result = run_git_command(probe, "rev-parse", "--show-toplevel")
     if result.returncode == 0:
@@ -153,6 +186,14 @@ def find_repo_root(start: Path) -> Path | None:
         if (candidate / ".git").exists():
             return candidate.resolve()
     return None
+
+
+def resolve_project_root(start: Path) -> tuple[Path, bool]:
+    probe = start if start.is_dir() else start.parent
+    git_root = find_git_root(probe)
+    if git_root is not None:
+        return git_root, True
+    return probe.resolve(), False
 
 
 def detect_stacks(repo_root: Path) -> list[str]:
@@ -182,36 +223,20 @@ def detect_stacks(repo_root: Path) -> list[str]:
     return sorted(stacks)
 
 
+def should_prune_dir(name: str) -> bool:
+    return name in PRUNED_DIR_NAMES or any(name.startswith(prefix) for prefix in PRUNED_DIR_PREFIXES)
+
+
 def walk_repo(repo_root: Path) -> tuple[set[str], set[str]]:
     observed_dirs: set[str] = set()
     observed_files: set[str] = set()
-    prune_dirs = {
-        ".git",
-        "node_modules",
-        ".next",
-        ".nuxt",
-        ".svelte-kit",
-        ".venv",
-        "venv",
-        "target",
-        "dist",
-        "build",
-        "coverage",
-        "htmlcov",
-        "__pycache__",
-        ".pytest_cache",
-        ".mypy_cache",
-        ".ruff_cache",
-        ".tox",
-        ".nox",
-    }
     for _, dirnames, filenames in os.walk(repo_root):
         dirnames[:] = [name for name in dirnames if name != ".git"]
         for dirname in list(dirnames):
             observed_dirs.add(dirname)
         for filename in filenames:
             observed_files.add(filename)
-        dirnames[:] = [name for name in dirnames if name not in prune_dirs]
+        dirnames[:] = [name for name in dirnames if not should_prune_dir(name)]
     return observed_dirs, observed_files
 
 
@@ -266,18 +291,26 @@ def collect_tracked_paths(repo_root: Path) -> set[str]:
     return {normalize_git_path(line) for line in result.stdout.splitlines() if line.strip()}
 
 
-def list_inspected_ignore_files(repo_root: Path) -> list[str]:
-    inspected: list[str] = []
+def list_inspected_ignore_files(repo_root: Path, *, is_git_repo: bool) -> list[str]:
+    inspected = [".gitignore"]
+    if is_git_repo:
+        inspected.append(".git/info/exclude")
     for relative_path in INSPECTED_IGNORE_FILES:
+        if relative_path in inspected:
+            continue
         absolute_path = repo_root / relative_path
-        if relative_path in (".gitignore", ".git/info/exclude") or absolute_path.exists():
+        if absolute_path.exists():
             inspected.append(relative_path)
     return inspected
 
 
-def collect_existing_patterns_by_file(repo_root: Path) -> dict[str, set[str]]:
+def collect_existing_patterns_by_file(
+    repo_root: Path,
+    *,
+    is_git_repo: bool,
+) -> dict[str, set[str]]:
     patterns_by_file: dict[str, set[str]] = {}
-    for relative_path in list_inspected_ignore_files(repo_root):
+    for relative_path in list_inspected_ignore_files(repo_root, is_git_repo=is_git_repo):
         absolute_path = repo_root / relative_path
         patterns: set[str] = set()
         if absolute_path.exists():
@@ -292,19 +325,22 @@ def collect_existing_patterns_by_file(repo_root: Path) -> dict[str, set[str]]:
 
 def collect_local_env_rules(repo_root: Path) -> list[tuple[str, str]]:
     rules: list[tuple[str, str]] = []
-    for path in sorted(repo_root.glob(".env*")):
-        if not path.is_file():
-            continue
-        name = path.name
-        if name.endswith(".example") or name.endswith(".sample"):
-            continue
-        if name in LOCAL_ENV_NAMES or (name.startswith(".env.") and name.endswith(SAFE_LOCAL_ENV_SUFFIX)):
-            rules.append(
-                (
-                    name,
-                    "Local environment files often contain machine-specific or secret values.",
+    for current_root, dirnames, filenames in os.walk(repo_root):
+        dirnames[:] = [name for name in dirnames if not should_prune_dir(name)]
+        current_path = Path(current_root)
+        for file_name in sorted(filenames):
+            if not file_name.startswith(".env"):
+                continue
+            if file_name.endswith(".example") or file_name.endswith(".sample"):
+                continue
+            if file_name in LOCAL_ENV_NAMES or (file_name.startswith(".env.") and file_name.endswith(SAFE_LOCAL_ENV_SUFFIX)):
+                relative_path = (current_path / file_name).relative_to(repo_root).as_posix()
+                rules.append(
+                    (
+                        relative_path,
+                        "Local environment files often contain machine-specific or secret values.",
+                    )
                 )
-            )
     return rules
 
 
@@ -313,9 +349,14 @@ def path_matches_pattern(path: str, pattern: str) -> bool:
     pure_path = PurePosixPath(normalized_path)
     if pattern.endswith("/"):
         target = pattern[:-1]
+        if any(char in target for char in "*?[]"):
+            return any(fnmatch.fnmatchcase(part, target) for part in pure_path.parts)
         return target in pure_path.parts
-    if pattern == "*.log":
-        return pure_path.name.endswith(".log")
+    if any(char in pattern for char in "*?[]"):
+        return fnmatch.fnmatchcase(normalized_path, pattern) or fnmatch.fnmatchcase(
+            pure_path.name,
+            pattern,
+        )
     return normalized_path == pattern or pure_path.name == pattern
 
 
@@ -324,14 +365,17 @@ def matching_paths(paths: set[str] | list[str], pattern: str) -> list[str]:
     return matches
 
 
-def collect_repo_signals(repo_root: Path) -> RepoSignals:
+def collect_repo_signals(repo_root: Path, *, is_git_repo: bool) -> RepoSignals:
     detected_stacks = detect_stacks(repo_root)
     observed_dirs, observed_files = walk_repo(repo_root)
-    inspected_ignore_files = list_inspected_ignore_files(repo_root)
-    existing_patterns_by_file = collect_existing_patterns_by_file(repo_root)
-    status_entries = collect_status_entries(repo_root)
-    recent_commit_paths = collect_recent_commit_paths(repo_root)
-    tracked_paths = collect_tracked_paths(repo_root)
+    inspected_ignore_files = list_inspected_ignore_files(repo_root, is_git_repo=is_git_repo)
+    existing_patterns_by_file = collect_existing_patterns_by_file(
+        repo_root,
+        is_git_repo=is_git_repo,
+    )
+    status_entries = collect_status_entries(repo_root) if is_git_repo else []
+    recent_commit_paths = collect_recent_commit_paths(repo_root) if is_git_repo else []
+    tracked_paths = collect_tracked_paths(repo_root) if is_git_repo else set()
     optional_targets = {
         relative_path
         for relative_path in SECONDARY_SHARED_TARGETS
@@ -340,6 +384,7 @@ def collect_repo_signals(repo_root: Path) -> RepoSignals:
     }
     docker_context = (repo_root / "Dockerfile").exists() or (repo_root / ".dockerignore").exists()
     return RepoSignals(
+        is_git_repo=is_git_repo,
         detected_stacks=detected_stacks,
         observed_dirs=observed_dirs,
         observed_files=observed_files,
@@ -433,7 +478,10 @@ def build_candidate_rules(
             add_skipped(pattern, f"tracked paths already match this pattern: {sample}")
             return
 
-        targets = [primary_target]
+        effective_target = primary_target
+        if primary_target == ".git/info/exclude" and not signals.is_git_repo:
+            effective_target = ".gitignore"
+        targets = [effective_target]
         if allow_secondary_targets:
             targets.extend(secondary_targets_for_pattern(pattern, signals))
         for target_file in targets:
@@ -452,6 +500,25 @@ def build_candidate_rules(
         evidence: list[str] = []
         if dirname in signals.observed_dirs or (repo_root / dirname).exists():
             evidence.append(f"observed-directory: {dirname}")
+        status_hits = matching_paths(status_paths, pattern)
+        if status_hits:
+            evidence.append(f"git-status: {status_hits[0]}")
+        recent_hits = matching_paths(signals.recent_commit_paths, pattern)
+        if recent_hits:
+            evidence.append(f"recent-commit: {recent_hits[0]}")
+        consider_pattern(
+            pattern,
+            reason,
+            ".gitignore",
+            evidence,
+            allow_secondary_targets=True,
+        )
+
+    for prefix, (pattern, reason) in PREFIX_DIR_RULES.items():
+        matched_dirs = sorted(name for name in signals.observed_dirs if name.startswith(prefix))
+        if not matched_dirs:
+            continue
+        evidence = [f"observed-directory: {matched_dirs[0]}"]
         status_hits = matching_paths(status_paths, pattern)
         if status_hits:
             evidence.append(f"git-status: {status_hits[0]}")
@@ -614,7 +681,7 @@ def render_payload(
         "inspected_ignore_files": signals.inspected_ignore_files,
         "recent_commit_paths_sample": signals.recent_commit_paths[:10],
         "status_entries_sample": [asdict(item) for item in signals.status_entries[:10]],
-        "is_git_repo": True,
+        "is_git_repo": signals.is_git_repo,
     }
 
 
@@ -646,12 +713,9 @@ def emit_text(candidate_rules: list[CandidateRule], skipped_rules: list[SkippedR
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     requested_root = Path(args.project_root).resolve()
-    repo_root = find_repo_root(requested_root)
-    if repo_root is None:
-        print("Current path is not inside a git repository.", file=sys.stderr)
-        return 1
+    repo_root, is_git_repo = resolve_project_root(requested_root)
 
-    signals = collect_repo_signals(repo_root)
+    signals = collect_repo_signals(repo_root, is_git_repo=is_git_repo)
     candidate_rules, skipped_rules = build_candidate_rules(repo_root, signals)
     applied_rules: list[AppliedRule] = []
 

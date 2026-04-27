@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session Context Optimizer"
+  short_description: "Build a focused session context pack"
+  default_prompt: "Use $session-context-optimizer to study the strongest relevant skills in this repository and turn them into a concise, high-signal context pack for the current task."

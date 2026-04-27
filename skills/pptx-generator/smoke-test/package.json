@@ -1,0 +1,13 @@
+{
+  "name": "pptx-generator-smoke-test",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Smoke test deck for the pptx-generator skill",
+  "license": "MIT",
+  "scripts": {
+    "build": "node slides/compile.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

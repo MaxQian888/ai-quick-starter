@@ -1,0 +1,23 @@
+{
+  "skill_name": "screenshot",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Take a screenshot of my entire desktop and save it to the default location.",
+      "expected_output": "Runs the appropriate platform helper, captures all displays, saves to the OS default screenshot location, and reports the saved file paths.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need to compare my Figma design with the running app. Can you capture both for me?",
+      "expected_output": "Prefers the Figma MCP/skill for the design capture first, then uses this skill to capture the running app to temp, and reports both paths for comparison.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Capture just the active window and save it to a temp file so I can inspect it.",
+      "expected_output": "Uses the platform helper with active-window or active-window mode, saves to temp directory, and reports the saved file path.",
+      "files": []
+    }
+  ]
+}

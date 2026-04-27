@@ -151,6 +151,85 @@ class BuildMigrationBlueprintTests(unittest.TestCase):
         self.assertIn("## Forbidden Moves", markdown)
         self.assertIn("## Open Questions", markdown)
 
+    def test_treats_root_package_workspaces_as_monorepo_signal_without_extra_workspace_files(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "package.json": json.dumps(
+                    {
+                        "name": "workspace-root",
+                        "private": True,
+                        "workspaces": ["apps/*", "packages/*"],
+                    }
+                ),
+                "apps/web/src/index.ts": "export const app = true;\n",
+                "packages/ui/src/button.ts": "export const Button = {};\n",
+            }
+        )
+        output_dir = self.make_output_dir()
+
+        result, json_path, _ = self.run_cli(repo_root, output_dir)
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json(json_path)
+        self.assertEqual(payload["migration_classification"]["type"], "monorepo")
+        self.assertTrue(payload["migration_classification"]["confidence"] >= 0.8)
+
+    def test_detects_top_level_mixed_concerns_when_repo_has_no_src_directory(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "package.json": json.dumps(
+                    {
+                        "name": "legacy-top-level-app",
+                        "scripts": {
+                            "build": "vite build",
+                        },
+                    }
+                ),
+                "components/button.tsx": "export const Button = () => null;\n",
+                "services/api.ts": "export async function load() { return []; }\n",
+                "utils/format.ts": "export const format = () => '';\n",
+                "pages/home.tsx": "export default function Home() { return null; }\n",
+            }
+        )
+        output_dir = self.make_output_dir()
+
+        result, json_path, _ = self.run_cli(repo_root, output_dir)
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json(json_path)
+        self.assertEqual(payload["migration_classification"]["type"], "restructure")
+        self.assertTrue(payload["current_structure"]["mixed_concerns"])
+        self.assertIn("components", payload["current_structure"]["coupling_hotspots"])
+        self.assertTrue(payload["migration_classification"]["confidence"] >= 0.75)
+
+    def test_respects_explicit_nested_output_paths(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "package.json": json.dumps({"name": "demo"}),
+                "src/components/button.tsx": "export const Button = () => null;\n",
+                "src/services/api.ts": "export async function load() { return []; }\n",
+                "src/utils/format.ts": "export const format = () => '';\n",
+            }
+        )
+        output_dir = self.make_output_dir()
+        json_out = output_dir / "reports" / "nested" / "plan.json"
+        markdown_out = output_dir / "reports" / "nested" / "plan.md"
+
+        result, _, _ = self.run_cli(
+            repo_root,
+            output_dir,
+            "--json-out",
+            str(json_out),
+            "--markdown-out",
+            str(markdown_out),
+        )
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        self.assertTrue(json_out.exists(), str(json_out))
+        self.assertTrue(markdown_out.exists(), str(markdown_out))
+        payload = self.load_json(json_out)
+        self.assertEqual(payload["project_profile"]["project_root"], str(repo_root.resolve()))
+
 
 if __name__ == "__main__":
     unittest.main()

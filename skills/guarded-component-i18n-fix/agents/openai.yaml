@@ -1,0 +1,5 @@
+interface:
+  display_name: "Guarded i18n Fix"
+  short_description: "Detect existing i18n stacks and apply safe, minimal component fixes without conflicts"
+  default_prompt: "Use $guarded-component-i18n-fix to inspect a component directory, detect the repository's existing i18n system, and apply only safe, minimal fixes that won't introduce a conflicting framework."
+

@@ -1,0 +1,15 @@
+{
+  "skill": "pptx-generator",
+  "evaluations": [
+    {
+      "name": "generate-new-deck",
+      "prompt": "Create a 10-slide pitch deck for a SaaS startup using PptxGenJS",
+      "criteria": ["Follows 5 page-type classification", "Uses theme object contract correctly", "Includes page number badges", "Runs verification with markitdown"]
+    },
+    {
+      "name": "edit-existing-template",
+      "prompt": "Update an existing PowerPoint template with new branding colors",
+      "criteria": ["Uses XML-level editing workflow", "Preserves original deck", "Runs MarkItDown to confirm changes", "Uses 6-char hex without #"]
+    }
+  ]
+}

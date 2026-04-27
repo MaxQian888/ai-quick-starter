@@ -1,6 +1,7 @@
 ---
 name: powershell-terminal-config-sync
-description: Discover, bundle, and safely sync PowerShell profile files plus Windows Terminal settings for a Windows user environment. Use when Codex needs to copy an existing PowerShell and terminal setup to another machine or account, audit which dependent files a profile references, recover from shell startup drift caused by missing config files, or generate a non-destructive sync script instead of guessing paths by hand.
+description: |
+  Use whenever you need to discover, package, or synchronize PowerShell profile and Windows Terminal configuration across environments. Make sure to use this skill whenever the user mentions "PowerShell profile", "Windows Terminal settings", "sync shell config", "dotfiles", "terminal setup", "oh-my-posh", "PSReadLine", or moving their shell environment to a new machine. Also trigger for backing up terminal customization, reproducing a dev environment, or auditing what shell configuration files exist on a Windows machine. Covers PowerShell 5.1, PowerShell 7+, Windows Terminal stable and preview, and dependent modules or themes.
 ---
 
 # PowerShell Terminal Config Sync
@@ -9,6 +10,16 @@ description: Discover, bundle, and safely sync PowerShell profile files plus Win
 
 Discover live PowerShell and Windows Terminal configuration, capture dependent files, and emit a reviewable sync bundle plus a `ShouldProcess`-safe PowerShell copy script.
 Use the helper script first, review the JSON bundle before copying anything, and keep missing or machine-specific references explicit.
+
+## Adaptive Detection
+
+Before syncing, detect the shell environment:
+
+1. **PowerShell versions**: Check for both `Documents\WindowsPowerShell\` (5.1) and `Documents\PowerShell\` (7+) profiles.
+2. **Windows Terminal editions**: Look in both stable and preview `Packages` directories, plus the new `Microsoft\Windows Terminal\` path.
+3. **Dependencies**: Scan for `oh-my-posh`, dot-sourced scripts, custom modules, and theme JSON references.
+4. **Git presence**: Confirm the nearest git root to avoid operating outside version control.
+5. **Machine-specific paths**: Note absolute paths that may break on the destination machine.
 
 ## Quick Start
 
@@ -89,6 +100,20 @@ If the source machine profile is already broken, `-NoProfile` prevents startup f
 - Do not mutate Windows Terminal settings inline when file copying is enough.
 - Do not hide unresolved references such as missing theme JSON or external scripts under `C:\Tools`.
 - Do not delete destination files to "match" the source machine.
+
+## Examples
+
+### Example 1: Discover current configuration
+
+```powershell
+python scripts/build_shell_config_sync_plan.py --source-home "$env:USERPROFILE" --source-localappdata "$env:LOCALAPPDATA" --output-dir .\artifacts\shell-config
+```
+
+### Example 2: Preview sync on destination machine
+
+```powershell
+pwsh -NoLogo -NoProfile -File .\artifacts\shell-config\sync-shell-config.ps1 -TargetHome "C:\Users\OtherUser" -WhatIf
+```
 
 ## References
 

@@ -1,0 +1,16 @@
+{
+  "skill": "draw-mermaid-diagrams",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "flowchart-generation",
+      "description": "Generate a valid flowchart from a natural language process description.",
+      "criteria": ["syntactically valid Mermaid", "correct diagram type", "concise labels", "consistent direction"]
+    },
+    {
+      "id": "sequence-diagram-generation",
+      "description": "Generate a valid sequence diagram from an API interaction description.",
+      "criteria": ["proper participants declared", "valid arrow syntax", "temporal order correct"]
+    }
+  ]
+}

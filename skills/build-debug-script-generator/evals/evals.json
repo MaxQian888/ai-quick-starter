@@ -1,0 +1,23 @@
+{
+  "skill_name": "build-debug-script-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I cloned a Node.js project but I don't know how to build or debug it locally. Can you generate build and debug scripts for me?",
+      "expected_output": "Detects Node.js from package.json, runs generate_build_debug_scripts.py, produces build.ps1 and debug.ps1, and reports blockers or assumptions.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Generate local build scripts for my Python project at ./backend. It uses pyproject.toml and has a Makefile.",
+      "expected_output": "Detects Python + Makefile signals, generates build-debug-bundle.json with install/build/debug commands, and warns if debug path is weak.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The build script you generated last week seems stale. Can you regenerate it?",
+      "expected_output": "Re-runs the generator, reads the new JSON bundle, compares with existing scripts, and regenerates rather than patching from memory.",
+      "files": []
+    }
+  ]
+}

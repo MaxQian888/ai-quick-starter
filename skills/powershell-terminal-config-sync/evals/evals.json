@@ -1,0 +1,10 @@
+{
+  "skill": "powershell-terminal-config-sync",
+  "evaluations": [
+    {
+      "name": "discover-and-sync",
+      "prompt": "Package my PowerShell profile and Windows Terminal settings for a new machine",
+      "criteria": ["Runs discovery script first", "Reviews JSON bundle before copying", "Uses -WhatIf preview", "Lists unresolved references explicitly"]
+    }
+  ]
+}

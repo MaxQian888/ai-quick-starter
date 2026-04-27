@@ -1,6 +1,7 @@
 ---
 name: local-javascript-scripting
-description: Use when Codex needs to write, review, scaffold, or validate local Node.js or JavaScript automation scripts for filesystem work, CLI tools, batch jobs, JSON or CSV transforms, or child-process orchestration, and the target is the local machine rather than a browser UI, frontend component, or web page.
+description: |
+  Use whenever you need to write, review, scaffold, or validate local Node.js or JavaScript automation scripts for filesystem work, CLI tools, batch jobs, JSON or CSV transforms, child-process orchestration, or any code that runs on the local machine rather than in a browser. Make sure to use this skill whenever the task involves local automation, server-side scripting, build tooling, data pipelines, or dev-ops helpers — even if the user says "script", "tool", "automation", "batch job", or "CLI". Also trigger when converting browser code to Node.js, choosing between ESM and CJS, or validating that a script does not accidentally import browser-only APIs like `window` or `document`. Covers one-off scripts, reusable modules, and CLI wrappers.
 ---
 
 # Local Javascript Scripting
@@ -8,6 +9,18 @@ description: Use when Codex needs to write, review, scaffold, or validate local 
 ## Overview
 
 Write local automation scripts the same way you would onboard into a small Node tool: inspect the repo or machine context first, choose ESM or CJS deliberately, prefer core Node modules, and keep browser-only patterns out unless the user explicitly wants web code.
+
+## Adaptive Detection
+
+Before writing or reviewing a script, scan for project signals:
+
+1. **Module system**: Check `package.json` for `"type": "module"` or `"type": "commonjs"`. Look at existing `.js` / `.mjs` / `.cjs` files.
+2. **Package manager**: Detect `package-lock.json` (npm), `yarn.lock` (Yarn), or `pnpm-lock.yaml` (pnpm).
+3. **Existing scripts**: Look in `scripts/`, `tools/`, `bin/`, or `src/` for current conventions.
+4. **Runtime constraints**: Check `engines` in `package.json` for Node version requirements.
+5. **Build tools**: Note presence of `tsconfig.json`, `vite.config.*`, or bundlers that may affect output.
+
+Match the detected conventions rather than introducing new ones.
 
 ## Workflow
 
@@ -46,21 +59,15 @@ node scripts/check-local-node-script.mjs --json ./scripts/sync-files.mjs
 - Do not add third-party dependencies when the task is easily handled by core Node modules.
 - Do not silently switch module systems. Match the repo if it already has a pattern; otherwise prefer ESM for new standalone scripts.
 
-## Quick Start
+## Examples
 
-Scaffold an ESM CLI:
+### Example 1: Scaffold an ESM CLI
 
 ```bash
 node scripts/scaffold-local-node-script.mjs --output ./scripts/example.mjs --kind cli --module esm --name example
 ```
 
-Scaffold a CommonJS one-off script:
-
-```bash
-node scripts/scaffold-local-node-script.mjs --output ./scripts/example.cjs --kind script --module cjs --name example
-```
-
-Check a finished script:
+### Example 2: Check a finished script
 
 ```bash
 node scripts/check-local-node-script.mjs --json ./scripts/example.mjs

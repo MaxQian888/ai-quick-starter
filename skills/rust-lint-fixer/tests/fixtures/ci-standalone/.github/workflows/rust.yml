@@ -1,0 +1,7 @@
+name: rust
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: cargo clippy --all-targets --all-features -- -D warnings

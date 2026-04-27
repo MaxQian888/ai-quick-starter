@@ -1,6 +1,7 @@
 ---
 name: project-skill-builder
-description: Analyze an existing repository, extract its local docs, manifests, commands, entrypoints, and working guardrails, then scaffold a reusable project-specific skill package for later use. Use when Codex needs to turn one concrete project into a repeatable skill instead of re-learning the repo from scratch in every future session.
+description: |
+  Use whenever you need to analyze an existing repository and scaffold a reusable project-specific skill package for repeated future sessions. Make sure to use this skill whenever the user says "create a skill for this repo", "onboarding docs", "repo-specific skill", "project context", "CLAUDE.md for this project", or "make this easier to work with next time" — even for small projects that are visited frequently. Also trigger when a repository has unique conventions, custom build steps, or tribal knowledge that should be captured for future AI sessions. Covers skill generation, project mapping, working rules extraction, and durable navigation docs.
 ---
 
 # Project Skill Builder
@@ -10,6 +11,18 @@ description: Analyze an existing repository, extract its local docs, manifests, 
 Scan a repository first, then materialize the findings as a small skill package that future Codex runs can reuse.
 
 Default to generating a doc-backed project skill with a strong `SKILL.md`, `CLAUDE.md`, UI metadata, and focused reference files. Treat the generated skill as a starting point that should reflect observed repository truth, not generic boilerplate.
+
+## Adaptive Detection
+
+Before building a skill, detect repository signals:
+
+1. **Project type**: Identify the primary language, framework, and runtime from manifests.
+2. **Workspace structure**: Check for monorepo, multi-package, or single-package layout.
+3. **Documentation state**: Note existing `README.md`, `CLAUDE.md`, `docs/`, or `ARCHITECTURE.md`.
+4. **Build surface**: Identify how to build, test, lint, and run the project.
+5. **Team conventions**: Look for style guides, naming conventions, and folder organization patterns.
+
+Use these signals to decide what belongs in the generated skill and what can be left out.
 
 ## Workflow
 
@@ -40,6 +53,20 @@ The helper creates a new skill directory with:
 - `artifacts/project-analysis.json`
 
 The generated package is intentionally lightweight. It favors repository-specific guidance over speculative automation.
+
+## Examples
+
+### Example 1: Generate a skill for a React monorepo
+
+```bash
+python scripts/build_project_skill.py --project-root . --skill-name acme-web --output-dir ./skills
+```
+
+### Example 2: Regenerate with narrowed scope
+
+```bash
+python scripts/build_project_skill.py --project-root . --skill-name acme-web --output-dir ./skills --include apps/web --include packages/ui --force
+```
 
 ## Guardrails
 

@@ -1,10 +1,23 @@
 ---
 name: "screenshot"
-description: "Use when the user explicitly asks for a desktop or system screenshot (full screen, specific app or window, or a pixel region), or when tool-specific capture capabilities are unavailable and an OS-level capture is needed."
+description: >
+  Use this skill whenever you need to capture a desktop screenshot, app window, specific screen region, or full-system display.
+  Make sure to use it when the user asks to "take a screenshot," "show me what's on screen," "capture this window," or when tool-specific capture methods are unavailable.
+  Covers macOS, Windows, and Linux with platform-specific helpers for full-screen, active window, pixel region, and multi-display capture.
+  Also trigger for visual inspection, UI comparison, and desktop app debugging tasks.
 ---
 
 
 # Screenshot Capture
+
+## Adaptive Detection
+
+Before capturing, scan for:
+- Operating system (macOS, Windows, Linux) to choose the right helper script
+- Available capture tools (`scrot`, `gnome-screenshot`, ImageMagick `import` on Linux)
+- Whether the target is a browser, Electron app, or native desktop app (prefer tool-specific capture when available)
+- Multi-display setup to decide between per-display and virtual-desktop modes
+- macOS Screen Recording permission status (run preflight when needed)
 
 Follow these save-location rules every time:
 
@@ -280,3 +293,17 @@ gnome-screenshot -w -f output/window.png
 - If Windows full-screen capture is offset on mixed-scale monitors, run without `-VirtualDesktop` (default per-display mode).
 - If saving to the OS default location fails with permission errors in a sandbox, rerun the command with escalated permissions.
 - Always report the saved file path in the response.
+
+## Examples
+
+**Example 1: Capture the full desktop**
+```
+User: "Take a screenshot of my desktop."
+Agent: Run the platform helper (PowerShell on Windows, Python on macOS/Linux) with default mode, save to the OS default location, and report the saved file path.
+```
+
+**Example 2: Compare Figma design with running app**
+```
+User: "The design from Figma is not matching what is implemented."
+Agent: Use the Figma MCP/skill to capture the design first, then run the screenshot helper in temp mode to capture the running app, and compare the raw screenshots before any manipulation.
+```

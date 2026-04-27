@@ -1,0 +1,16 @@
+{
+  "skill": "feature-call-chain-mapper",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "feature-trace",
+      "description": "Trace a named feature through a codebase and produce a structured call chain.",
+      "criteria": ["candidate entrypoints identified", "evidence files listed", "cross-module handoffs noted", "blind spots surfaced"]
+    },
+    {
+      "id": "narrowed-subtree-trace",
+      "description": "Trace a feature within a narrowed subtree using include/exclude filters.",
+      "criteria": ["include/exclude respected", "relevant files only", "blind spots include excluded areas"]
+    }
+  ]
+}

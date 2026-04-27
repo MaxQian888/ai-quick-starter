@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stitch Design MD"
+  short_description: "Generate reusable DESIGN.md from Stitch screens"
+  default_prompt: "Use $design-md to analyze my Stitch project screen and produce a reusable DESIGN.md with atmosphere, color roles, typography, component styles, and layout rules."

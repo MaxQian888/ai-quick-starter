@@ -1,4 +1,4 @@
 interface:
   display_name: "E2E Test Completer"
   short_description: "Sync E2E tests to code changes safely"
-  default_prompt: "Use $e2e-test-completer to map recent implementation changes to affected E2E flows, update or add the missing tests, and simulate the safest E2E verification command before broader validation."
+  default_prompt: "Use $e2e-test-completer to map code changes to affected E2E flows, update or add missing tests, and simulate the safest verification command before running the full suite."

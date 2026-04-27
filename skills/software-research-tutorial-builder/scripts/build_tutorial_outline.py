@@ -67,6 +67,19 @@ def build_outline(brief: dict[str, Any]) -> str:
         "- [ ] Cleanup steps",
         "",
     ])
+    conflicts = brief.get("conflicts", {})
+    if conflicts:
+        lines.extend(["## Conflicts To Resolve", ""])
+        for topic, entries in conflicts.items():
+            lines.append(f"### {topic.capitalize()}")
+            for item in entries:
+                lines.append(f"- [{item['track']}] {item['claim']}")
+            lines.append("")
+    unverified_topics = brief.get("unverified_topics", [])
+    if unverified_topics:
+        lines.extend(["## Unverified Topics", ""])
+        lines.extend([f"- {item}" for item in unverified_topics])
+        lines.append("")
     if unresolved:
         lines.extend(["## Open Questions", ""])
         lines.extend([f"- {item}" for item in unresolved])

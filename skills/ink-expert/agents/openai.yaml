@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ink Expert"
+  short_description: "Build, migrate, and debug modern Ink CLI apps with v6-aware APIs."
+  default_prompt: "Use this skill to implement or troubleshoot Ink CLI applications, especially when handling v6 APIs, migration from older templates, and interaction/testing behavior."

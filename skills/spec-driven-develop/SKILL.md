@@ -1,11 +1,24 @@
 ---
 name: spec-driven-develop
-description: Use when Codex needs a pre-implementation workflow for a large rewrite, migration, architecture overhaul, or multi-phase feature program that will span multiple sessions and benefit from explicit analysis docs, tracked progress files, and a task-specific execution skill. Trigger for requests such as rewriting a project in another language, staging a large refactor, planning a long-running migration, setting up docs/progress/MASTER.md continuity, or asking for spec-driven development before coding.
+description: |
+  Use whenever you need a pre-implementation workflow for a large rewrite, migration, architecture overhaul, or multi-phase feature program that will span multiple sessions and benefit from explicit analysis docs, tracked progress files, and a task-specific execution skill. Make sure to use this skill whenever the user says "rewrite", "migration", "refactor", "overhaul", "multi-phase", "long-running", "plan this work", "spec-driven", or "docs/progress" — even for medium-sized projects that need structured planning. Also trigger when setting up docs/progress/MASTER.md continuity, creating phase-based roadmaps, or asking for spec-driven development before coding. Covers language migrations, framework upgrades, architectural restructuring, and large feature programs.
 ---
 
 # Spec-Driven Develop
 
 Prepare large work before broad implementation starts. Confirm the target, analyze the real project surface, decompose the work into phases, materialize `docs/progress/` as the cross-session truth source, and hand off a focused execution skill only after the plan is stable.
+
+## Adaptive Detection
+
+Before planning, detect project signals:
+
+1. **Existing progress docs**: Check if `docs/progress/MASTER.md` already exists.
+2. **Project scale**: Estimate scope from manifests, file count, and test coverage.
+3. **Team constraints**: Note deadlines, parallel workstreams, and review processes.
+4. **Risk areas**: Identify tight coupling, missing tests, or undocumented behavior.
+5. **Follow-up skills**: Determine which execution skills will be needed after planning.
+
+Use these signals to set phase granularity and verification boundaries.
 
 ## Workflow
 
@@ -32,6 +45,20 @@ Prepare large work before broad implementation starts. Confirm the target, analy
 - Do not generate a generic child skill that ignores the actual project, phase boundaries, or verification rules.
 - Do not claim the preparation is complete until the progress files exist on disk and match the agreed phase breakdown.
 - When all tracked tasks are complete, enter cleanup mode and ask whether to keep or remove temporary progress docs and the generated execution skill.
+
+## Examples
+
+### Example 1: Bootstrap progress docs from a phase list
+
+```bash
+python scripts/bootstrap_progress_docs.py --output-root . --task-name "React to Next.js migration" --task-summary "Migrate the frontend from CRA to Next.js App Router" --phase-file phases.json
+```
+
+### Example 2: Export existing progress to JSON
+
+```bash
+python scripts/export_progress.py ./docs/progress
+```
 
 ## References
 

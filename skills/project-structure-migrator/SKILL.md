@@ -1,6 +1,7 @@
 ---
 name: project-structure-migrator
-description: Use when Codex needs to migrate a repository's project structure, such as moving a single project to a workspace or monorepo, reorganizing a legacy directory layout into clearer boundaries, or splitting or merging project surfaces while preserving builds, tests, and entrypoints.
+description: |
+  Use whenever you need to migrate a repository's project structure, such as moving a single project to a workspace or monorepo, reorganizing a legacy directory layout into clearer boundaries, or splitting or merging project surfaces while preserving builds, tests, and entrypoints. Make sure to use this skill whenever the user says "restructure", "reorganize", "move to monorepo", "workspace migration", "split packages", "merge repos", "flat to feature-based", or "clean up directory structure" — even for partial migrations or exploratory restructuring. Also trigger when adding a new package to an existing monorepo, converting a CRA app to a Next.js app within a workspace, or any task that changes file locations and import paths. Covers JavaScript/TypeScript, Python, Rust, Go, and mixed-language repositories.
 ---
 
 # Project Structure Migrator
@@ -11,13 +12,25 @@ Analyze a repository's current structure, generate a staged migration blueprint,
 
 Default to structured artifacts: one Markdown blueprint for review and one matching JSON document as the machine-readable truth source.
 
+## Adaptive Detection
+
+Before migrating, detect repository signals:
+
+1. **Current layout**: Check if the repo is flat, layered, feature-based, or already a monorepo.
+2. **Manifest files**: Identify `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, and workspace configs.
+3. **Workspace tools**: Look for `pnpm-workspace.yaml`, `turbo.json`, `nx.json`, `lerna.json`, or `Cargo.toml` workspaces.
+4. **Import patterns**: Note path aliases, barrel exports, and relative import density.
+5. **Validation chain**: Identify build, test, lint, and typecheck commands from manifests and CI.
+
+Use these signals to choose the migration type and compatibility strategy.
+
 ## Quick Start
 
 1. Confirm the real `project-root` and nearest git root.
 2. Run the blueprint generator before freehand migration advice:
 
 ```bash
-C:\Users\qwdma\.local\bin\uv.exe run --python 3.11 scripts/build_migration_blueprint.py --project-root <repo> --output-dir <out-dir>
+python scripts/build_migration_blueprint.py --project-root <repo> --output-dir <out-dir>
 ```
 
 3. Read the JSON output first.
@@ -126,6 +139,20 @@ Before acting on the blueprint, confirm:
 - `migration_batches` keep one primary concern per batch,
 - `verification_plan` maps to real commands,
 - and `open_questions` is not silently empty when evidence is weak.
+
+## Examples
+
+### Example 1: Generate a migration blueprint
+
+```bash
+python scripts/build_migration_blueprint.py --project-root . --output-dir ./migration-plan
+```
+
+### Example 2: Targeted monorepo migration with stack hint
+
+```bash
+python scripts/build_migration_blueprint.py --project-root . --migration-type monorepo --stack js-ts --output-dir ./migration-plan
+```
 
 ## References
 

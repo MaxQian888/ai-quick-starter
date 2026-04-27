@@ -1,0 +1,23 @@
+{
+  "skill_name": "component-reorg-executor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have an approved component reorganization plan. Can you execute it? The plan is at ./plans/reorg.json.",
+      "expected_output": "Runs apply_component_reorg_plan.py with the provided plan, executes only action=move entries, repairs imports and barrel exports, and reports summary.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Apply the planner JSON to move my components into the new functional subfolders.",
+      "expected_output": "Confirms the planner JSON is approved and matches current repo state, executes moves, repairs relative imports, and runs scoped verification.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The reorg plan looks old. Some files may have moved since it was generated. What should I do?",
+      "expected_output": "Stops execution, explains the planner JSON is stale, and instructs the user to regenerate the plan with component-reorg-planner before executing.",
+      "files": []
+    }
+  ]
+}

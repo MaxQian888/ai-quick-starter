@@ -1,85 +1,98 @@
 ---
 name: project-prompt-optimizer
-description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
+description: |
+  Use whenever you need to generate or optimize execution prompts using repository-specific structure, constraints, and validation workflows. Make sure to use this skill whenever the user asks for a "better prompt", "prompt engineering", "execution prompt", "task prompt", "agent prompt", or "improve this instruction" — especially when the prompt must be run against a real codebase. Also trigger when converting vague task descriptions into actionable instructions, adding verification steps to prompts, or tailoring generic prompts to a specific project's conventions. Covers prompt generation from scratch, prompt optimization from drafts, and repository-aware prompt hardening.
 ---
 
 # Project Prompt Optimizer
 
 ## Overview
 
-[TODO: 1-2 sentences explaining what this skill enables]
+Turn a vague task or draft prompt into a repository-aware execution prompt that another agent can run directly.
 
-## Structuring This Skill
+This skill focuses on prompt quality for real codebases: boundaries, constraints, validation, and deliverables.
 
-[TODO: Choose the structure that best fits this skill's purpose. Common patterns:
+## Adaptive Detection
 
-**1. Workflow-Based** (best for sequential processes)
-- Works well when there are clear step-by-step procedures
-- Example: DOCX skill with "Workflow Decision Tree" -> "Reading" -> "Creating" -> "Editing"
-- Structure: ## Overview -> ## Workflow Decision Tree -> ## Step 1 -> ## Step 2...
+Before optimizing, detect the project context:
 
-**2. Task-Based** (best for tool collections)
-- Works well when the skill offers different operations/capabilities
-- Example: PDF skill with "Quick Start" -> "Merge PDFs" -> "Split PDFs" -> "Extract Text"
-- Structure: ## Overview -> ## Quick Start -> ## Task Category 1 -> ## Task Category 2...
+1. **Repository structure**: Check for monorepo vs single package, framework, and language stack.
+2. **Existing conventions**: Look for `CLAUDE.md`, `CONTRIBUTING.md`, or style guides.
+3. **Build and test**: Identify how the project validates changes (lint, typecheck, tests, CI).
+4. **Task type**: Determine if the prompt is for coding, refactoring, documentation, or infrastructure.
+5. **Target audience**: Note if the prompt is for a human developer, an AI agent, or a CI pipeline.
 
-**3. Reference/Guidelines** (best for standards or specifications)
-- Works well for brand guidelines, coding standards, or requirements
-- Example: Brand styling with "Brand Guidelines" -> "Colors" -> "Typography" -> "Features"
-- Structure: ## Overview -> ## Guidelines -> ## Specifications -> ## Usage...
+Use these signals to anchor constraints and validation steps in the final prompt.
 
-**4. Capabilities-Based** (best for integrated systems)
-- Works well when the skill provides multiple interrelated features
-- Example: Product Management with "Core Capabilities" -> numbered capability list
-- Structure: ## Overview -> ## Core Capabilities -> ### 1. Feature -> ### 2. Feature...
+## Workflow
 
-Patterns can be mixed and matched as needed. Most skills combine patterns (e.g., start with task-based, add workflow for complex operations).
+1. Classify request type:
+   - prompt generation from a task, or
+   - prompt optimization from an existing draft.
+2. Read minimal repo context using [references/project-scan-guide.md](references/project-scan-guide.md).
+3. Optionally run the helper script for quick signal extraction:
 
-Delete this entire "Structuring This Skill" section when done - it's just guidance.]
+```bash
+python scripts/summarize_project_context.py --root <repo> --format json
+```
 
-## [TODO: Replace with the first main section based on chosen structure]
+4. Review prompt gaps with [references/prompt-review-rules.md](references/prompt-review-rules.md).
+5. Produce output with [references/output-contract.md](references/output-contract.md).
 
-[TODO: Add content here. See examples in existing skills:
-- Code samples for technical skills
-- Decision trees for complex workflows
-- Concrete examples with realistic user requests
-- References to scripts/templates/references as needed]
+## Command Shapes
 
-## Resources (optional)
+Default JSON summary:
 
-Create only the resource directories this skill actually needs. Delete this section if no resources are required.
+```bash
+python scripts/summarize_project_context.py --root <repo>
+```
 
-### scripts/
-Executable code (Python/Bash/etc.) that can be run directly to perform specific operations.
+Markdown summary for fast review:
 
-**Examples from other skills:**
-- PDF skill: `fill_fillable_fields.py`, `extract_form_field_info.py` - utilities for PDF manipulation
-- DOCX skill: `document.py`, `utilities.py` - Python modules for document processing
+```bash
+python scripts/summarize_project_context.py --root <repo> --format markdown
+```
 
-**Appropriate for:** Python scripts, shell scripts, or any executable code that performs automation, data processing, or specific operations.
+Scoped summary:
 
-**Note:** Scripts may be executed without loading into context, but can still be read by Codex for patching or environment adjustments.
+```bash
+python scripts/summarize_project_context.py --root <repo> --include apps/web --include packages/ui --max-depth 3
+```
 
-### references/
-Documentation and reference material intended to be loaded into context to inform Codex's process and thinking.
+## Output Requirement
 
-**Examples from other skills:**
-- Product management: `communication.md`, `context_building.md` - detailed workflow guides
-- BigQuery: API reference documentation and query examples
-- Finance: Schema documentation, company policies
+Always return exactly three sections:
 
-**Appropriate for:** In-depth documentation, API references, database schemas, comprehensive guides, or any detailed information that Codex should reference while working.
+- `Final Prompt`
+- `Execution Advice`
+- `Checklist`
 
-### assets/
-Files not intended to be loaded into context, but rather used within the output Codex produces.
+## Examples
 
-**Examples from other skills:**
-- Brand styling: PowerPoint template files (.pptx), logo files
-- Frontend builder: HTML/React boilerplate project directories
-- Typography: Font files (.ttf, .woff2)
+### Example 1: Generate a prompt from a vague task
 
-**Appropriate for:** Templates, boilerplate code, document templates, images, icons, fonts, or any files meant to be copied or used in the final output.
+```bash
+python scripts/summarize_project_context.py --root . --format json
+```
 
----
+Use the JSON output to build a prompt that includes repository-specific constraints, file paths, and validation steps.
 
-**Not every skill requires all three types of resources.**
+### Example 2: Optimize an existing draft prompt
+
+1. Read the draft prompt.
+2. Run `scripts/summarize_project_context.py` to gather repo signals.
+3. Review gaps against `references/prompt-review-rules.md`.
+4. Produce the optimized prompt with `Final Prompt`, `Execution Advice`, and `Checklist`.
+
+## Guardrails
+
+- Do not rewrite prompts generically; always anchor on repository signals.
+- Do not over-scan large repos when a few files already establish constraints.
+- Do not hide assumptions; list unknowns and proceed with safe defaults.
+- Do not skip verification guidance in the final prompt package.
+
+## References
+
+- Read `references/project-scan-guide.md` for minimal repo context extraction.
+- Read `references/prompt-review-rules.md` for common prompt gaps and fixes.
+- Read `references/output-contract.md` for the required output structure.

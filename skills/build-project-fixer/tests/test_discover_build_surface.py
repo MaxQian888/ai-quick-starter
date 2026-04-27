@@ -155,6 +155,40 @@ class DiscoverBuildSurfaceTests(unittest.TestCase):
 
         self.assertEqual(sorted(payload["commands"].keys()), ["build"])
 
+    def test_requirements_txt_adds_python_install_command(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "requirements.txt": "requests==2.32.0\npytest==8.3.0\n",
+                "tests/test_smoke.py": "def test_ok():\n    assert True\n",
+            }
+        )
+
+        payload = self.run_cli(repo_root)
+
+        self.assertEqual(payload["commands"]["install"][0]["command"], "python -m pip install -r requirements.txt")
+        self.assertEqual(payload["commands"]["test"][0]["command"], "python -m pytest")
+
+    def test_poetry_lock_prefers_poetry_install(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "pyproject.toml": (
+                    "[tool.poetry]\n"
+                    "name = 'demo'\n"
+                    "version = '0.1.0'\n"
+                    "description = ''\n"
+                    "authors = ['demo <demo@example.com>']\n"
+                    "[tool.poetry.dependencies]\n"
+                    "python = '^3.11'\n"
+                ),
+                "poetry.lock": "[[package]]\nname = 'demo'\nversion = '0.1.0'\n",
+            }
+        )
+
+        payload = self.run_cli(repo_root)
+
+        self.assertEqual(payload["package_managers"][0], "poetry")
+        self.assertEqual(payload["commands"]["install"][0]["command"], "poetry install")
+
 
 if __name__ == "__main__":
     unittest.main()

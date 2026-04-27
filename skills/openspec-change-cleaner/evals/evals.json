@@ -1,0 +1,23 @@
+{
+  "skill_name": "openspec-change-cleaner",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit the OpenSpec changes in this repo. The active change 'add-auth-module' looks stale — its tasks.md hasn't been updated since last sprint and the proposal still references APIs that were redesigned. Check if anything else in the changes folder needs attention too.",
+      "expected_output": "The skill runs the cleanup report, identifies 'add-auth-module' as repair-artifacts due to stale tasks.md and outdated proposal references, and produces a JSON/Markdown report with classifications and next steps.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Clean up the OpenSpec archive folder. I noticed some old archived changes that look like empty scaffolding with just TODO placeholders.",
+      "expected_output": "The skill audits archive entries, classifies placeholder-only folders as safe-cleanup-candidate while keeping meaningful history, and follows conservative cleanup rules without deleting anything on the first pass.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Refresh the OpenSpec artifacts for the 'update-indexer' change before I archive it. Make sure the design and specs match what's actually shipped.",
+      "expected_output": "The skill inspects the latest implementation, reconciles the change artifacts against current code, refreshes proposal/design/specs/tasks.md, re-runs validation, and optionally archives if everything is clean.",
+      "files": []
+    }
+  ]
+}

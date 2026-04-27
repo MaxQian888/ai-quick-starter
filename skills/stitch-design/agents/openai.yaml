@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stitch Design Expert"
+  short_description: "Route Stitch design tasks with consistent workflows"
+  default_prompt: "Use $stitch-design to route this Stitch task through prompt enhancement, design-system synthesis, and screen generation."

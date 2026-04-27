@@ -1,0 +1,16 @@
+{
+  "skill": "design-md",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "design-md-generation",
+      "description": "Generate a DESIGN.md from a Stitch screen with complete design tokens.",
+      "criteria": ["color tokens with hex and role", "typography hierarchy", "component styling sections", "layout and spacing principles"]
+    },
+    {
+      "id": "design-md-refresh",
+      "description": "Refresh an existing DESIGN.md with updated screen data while preserving structure.",
+      "criteria": ["existing structure preserved", "new observations merged", "no fabricated metrics"]
+    }
+  ]
+}

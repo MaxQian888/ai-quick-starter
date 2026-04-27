@@ -1,6 +1,6 @@
 ---
 name: draw-vega-lite-charts
-description: Create, revise, and explain Vega-Lite chart specifications (JSON or YAML blocks) from natural-language requirements or table schemas. Use when users ask to draw charts, design data visualizations, convert analysis questions into Vega-Lite specs, debug Vega-Lite encoding or transform issues, switch chart types, or optimize readability and interactions. Trigger on requests like "make a chart", "write Vega-Lite", and "fix this Vega-Lite spec".
+description: Use when Codex needs to create, revise, or explain Vega-Lite chart specifications from natural-language chart requirements, data field mappings, or broken specs, including chart design, spec debugging, chart-type changes, and readability or interaction improvements.
 ---
 
 # Draw Vega-Lite Charts

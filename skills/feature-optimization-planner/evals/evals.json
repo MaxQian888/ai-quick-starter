@@ -1,0 +1,16 @@
+{
+  "skill": "feature-optimization-planner",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "folder-audit",
+      "description": "Audit a bounded folder and produce a prioritized optimization plan.",
+      "criteria": ["executive summary present", "issues counted by priority", "evidence-backed entries", "quick wins identified"]
+    },
+    {
+      "id": "scope-respect",
+      "description": "Ensure the audit stays scoped and does not widen into a repo-wide rewrite.",
+      "criteria": ["target folder only", "no code modified", "uncertainty visible", "linked skills suggested appropriately"]
+    }
+  ]
+}

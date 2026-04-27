@@ -1,0 +1,4 @@
+interface:
+  display_name: "Enhance Prompt"
+  short_description: "Transform rough Stitch requests into strong prompts"
+  default_prompt: "Use $enhance-prompt to convert this rough Stitch request into a structured, high-signal generation prompt."

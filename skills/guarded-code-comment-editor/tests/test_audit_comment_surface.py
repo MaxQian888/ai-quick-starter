@@ -151,6 +151,52 @@ class AuditCommentSurfaceTests(unittest.TestCase):
         self.assertEqual(payload["summary"]["file_count"], 1)
         self.assertEqual(payload["summary"]["languages"]["tsx"], 1)
 
+    def test_cli_text_output_contains_human_readable_sections(self) -> None:
+        root = self.make_tree(
+            {
+                "src/sample.py": '''
+                    """Worker helpers."""
+
+                    def run(job_id: str) -> str:
+                        """Normalize identifiers before logging."""
+                        return f"job:{job_id.strip()}"
+                ''',
+            }
+        )
+
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "--root",
+                str(root),
+                "--target",
+                str(root / "src"),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        self.assertIn("## Request", result.stdout)
+        self.assertIn("## Selected Style", result.stdout)
+        self.assertIn("## Summary", result.stdout)
+
+    def test_max_files_caps_directory_scan(self) -> None:
+        module = load_module()
+        root = self.make_tree(
+            {
+                "src/a.ts": "export const a = 1;\n",
+                "src/b.ts": "export const b = 2;\n",
+                "src/c.ts": "export const c = 3;\n",
+            }
+        )
+
+        payload = module.analyze_target(root, root / "src", max_files=2)
+
+        self.assertEqual(payload["summary"]["file_count"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

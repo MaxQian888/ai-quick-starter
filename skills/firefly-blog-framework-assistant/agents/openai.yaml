@@ -1,0 +1,4 @@
+interface:
+  display_name: "Firefly Blog Assistant"
+  short_description: "Docs-backed Firefly setup, config, and troubleshooting"
+  default_prompt: "Use $firefly-blog-framework-assistant to solve this Firefly blog task with official Firefly docs evidence, map requirements to concrete project files, and refresh local references when documentation may be outdated."

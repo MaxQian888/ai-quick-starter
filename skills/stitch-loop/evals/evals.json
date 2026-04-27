@@ -1,0 +1,10 @@
+{
+  "skill": "stitch-loop",
+  "evaluations": [
+    {
+      "name": "build-page-iteration",
+      "prompt": "Generate the about page for this Stitch site and prepare the next baton",
+      "criteria": ["Reads baton and context files", "Generates page with design system block", "Integrates into site/public/", "Updates SITE.md and next-prompt.md"]
+    }
+  ]
+}

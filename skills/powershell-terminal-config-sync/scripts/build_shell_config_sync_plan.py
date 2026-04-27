@@ -184,6 +184,8 @@ def resolve_reference(raw_reference: str, context: ReferenceContext) -> Path | N
         return Path(expanded)
     if expanded.startswith(("./", ".\\")):
         return (context.source_file.parent / expanded).resolve(strict=False)
+    if any(expanded.lower().endswith(extension) for extension in PATHISH_EXTENSIONS):
+        return (context.source_file.parent / expanded).resolve(strict=False)
     if "/" in expanded or "\\" in expanded:
         return (context.source_file.parent / expanded).resolve(strict=False)
     return None

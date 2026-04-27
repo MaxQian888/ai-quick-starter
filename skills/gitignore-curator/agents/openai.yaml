@@ -1,4 +1,4 @@
 interface:
   display_name: "Gitignore Curator"
-  short_description: "Review .gitignore and related ignore files safely"
-  default_prompt: "Use $gitignore-curator to inspect this git project, review current git status and recent commits, propose safe additions for .gitignore or related ignore files, and update the approved files after confirmation."
+  short_description: "Inspect repos and workspaces, then propose or apply safe ignore rules based on actual stack signals and evidence."
+  default_prompt: "Use $gitignore-curator to look at this repository or workspace, check what's already in .gitignore and related files, and figure out what generated or local-only artifacts should be ignored. Propose the changes with clear reasoning first, then apply them only when I explicitly ask for a direct cleanup."

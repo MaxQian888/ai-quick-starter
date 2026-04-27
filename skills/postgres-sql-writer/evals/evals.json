@@ -1,0 +1,15 @@
+{
+  "skill": "postgres-sql-writer",
+  "evaluations": [
+    {
+      "name": "write-analytics-query",
+      "prompt": "Write a PostgreSQL query to calculate monthly revenue by tenant with soft-delete safety",
+      "criteria": ["Uses explicit grain and dedup rules", "Includes parameterized examples", "Uses RETURNING or FILTER where appropriate", "Marks assumptions explicitly"]
+    },
+    {
+      "name": "explain-plan-review",
+      "prompt": "Review this EXPLAIN ANALYZE output and suggest indexes",
+      "criteria": ["Identifies dominant scan and join", "Ties index advice to query patterns", "Keeps advice brief unless tuning requested", "Mentions cautions"]
+    }
+  ]
+}

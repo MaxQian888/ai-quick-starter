@@ -442,37 +442,48 @@ function Invoke-FfmpegRecording {
   )
 
   $args = New-Object System.Collections.Generic.List[string]
-  $args.AddRange(@("-y", "-hide_banner", "-loglevel", "warning"))
-  if ($LengthSeconds -gt 0) {
-    $args.AddRange(@("-t", [string]$LengthSeconds))
+  function Add-StringArguments {
+    param(
+      [System.Collections.Generic.List[string]]$List,
+      [object[]]$Items
+    )
+
+    foreach ($item in $Items) {
+      $List.Add([string]$item)
+    }
   }
 
-  $args.AddRange(@("-f", "gdigrab", "-framerate", [string]$FrameRate, "-draw_mouse", "1"))
+  Add-StringArguments -List $args -Items @("-y", "-hide_banner", "-loglevel", "warning")
+  if ($LengthSeconds -gt 0) {
+    Add-StringArguments -List $args -Items @("-t", [string]$LengthSeconds)
+  }
+
+  Add-StringArguments -List $args -Items @("-f", "gdigrab", "-framerate", [string]$FrameRate, "-draw_mouse", "1")
   if ($Plan.Capture -eq "desktop") {
-    $args.AddRange(@("-i", "desktop"))
+    Add-StringArguments -List $args -Items @("-i", "desktop")
   } else {
-    $args.AddRange(@(
+    Add-StringArguments -List $args -Items @(
         "-offset_x", [string]$Plan.Left,
         "-offset_y", [string]$Plan.Top,
         "-video_size", ("{0}x{1}" -f $Plan.Width, $Plan.Height),
         "-i", "desktop"
-      ))
+      )
   }
 
   if ($WithAudio) {
     if (-not $AudioInput) {
       throw "Audio recording requires -AudioDevice. Run with -ListAudioDevices first."
     }
-    $args.AddRange(@("-f", "dshow", "-i", "audio=$AudioInput"))
+    Add-StringArguments -List $args -Items @("-f", "dshow", "-i", "audio=$AudioInput")
   }
 
-  $args.AddRange(@("-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p"))
+  Add-StringArguments -List $args -Items @("-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p")
   if ($WithAudio) {
-    $args.AddRange(@("-c:a", "aac", "-b:a", "160k", "-shortest"))
+    Add-StringArguments -List $args -Items @("-c:a", "aac", "-b:a", "160k", "-shortest")
   } else {
     $args.Add("-an")
   }
-  $args.AddRange(@("-movflags", "+faststart", $OutputPath))
+  Add-StringArguments -List $args -Items @("-movflags", "+faststart", $OutputPath)
 
   if ($WhatIf) {
     Write-Output "Backend: ffmpeg"

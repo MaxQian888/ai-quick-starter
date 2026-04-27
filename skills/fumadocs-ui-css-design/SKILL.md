@@ -1,11 +1,28 @@
 ---
 name: fumadocs-ui-css-design
-description: Use when building, extending, migrating, or customizing a Fumadocs documentation site, especially when Codex needs current official Fumadocs guidance for scaffolding, Next.js manual installation, content source setup, page tree and navigation, MDX authoring, layouts, search, internationalization, static export, or theme and CSS customization.
+description: |
+  Use this skill whenever the user is building, extending, migrating, or customizing a Fumadocs documentation site.
+  Make sure to use this skill whenever the request mentions Fumadocs, documentation site, docs scaffold, MDX docs,
+  Next.js docs, page tree, meta.json, Orama search, i18n routing, static export, or theme customization.
+  Also trigger for synonyms like "docs framework", "documentation portal", "content source", "loader()", "RootProvider",
+  "DocsLayout", or when the user asks about doc navigation, sidebar, TOC, or CSS variables in a Fumadocs context.
 ---
 
 # Fumadocs Complete Workflow
 
 Treat this skill as the complete Fumadocs guide for real implementation work. The folder name is legacy; the scope is no longer limited to UI and CSS.
+
+## Adaptive Detection
+
+Before proposing changes, detect the project type and existing setup:
+
+1. **Project type**: brand new docs app vs existing Next.js app vs partially integrated Fumadocs site.
+2. **Framework version**: check `package.json` for Next.js and React versions to ensure compatibility.
+3. **Content source**: look for `source.config.ts`, `lib/source.ts`, or `fumadocs-mdx` plugin wiring.
+4. **Styling**: check for Tailwind CSS, existing global styles, and Fumadocs CSS imports.
+5. **Search**: determine if built-in Orama is already configured or if a custom search is in place.
+6. **i18n**: look for locale folders, middleware, and `RootProvider` locale props.
+7. **Package manager**: preserve the user's choice (npm, pnpm, yarn, bun).
 
 ## Start Here
 
@@ -30,6 +47,21 @@ python scripts/print_fumadocs_reference_map.py --scenario manual-next --json
    - [references/setup-and-architecture.md](references/setup-and-architecture.md)
    - [references/content-and-navigation.md](references/content-and-navigation.md)
    - [references/ui-search-i18n-and-deploy.md](references/ui-search-i18n-and-deploy.md)
+
+## Examples
+
+**Scaffold a new Fumadocs app:**
+```bash
+npx create-fumadocs-app my-docs
+cd my-docs
+```
+
+**Add a new docs page with navigation:**
+```bash
+# Create content/page.mdx with frontmatter
+# Update meta.json to include the page in the sidebar
+# Verify the page tree via loader()
+```
 
 ## Workflow
 

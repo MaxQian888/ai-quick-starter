@@ -1,0 +1,21 @@
+{
+  "skill": "ink-expert",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "ink-v6-migration",
+      "prompt": "Migrate my Ink v5 CLI app to Ink v6",
+      "criteria": ["Checks current versions", "Uses migration reference", "Updates imports and APIs"]
+    },
+    {
+      "id": "advanced-input-handling",
+      "prompt": "Add paste support and focus management to my Ink app",
+      "criteria": ["Uses usePaste", "Uses useFocusManager", "Handles IME correctly"]
+    },
+    {
+      "id": "ci-safe-testing",
+      "prompt": "Make my Ink CLI tests pass in CI",
+      "criteria": ["Configures non-interactive mode", "Uses ink-testing-library", "Adds frame assertions"]
+    }
+  ]
+}

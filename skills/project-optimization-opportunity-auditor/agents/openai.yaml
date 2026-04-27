@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Optimization Opportunity Auditor"
+  short_description: "Audit repos and rank concrete optimization opportunities"
+  default_prompt: "Use $project-optimization-opportunity-auditor to inspect this repository, learn its architecture and planning artifacts, and produce a prioritized optimization backlog with detailed evidence and recommended next actions."

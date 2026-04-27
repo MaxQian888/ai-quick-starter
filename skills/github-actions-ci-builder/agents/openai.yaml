@@ -1,0 +1,35 @@
+interface:
+  display_name: "GitHub Actions CI Builder"
+  short_description: "Build, modernize, audit, and orchestrate GitHub Actions CI workflows with governance, performance, and local verification."
+  default_prompt: >
+    Use $github-actions-ci-builder to inspect this repository's CI setup,
+    design a maintainable workflow topology, verify external actions against
+    the latest official release, surface governance and performance gaps,
+    and connect the findings to a realistic local verification path.
+  capabilities:
+    - create_ci_from_scratch
+    - modernize_existing_workflows
+    - audit_governance_and_security
+    - optimize_performance_and_caching
+    - split_monolithic_workflows
+    - verify_action_versions
+    - simulate_ci_locally_with_act
+    - design_reusable_workflows
+    - design_composite_actions
+  trigger_phrases:
+    - "set up CI"
+    - "GitHub Actions"
+    - "workflow file"
+    - ".github/workflows"
+    - "continuous integration"
+    - "build pipeline"
+    - "deploy automation"
+    - "action version"
+    - "run CI locally"
+    - "act local simulation"
+    - "split workflow"
+    - "reusable workflow"
+    - "composite action"
+    - "CI governance"
+    - "workflow permissions"
+    - "SHA pinning"

@@ -1,0 +1,2 @@
+# Optional: Chinese name → slug conversion
+pypinyin>=0.48.0

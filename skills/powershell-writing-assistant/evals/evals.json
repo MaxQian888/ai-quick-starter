@@ -1,0 +1,15 @@
+{
+  "skill": "powershell-writing-assistant",
+  "evaluations": [
+    {
+      "name": "advanced-function",
+      "prompt": "Write a PowerShell function that reads JSON files and outputs a CSV report",
+      "criteria": ["Uses approved verb + singular noun", "Includes CmdletBinding and parameter validation", "Emits objects to pipeline", "Includes error handling"]
+    },
+    {
+      "name": "module-scaffold",
+      "prompt": "Create a reusable PowerShell module for Azure resource management",
+      "criteria": ["Uses module template scaffold", "Includes Pester tests", "Follows version compatibility guide", "Passes quality gate"]
+    }
+  ]
+}

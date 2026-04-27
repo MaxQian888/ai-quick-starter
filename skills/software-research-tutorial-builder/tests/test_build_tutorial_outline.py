@@ -55,6 +55,33 @@ class BuildTutorialOutlineTests(unittest.TestCase):
         self.assertIn("Minimal runnable case", outline)
         self.assertIn("Troubleshooting case", outline)
 
+    def test_outline_surfaces_conflicts_and_unverified_topics(self):
+        module = self.load_module()
+        brief = {
+            "software": "Acme CLI",
+            "versions": ["1.2.0"],
+            "platforms": ["windows"],
+            "prerequisites": ["Python 3.11"],
+            "core_concepts": ["profiles"],
+            "command_inventory": ["uv tool install acme-cli"],
+            "verified_claims": ["Install with uv tool install acme-cli."],
+            "unresolved_questions": [],
+            "topic_notes": {},
+            "conflicts": {
+                "installation": [
+                    {"track": "official", "claim": "Install with uv tool install acme-cli."},
+                    {"track": "community", "claim": "Install with pipx install acme-cli."},
+                ]
+            },
+            "unverified_topics": ["installation"],
+        }
+
+        outline = module.build_outline(brief)
+
+        self.assertIn("## Conflicts To Resolve", outline)
+        self.assertIn("installation", outline)
+        self.assertIn("## Unverified Topics", outline)
+
 
 if __name__ == "__main__":
     unittest.main()

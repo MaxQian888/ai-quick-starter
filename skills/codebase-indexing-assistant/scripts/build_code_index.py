@@ -73,6 +73,17 @@ DOC_NAMES = {
     "contributing.md",
     "readme.md",
 }
+INTERNAL_INDEX_PARENT_HINTS = {
+    "__tests__",
+    "components",
+    "fixtures",
+    "hooks",
+    "lib",
+    "mocks",
+    "services",
+    "tests",
+    "utils",
+}
 ENTRY_PREFIXES = ("app", "cli", "index", "main", "manage", "server")
 CONFIG_SUFFIXES = (".json", ".toml", ".yaml", ".yml", ".ini", ".cfg")
 SOURCE_EXTENSIONS = {
@@ -303,6 +314,7 @@ def infer_roles(relative_path: str, path: Path) -> list[str]:
     roles: set[str] = set()
     lower_name = path.stem.lower()
     lower_parts = [part.lower() for part in path.parts]
+    internal_index = lower_name == "index" and any(part in INTERNAL_INDEX_PARENT_HINTS for part in lower_parts[:-1])
 
     if is_doc(path):
         roles.add("docs")
@@ -315,7 +327,7 @@ def infer_roles(relative_path: str, path: Path) -> list[str]:
         token in lower_parts for token in ("test", "tests", "__tests__")
     ):
         roles.add("test")
-    if lower_name.startswith(ENTRY_PREFIXES) and path.suffix.lower() in ENTRY_EXTENSIONS:
+    if lower_name.startswith(ENTRY_PREFIXES) and path.suffix.lower() in ENTRY_EXTENSIONS and not internal_index:
         roles.add("entry")
     if any(part in {"api", "apis", "routes", "controllers", "handlers"} for part in lower_parts):
         roles.add("api")

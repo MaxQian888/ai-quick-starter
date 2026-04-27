@@ -76,6 +76,35 @@ class BuildResearchBriefTests(unittest.TestCase):
         self.assertIn("## Unresolved Questions", markdown)
         self.assertIn("Check Linux path behavior.", markdown)
 
+    def test_merge_findings_detects_conflicting_claims_and_unverified_topics(self):
+        module = self.load_module()
+        findings = [
+            {
+                "software": "Acme CLI",
+                "track": "official",
+                "topic": "installation",
+                "claim": "Install with uv tool install acme-cli.",
+                "source": "Official docs",
+                "url": "https://example.com/docs/install",
+                "verified": True,
+            },
+            {
+                "software": "Acme CLI",
+                "track": "community",
+                "topic": "installation",
+                "claim": "Install with pipx install acme-cli.",
+                "source": "Community blog",
+                "url": "https://example.com/blog/install",
+                "verified": False,
+            },
+        ]
+
+        brief = module.merge_findings(findings)
+
+        self.assertIn("installation", brief["conflicts"])
+        self.assertEqual(len(brief["conflicts"]["installation"]), 2)
+        self.assertIn("installation", brief["unverified_topics"])
+
 
 if __name__ == "__main__":
     unittest.main()

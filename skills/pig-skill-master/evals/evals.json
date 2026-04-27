@@ -1,0 +1,23 @@
+{
+  "skill_name": "pig-skill-master",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a QQ group chat export file. Can you analyze it and create a persona skill for my friend 'Xiao Ming' who talks a lot about gaming and memes?",
+      "expected_output": "Collects baseline profile, parses the QQ export for messages from the target friend, analyzes persona from evidence, shows a preview before writing, and generates SKILL.md, persona.md, and meta.json.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I just got 500 new messages from the same group. Can you update Xiao Ming's existing persona with the new chat evidence?",
+      "expected_output": "Backs up the current persona state, imports new material, merges only additive deltas using the merger reference, and regenerates skill files without overwriting existing conclusions silently.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The current Xiao Ming persona feels wrong — he wouldn't use that formal tone. Can you fix it?",
+      "expected_output": "Uses the correction handler reference to record the user's feedback, adds it to the correction log, and regenerates the persona and skill files while preserving version history.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tauri Rust Component Splitter"
+  short_description: "Plan and scaffold cleaner Tauri Rust module splits"
+  default_prompt: "Use $tauri-rust-component-splitter to inspect this src-tauri Rust module, propose a maintainable split plan, and scaffold the destination files without moving implementation automatically."

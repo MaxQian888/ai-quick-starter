@@ -1,0 +1,136 @@
+{
+  "source_url": "https://raw.githubusercontent.com/Leey21/awesome-ai-research-writing/main/README.md",
+  "readme_path": "D:\\Project\\skills-test\\ai-research-writing\\references\\cache\\upstream-awesome-ai-research-writing.md",
+  "sections": [
+    {
+      "level": 2,
+      "title": "📖 为什么做这个项目",
+      "line_number": 3
+    },
+    {
+      "level": 2,
+      "title": "🎯 我们做了什么",
+      "line_number": 9
+    },
+    {
+      "level": 2,
+      "title": "✨ 特点",
+      "line_number": 17
+    },
+    {
+      "level": 2,
+      "title": "📑 目录 (Table of Contents)",
+      "line_number": 26
+    },
+    {
+      "level": 1,
+      "title": "Part I: 写作 Prompt 集合",
+      "line_number": 54
+    },
+    {
+      "level": 2,
+      "title": "中转英",
+      "line_number": 58
+    },
+    {
+      "level": 2,
+      "title": "英转中",
+      "line_number": 101
+    },
+    {
+      "level": 2,
+      "title": "中转中",
+      "line_number": 131
+    },
+    {
+      "level": 2,
+      "title": "缩写",
+      "line_number": 173
+    },
+    {
+      "level": 2,
+      "title": "扩写",
+      "line_number": 216
+    },
+    {
+      "level": 2,
+      "title": "表达润色（英文论文）",
+      "line_number": 260
+    },
+    {
+      "level": 2,
+      "title": "表达润色（中文论文）",
+      "line_number": 302
+    },
+    {
+      "level": 2,
+      "title": "逻辑检查",
+      "line_number": 350
+    },
+    {
+      "level": 2,
+      "title": "去 AI 味（LaTeX 英文）",
+      "line_number": 380
+    },
+    {
+      "level": 2,
+      "title": "去 AI 味（Word 中文）",
+      "line_number": 438
+    },
+    {
+      "level": 2,
+      "title": "论文架构图",
+      "line_number": 484
+    },
+    {
+      "level": 2,
+      "title": "实验绘图推荐",
+      "line_number": 549
+    },
+    {
+      "level": 2,
+      "title": "生成图的标题",
+      "line_number": 618
+    },
+    {
+      "level": 2,
+      "title": "生成表的标题",
+      "line_number": 648
+    },
+    {
+      "level": 2,
+      "title": "实验分析",
+      "line_number": 678
+    },
+    {
+      "level": 2,
+      "title": "论文整体以 Reviewer 视角进行审视",
+      "line_number": 717
+    },
+    {
+      "level": 2,
+      "title": "模型选择",
+      "line_number": 763
+    },
+    {
+      "level": 1,
+      "title": "Part II: 论文写作相关的 Agent-Skills",
+      "line_number": 770
+    },
+    {
+      "level": 2,
+      "title": "Skills 的配置",
+      "line_number": 776
+    },
+    {
+      "level": 2,
+      "title": "Skills 总览",
+      "line_number": 830
+    },
+    {
+      "level": 2,
+      "title": "使用场景与示例 Prompt",
+      "line_number": 840
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 name: develop-react-flow-projects
-description: Guide Codex through building, extending, migrating, and debugging React Flow projects with @xyflow/react. Use when working on flow editors, node-edge canvases, drag-and-drop graph UIs, custom nodes or edges, layout engines, shared React Flow state, performance tuning, or migrations from legacy reactflow APIs.
+description: Use whenever building, migrating, or debugging React Flow projects, creating node-based UIs, flow diagrams, graph editors, canvas applications, or visual workflow tools. Make sure to use this skill for any request involving @xyflow/react, reactflow, custom nodes and edges, auto-layout engines, flow state management, or canvas performance tuning. Also triggers for blank canvas issues, React Flow version upgrades, connection rules, edge labels, viewport controls, or integrating Zustand with flow state.
 ---
 
 # Develop React Flow Projects
@@ -9,12 +9,29 @@ description: Guide Codex through building, extending, migrating, and debugging R
 
 Inspect the current React Flow surface first, then make the narrowest change that fits the existing app. Use the bundled references to avoid common breakages around package version, controlled state, custom node wiring, layout engines, and performance.
 
+## Adaptive Detection
+
+Before changing code, scan the workspace to understand the current React Flow setup:
+
+1. Detect package and version:
+   - Check `package.json` for `@xyflow/react` (v12) vs legacy `reactflow` (v11 and earlier).
+   - Note the installed version to avoid mixing incompatible APIs.
+2. Detect existing flow patterns:
+   - Search for `<ReactFlow` usage to find controlled vs uncontrolled setups.
+   - Look for `nodeTypes`, `edgeTypes` declarations.
+   - Check for Zustand stores or context providers holding flow state.
+3. Detect styling and layout:
+   - Look for CSS imports (`@xyflow/react/dist/style.css` or similar).
+   - Check for layout engine usage (`dagre`, `elkjs`, `d3-hierarchy`, `d3-force`).
+4. Detect build toolchain:
+   - Check for Vite, Next.js, or CRA configurations that may affect bundling.
+
 ## Workflow
 
-1. Audit the current surface before changing code.
-2. Choose the smallest seam that matches the requested work.
-3. Implement in the library's preferred patterns.
-4. Verify the interaction paths that can actually regress.
+1. **Audit the current surface** before changing code.
+2. **Choose the smallest seam** that matches the requested work.
+3. **Implement** in the library's preferred patterns.
+4. **Verify** the interaction paths that can actually regress.
 
 ## Audit First
 
@@ -60,6 +77,26 @@ Inspect the current React Flow surface first, then make the narrowest change tha
 - Use D3-Hierarchy only when the graph is a single-root tree with near-uniform node sizes.
 - Use D3-Force for organic or physics-like graphs and gate recomputation carefully.
 - Use ELK when you need advanced routing, sub-flow awareness, or heavily configurable layout.
+
+## Examples
+
+### Example 1: Adding a Custom Node Type
+
+**Input:** "I need a node that shows a progress bar."
+
+**Output:**
+- Custom node component with `NodeProps` and `Handle` imports.
+- Registered in `nodeTypes` outside render.
+- Immutable update pattern via `useReactFlow().setNodes()` or store action.
+
+### Example 2: Fixing a Blank Canvas
+
+**Input:** "My flow canvas is blank after upgrading."
+
+**Output:**
+- Check CSS import order and parent container dimensions.
+- Verify `@xyflow/react` vs `reactflow` imports match the installed version.
+- Confirm controlled state props are wired correctly.
 
 ## Reference Map
 

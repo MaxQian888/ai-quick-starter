@@ -1,0 +1,23 @@
+{
+  "skill_name": "ai-news-realtime-multisource",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Give me the latest AI news from the last 24 hours, focusing on open-source models and agent frameworks.",
+      "expected_output": "Runs the fetch script with --region global --hours 24 --keywords, returns a deduplicated list of AI news items sorted newest first, grouped by region.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need a daily AI briefing covering both China and global sources. Format it as markdown.",
+      "expected_output": "Runs the fetch script with default region coverage (cn + global), outputs markdown with per-item title, summary, source link, and published date.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Collect AI news updates from Chinese sources only for the past 48 hours and export as JSON.",
+      "expected_output": "Runs the fetch script with --region cn --hours 48 --format json, produces structured JSON output with all required fields.",
+      "files": []
+    }
+  ]
+}

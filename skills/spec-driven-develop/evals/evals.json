@@ -1,0 +1,10 @@
+{
+  "skill": "spec-driven-develop",
+  "evaluations": [
+    {
+      "name": "plan-migration",
+      "prompt": "Plan a large React-to-Next.js migration with progress tracking",
+      "criteria": ["Reads existing MASTER.md if present", "Breaks work into named phases", "Creates docs/progress/ files", "Generates focused child skill"]
+    }
+  ]
+}

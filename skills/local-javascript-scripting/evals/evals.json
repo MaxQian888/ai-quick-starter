@@ -1,0 +1,15 @@
+{
+  "skill": "local-javascript-scripting",
+  "evaluations": [
+    {
+      "name": "scaffold-esm-cli",
+      "prompt": "Create a local Node.js CLI script that syncs files between two directories",
+      "criteria": ["Uses ESM module syntax", "Has thin entrypoint with main().catch()", "No browser globals", "Includes real invocation example"]
+    },
+    {
+      "name": "detect-repo-pattern",
+      "prompt": "Write a script to batch process JSON files in this repo",
+      "criteria": ["Inspects package.json first", "Chooses ESM/CJS deliberately", "Prefers core Node modules", "Matches existing repo patterns"]
+    }
+  ]
+}

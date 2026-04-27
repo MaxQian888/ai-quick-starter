@@ -164,6 +164,67 @@ class BuildShellConfigSyncPlanTests(unittest.TestCase):
         self.assertIn("No automatic destination is known", sync_text)
         self.assertIn("## Manual Review", markdown_path.read_text(encoding="utf-8"))
 
+    def test_dedupes_terminal_references_across_repeated_json_values(self) -> None:
+        source_home, source_localappdata = self.make_source_tree(
+            {
+                "home/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1": "Set-Location $HOME\n",
+                "home/Pictures/terminal.png": "image\n",
+                "localappdata/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json": textwrap.dedent(
+                    """
+                    {
+                      "profiles": {
+                        "defaults": {
+                          "backgroundImage": "%USERPROFILE%\\\\Pictures\\\\terminal.png"
+                        },
+                        "list": [
+                          {
+                            "backgroundImage": "%USERPROFILE%\\\\Pictures\\\\terminal.png"
+                          }
+                        ]
+                      }
+                    }
+                    """
+                ).strip()
+                + "\n",
+            }
+        )
+        output_dir = self.make_output_dir()
+
+        result, json_path, _, _ = self.run_cli(source_home, source_localappdata, output_dir)
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json(json_path)
+        image_mappings = [
+            item for item in payload["copy_mappings"]
+            if item["source_path"] == str(source_home / "Pictures" / "terminal.png")
+        ]
+        self.assertEqual(len(image_mappings), 1)
+
+    def test_resolves_bare_relative_profile_dependency_in_same_directory(self) -> None:
+        source_home, source_localappdata = self.make_source_tree(
+            {
+                "home/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1": textwrap.dedent(
+                    """
+                    oh-my-posh init pwsh --config night-owl.omp.json | Invoke-Expression
+                    """
+                ).strip()
+                + "\n",
+                "home/Documents/WindowsPowerShell/night-owl.omp.json": "{\n  \"name\": \"night-owl\"\n}\n",
+                "localappdata/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json": "{\n  \"profiles\": {}\n}\n",
+            }
+        )
+        output_dir = self.make_output_dir()
+
+        result, json_path, _, _ = self.run_cli(source_home, source_localappdata, output_dir)
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json(json_path)
+        resolved_paths = {item["source_path"] for item in payload["copy_mappings"]}
+        self.assertIn(str(source_home / "Documents" / "WindowsPowerShell" / "night-owl.omp.json"), resolved_paths)
+        self.assertFalse(
+            any(item["raw_reference"] == "night-owl.omp.json" for item in payload["unresolved_references"])
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

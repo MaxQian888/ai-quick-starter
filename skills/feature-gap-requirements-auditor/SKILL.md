@@ -1,11 +1,26 @@
 ---
 name: feature-gap-requirements-auditor
-description: Use when Codex needs to compare existing documentation against a specific folder or component, identify likely missing or incomplete functionality, and turn the observed gaps into a detailed requirement checklist with evidence, acceptance criteria, and explicit assumptions.
+description: Use whenever comparing documentation against implementation to find missing or incomplete functionality, auditing feature completeness, verifying spec coverage, or generating requirement checklists from observed gaps. Make sure to use this skill for requirements audits, feature gap analysis, documentation-vs-code verification, compliance checking, or any request involving identifying what a component or folder should do but doesn't yet. Also triggers for spec completeness reviews, acceptance criteria generation from gaps, or contract metadata auditing.
 ---
 
 # Feature Gap Requirements Auditor
 
 Compare documentation signals against a narrow implementation surface before proposing new work. Use the helper script to collect docs, source files, tests, and keyword overlap first, then turn that evidence into a requirements list.
+
+## Adaptive Detection
+
+Before auditing, scan the workspace to understand the documentation and implementation landscape:
+
+1. Detect available documentation:
+   - Look for `README.md`, `spec.md`, `docs/`, `requirements/`, or `design/` directories.
+   - Check for `SKILL.md`, `AGENTS.md`, or `CLAUDE.md` files that may contain requirements.
+   - Search for `.md` files mentioning the target component or feature.
+2. Detect implementation surface:
+   - Identify the target directory or file from the user's request.
+   - Look for corresponding test files to understand expected behavior.
+3. Detect project conventions:
+   - Check for existing requirement formats or ticket templates.
+   - Look for priority labels or severity conventions used in the project.
 
 ## Workflow
 
@@ -54,6 +69,26 @@ Use `--include-contract-requirements` only when metadata like `display_name`, `d
   - concrete acceptance criteria,
   - open questions when ownership or behavior is still ambiguous.
 - Prefer repo-truthful wording such as "documentation suggests" or "the target surface does not show" when runtime proof is missing.
+
+## Examples
+
+### Example 1: Component Audit
+
+**Input:** "Audit the auth component against the spec."
+
+**Output:**
+- Discovers `spec.md` and `src/components/auth/`.
+- Reports missing OAuth provider support and partial role-based access.
+- Generates requirement checklist with acceptance criteria.
+
+### Example 2: Skill Contract Audit
+
+**Input:** "Check if this skill folder meets all contract requirements."
+
+**Output:**
+- Uses `--include-contract-requirements`.
+- Audits `display_name`, `description`, and required file presence.
+- Reports missing `evals/` directory and incomplete test coverage.
 
 ## Guardrails
 

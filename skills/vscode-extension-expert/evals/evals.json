@@ -1,0 +1,35 @@
+{
+  "skill_name": "vscode-extension-expert",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm building a VS Code extension using the quick-starter template and I need to add a new command that opens a webview panel. The command should be called 'myExtension.showDashboard' and the panel should display a simple React component. Can you wire this up properly?",
+      "expected_output": "Registers the command in extension/index.ts with proper disposable handling, adds the command contribution to package.json, ensures the webview panel uses MainPanel with single-panel lifecycle, and validates via pnpm test and pnpm test:extension.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My VS Code extension webview is opening blank when I press F5. It was working before but now I just see an empty panel. The extension host side seems fine. Can you help me debug this?",
+      "expected_output": "Checks virtual:vscode integration in extension/views/helper.ts, verifies VITE_DEV_SERVER_URL in launch.json, confirms build output exists, and applies the smallest fix to restore webview content without breaking the template contract.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I need to add a new message type from my webview to the extension host. The webview should send a 'saveSettings' message with a JSON payload, and the extension should handle it by writing to workspace storage. How should I implement this following the template?",
+      "expected_output": "Adds the message type to the webview send path via vscode.postMessage, adds the receiver in extension/views/helper.ts through setupWebviewHooks, adds tests on both sides, and keeps the message contract synchronized.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "I want to package and publish my VS Code extension to the marketplace. What steps should I follow to make sure everything is ready?",
+      "expected_output": "Runs the full validation sequence (lint, test, test:extension, build), verifies manifest fields (publisher, name, version, engines), runs pnpm package to produce a .vsix, and confirms packaging succeeds before mentioning publish.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "I added a new command in my extension but when I open the command palette and type it, I get 'Command not found'. I registered it in extension/index.ts. What could be wrong?",
+      "expected_output": "Checks command ID parity between package.json contributes.commands and registerCommand, verifies extension activation events, and applies the fix while preserving the three-place synchronization rule.",
+      "files": []
+    }
+  ]
+}

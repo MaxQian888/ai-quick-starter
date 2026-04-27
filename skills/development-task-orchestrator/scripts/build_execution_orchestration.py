@@ -60,11 +60,19 @@ def slugify(value: str) -> str:
     return cleaned or "work-item"
 
 
+def normalize_write_scope(raw: str) -> str:
+    normalized = raw.strip().replace("\\", "/")
+    normalized = re.sub(r"/+", "/", normalized)
+    if normalized.startswith("./"):
+        normalized = normalized[2:]
+    return normalized
+
+
 def parse_write_scopes(body: str) -> tuple[str, list[str]]:
     match = WRITES_PATTERN.search(body)
     if not match:
         return body.strip(), []
-    writes = [item.strip() for item in match.group("writes").split(",") if item.strip()]
+    writes = [normalize_write_scope(item) for item in match.group("writes").split(",") if item.strip()]
     trimmed = body[: match.start()].strip()
     return trimmed, writes
 
@@ -142,7 +150,9 @@ def build_batches(work_items: list[dict[str, object]], dependencies: list[dict[s
                 group_scope = set()
                 for existing_id in group:
                     group_scope.update(item_map[existing_id]["write_scope"])
-                if item_scope and group_scope and item_scope.intersection(group_scope):
+                if not item_scope or not group_scope:
+                    continue
+                if item_scope.intersection(group_scope):
                     continue
                 group.append(item_id)
                 placed = True
@@ -239,7 +249,7 @@ def build_payload(source_path: Path, detected_format: str, work_items: list[dict
         "checkpoint_sequence": checkpoints,
         "assumptions": [
             "Dependency extraction relies on explicit 'after ...' phrases in the source text.",
-            "Write-scope conflicts are inferred from exact scope-string overlap.",
+            "Write-scope conflicts are inferred from normalized scope-string overlap, and unspecified scopes stay isolated.",
         ],
         "risks": [
             "Hidden shared files can still reduce the safety of parallel batches.",

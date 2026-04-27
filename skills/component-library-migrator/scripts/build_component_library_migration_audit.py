@@ -95,6 +95,16 @@ def resolve_output_path(raw_path: str, suffix: str) -> Path:
     return Path(handle.name).resolve()
 
 
+def ensure_within_root(root: Path, candidate: Path, label: str) -> Path:
+    resolved_root = root.resolve()
+    resolved_candidate = candidate.resolve()
+    try:
+        resolved_candidate.relative_to(resolved_root)
+    except ValueError as exc:
+        raise ValueError(f"{label} must stay within root: {resolved_candidate}") from exc
+    return resolved_candidate
+
+
 def should_skip_directory(name: str) -> bool:
     return name in IGNORED_DIR_NAMES
 
@@ -412,7 +422,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[ERROR] root does not exist: {root}")
         return 1
 
-    target = (root / args.target).resolve()
+    try:
+        target = ensure_within_root(root, root / args.target, "target")
+    except ValueError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
     if not target.exists():
         print(f"[ERROR] target does not exist: {args.target}")
         return 1

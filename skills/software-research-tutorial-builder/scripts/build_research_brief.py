@@ -39,6 +39,9 @@ def merge_findings(findings: Any) -> dict[str, Any]:
     verified_claims: list[str] = []
     unresolved_questions: list[str] = []
     topic_notes: dict[str, list[str]] = defaultdict(list)
+    topic_claims: dict[str, list[dict[str, str]]] = defaultdict(list)
+    topic_has_verified: dict[str, bool] = defaultdict(bool)
+    topic_has_unverified: dict[str, bool] = defaultdict(bool)
 
     for finding in findings:
         if finding.get("software") and finding["software"] != software:
@@ -64,6 +67,26 @@ def merge_findings(findings: Any) -> dict[str, Any]:
         claim = finding.get("claim")
         if topic and claim:
             topic_notes[topic].append(claim)
+            topic_claims[topic].append(
+                {
+                    "track": finding.get("track", "unknown"),
+                    "claim": claim,
+                    "source": finding.get("source", "unknown"),
+                }
+            )
+            if finding.get("verified"):
+                topic_has_verified[topic] = True
+            else:
+                topic_has_unverified[topic] = True
+
+    conflicts: dict[str, list[dict[str, str]]] = {}
+    for topic, claims in topic_claims.items():
+        unique_claims = dedupe(claims)
+        unique_texts = {item["claim"] for item in unique_claims}
+        if len(unique_texts) > 1:
+            conflicts[topic] = unique_claims
+
+    unverified_topics = sorted(topic for topic in topic_claims if topic_has_unverified[topic])
 
     return {
         "software": software,
@@ -76,6 +99,8 @@ def merge_findings(findings: Any) -> dict[str, Any]:
         "verified_claims": dedupe(verified_claims),
         "unresolved_questions": dedupe(unresolved_questions),
         "topic_notes": {topic: dedupe(notes) for topic, notes in topic_notes.items()},
+        "conflicts": conflicts,
+        "unverified_topics": unverified_topics,
     }
 
 
@@ -110,6 +135,18 @@ def render_markdown(brief: dict[str, Any]) -> str:
     lines.extend(["", "## Unresolved Questions"])
     questions = brief.get("unresolved_questions", []) or ["None recorded"]
     lines.extend(f"- {item}" for item in questions)
+    conflicts = brief.get("conflicts", {})
+    if conflicts:
+        lines.extend(["", "## Conflicts To Resolve"])
+        for topic, entries in conflicts.items():
+            lines.append(f"### {topic.capitalize()}")
+            for item in entries:
+                lines.append(f"- [{item['track']}] {item['claim']}")
+            lines.append("")
+    unverified_topics = brief.get("unverified_topics", [])
+    if unverified_topics:
+        lines.extend(["## Unverified Topics", ""])
+        lines.extend(f"- {item}" for item in unverified_topics)
     topic_notes = brief.get("topic_notes", {})
     if topic_notes:
         lines.extend(["", "## Topic Notes"])

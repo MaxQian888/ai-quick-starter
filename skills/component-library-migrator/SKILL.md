@@ -1,11 +1,30 @@
 ---
 name: component-library-migrator
-description: Use when inspecting a React component directory to find safe opportunities to replace existing UI elements with a target component library, especially when Codex must audit first, support built-in targets like shadcn/ui, MUI, Ant Design, Chakra UI, and HeroUI, and only apply minimal evidence-backed edits.
+description: >
+  Make sure to use this skill whenever the user wants to migrate UI components to
+  a new component library, replace native HTML elements with shadcn/ui, MUI,
+  Ant Design, Chakra UI, or HeroUI, audit a React directory for migration
+  opportunities, or modernize an existing component set. Also trigger for
+  "switch to shadcn," "replace buttons with MUI," "audit components for library
+  migration," "migrate to a design system," or "component library upgrade."
+  Covers synonyms like "UI migration," "component replacement," "design system
+  adoption," "library swap," and "JSX modernization." Use it even when the user
+  only says "I want to use shadcn in my project" or "can we switch to MUI."
 ---
 
 # Component Library Migrator
 
 Audit the target directory before editing JSX. Only migrate files that the report marks as safe.
+
+## Adaptive Detection
+
+Before auditing, detect the project context:
+
+- Identify the framework: React, Next.js, Vue, or other.
+- Check `package.json` for existing UI library dependencies.
+- Detect styling approach: CSS modules, Tailwind, styled-components, or CSS-in-JS.
+- Confirm the target library is built-in (`shadcn/ui`, `mui`, `ant-design`, `chakra-ui`, `heroui`) or unsupported.
+- Check for existing design-system wrappers or custom component layers that may block migration.
 
 ## Workflow
 
@@ -61,6 +80,18 @@ Read [references/builtin-libraries.md](references/builtin-libraries.md) for cano
 - `safe_fix_plan`: the only file-level edits approved for direct migration.
 - `blocked_reasons`: why some files require manual follow-up.
 - `forbidden_actions`: actions that would over-expand or de-risk the migration incorrectly.
+
+## Examples
+
+**Audit for shadcn/ui migration:**
+```bash
+python scripts/build_component_library_migration_audit.py --root . --target src/components --library shadcn/ui
+```
+
+**Audit for MUI with JSON output:**
+```bash
+python scripts/build_component_library_migration_audit.py --root . --target app/ui --library mui --json
+```
 
 ## References
 

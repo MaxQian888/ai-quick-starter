@@ -1,0 +1,15 @@
+{
+  "skill": "project-prompt-optimizer",
+  "evaluations": [
+    {
+      "name": "optimize-existing-prompt",
+      "prompt": "Improve this draft prompt for refactoring a React codebase",
+      "criteria": ["Anchors on repository signals", "Includes boundaries and constraints", "Adds verification guidance", "Returns Final Prompt, Execution Advice, and Checklist"]
+    },
+    {
+      "name": "generate-from-task",
+      "prompt": "Create an execution prompt for adding authentication to this Next.js app",
+      "criteria": ["Runs context summary script", "Reviews prompt gaps", "Includes deliverables and validation steps", "Stays under 500 lines"]
+    }
+  ]
+}

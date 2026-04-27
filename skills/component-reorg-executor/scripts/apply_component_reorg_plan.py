@@ -43,7 +43,7 @@ def read_plan(plan_path: Path) -> dict[str, object]:
 
 def validate_plan(payload: dict[str, object]) -> tuple[Path, Path, list[dict[str, object]], list[dict[str, object]]]:
     root = Path(str(payload["root"])).resolve()
-    target = (root / str(payload["target_directory"])).resolve()
+    target = ensure_within_root(root, root / str(payload["target_directory"]), "Target directory")
     move_plan_raw = payload.get("move_plan", [])
     if not isinstance(move_plan_raw, list):
         raise ValueError("move_plan must be a list")
@@ -64,13 +64,23 @@ def normalize_relative(root: Path, raw_path: str) -> str:
     return (root / raw_path).resolve().relative_to(root.resolve()).as_posix()
 
 
+def ensure_within_root(root: Path, candidate: Path, label: str) -> Path:
+    resolved_root = root.resolve()
+    resolved_candidate = candidate.resolve()
+    try:
+        resolved_candidate.relative_to(resolved_root)
+    except ValueError as exc:
+        raise ValueError(f"{label} must stay within the repository root: {resolved_candidate}") from exc
+    return resolved_candidate
+
+
 def move_files(root: Path, moves: list[dict[str, object]]) -> list[dict[str, object]]:
     applied: list[dict[str, object]] = []
     for entry in moves:
         source_rel = str(entry["path"])
         destination_rel = str(entry["destination_path"])
-        source_path = (root / source_rel).resolve()
-        destination_path = (root / destination_rel).resolve()
+        source_path = ensure_within_root(root, root / source_rel, "Planned move source")
+        destination_path = ensure_within_root(root, root / destination_rel, "Planned move destination")
         if not source_path.exists():
             raise FileNotFoundError(f"Planned move source does not exist: {source_rel}")
         destination_path.parent.mkdir(parents=True, exist_ok=True)

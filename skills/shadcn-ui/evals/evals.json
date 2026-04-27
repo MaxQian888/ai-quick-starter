@@ -1,0 +1,23 @@
+{
+  "skill_name": "shadcn-ui",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to add a dialog and a form to my Next.js project using shadcn/ui. Can you set it up and install the components?",
+      "expected_output": "Verifies project setup (components.json, Tailwind, lib/utils.ts), uses npx shadcn@latest add to install dialog and form components, and provides usage examples with proper imports.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The Button component in my project needs a custom loading state. How should I extend it?",
+      "expected_output": "Creates a wrapper component in components/ (not components/ui/) that imports the base Button, adds a loading prop with a spinner icon, and preserves all existing accessibility attributes.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want to change the primary color theme across my entire shadcn/ui app. What's the right way?",
+      "expected_output": "Edits CSS variables in globals.css for both light and dark modes, ensures Tailwind config references the variables, and verifies the change renders correctly in both modes.",
+      "files": []
+    }
+  ]
+}

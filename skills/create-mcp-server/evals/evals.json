@@ -1,0 +1,16 @@
+{
+  "skill": "create-mcp-server",
+  "version": "1.0.0",
+  "evaluations": [
+    {
+      "id": "typescript-scaffold",
+      "description": "Scaffold a TypeScript MCP server with stdio transport and one echo tool.",
+      "criteria": ["package.json generated", "tsconfig.json generated", "src/index.ts with echo tool", "README-snippet.md present"]
+    },
+    {
+      "id": "python-scaffold",
+      "description": "Scaffold a Python MCP server with stdio transport and one echo tool.",
+      "criteria": ["pyproject.toml generated", "server.py with echo tool", "README-snippet.md present"]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Remotion Walkthrough Builder"
+  short_description: "Create walkthrough videos from Stitch designs"
+  default_prompt: "Use $remotion to generate a Stitch walkthrough video plan with transitions, overlays, and render-ready steps."

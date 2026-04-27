@@ -142,6 +142,114 @@ class BuildExecutionOrchestrationTests(unittest.TestCase):
         self.assertIn("## Main-Thread Duties", markdown)
         self.assertIn("## Verification Boundaries", markdown)
 
+    def test_respects_explicit_output_paths(self) -> None:
+        input_path = self.make_input(
+            "\n".join(
+                [
+                    "- [ ] Draft API checklist (writes: docs/api-checklist.md)",
+                    "- [ ] Implement API route after Draft API checklist (writes: src/api/route.ts)",
+                ]
+            )
+        )
+        output_dir = self.make_output_dir()
+        json_out = output_dir / "nested" / "plan.json"
+        markdown_out = output_dir / "reports" / "plan.md"
+
+        result = self.run_cli(
+            "--input",
+            str(input_path),
+            "--format",
+            "auto",
+            "--output-dir",
+            str(output_dir),
+            "--json-out",
+            str(json_out),
+            "--markdown-out",
+            str(markdown_out),
+        )
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        self.assertTrue(json_out.exists(), str(json_out))
+        self.assertTrue(markdown_out.exists(), str(markdown_out))
+        payload = json.loads(json_out.read_text(encoding="utf-8"))
+        self.assertEqual(payload["input_summary"]["source_path"], str(input_path))
+        markdown = markdown_out.read_text(encoding="utf-8")
+        self.assertIn("## Execution Units", markdown)
+
+    def test_auto_format_extracts_plain_task_lines_and_blocked_items(self) -> None:
+        input_path = self.make_input(
+            "\n".join(
+                [
+                    "Build execution brief",
+                    "- Prepare migration summary (writes: docs/migration.md)",
+                    "- Update API endpoint after Prepare migration summary (writes: src/api/endpoint.ts)",
+                    "- Refresh dashboard copy after Update API endpoint (writes: src/app/dashboard/page.tsx)",
+                ]
+            )
+        )
+        output_dir = self.make_output_dir()
+
+        result = self.run_cli("--input", str(input_path), "--format", "auto", "--output-dir", str(output_dir))
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json_from_stdout(result.stdout)
+        titles = [item["title"] for item in payload["work_items"]]
+        self.assertIn("Prepare Migration Summary", titles)
+        self.assertIn("Update API Endpoint", titles)
+        self.assertIn("Refresh Dashboard Copy", titles)
+        blocked_ids = {item["id"] for item in payload["blocked_items"]}
+        self.assertIn("update-api-endpoint", blocked_ids)
+        self.assertIn("refresh-dashboard-copy", blocked_ids)
+
+    def test_same_write_scope_with_slash_variants_stays_serialized(self) -> None:
+        input_path = self.make_input(
+            "\n".join(
+                [
+                    "# Tasks",
+                    r"- [ ] Update settings page copy (writes: src/app/settings/page.tsx)",
+                    r"- [ ] Refactor settings page loading state (writes: src\app\settings\page.tsx)",
+                    r"- [ ] Draft release note (writes: docs/settings.md)",
+                ]
+            )
+        )
+        output_dir = self.make_output_dir()
+
+        result = self.run_cli("--input", str(input_path), "--format", "tasks", "--output-dir", str(output_dir))
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json_from_stdout(result.stdout)
+        conflicting_ids = {
+            item["id"]
+            for item in payload["work_items"]
+            if item["title"] in {"Update Settings Page Copy", "Refactor Settings Page Loading State"}
+        }
+        for batch in payload["parallel_batches"]:
+            self.assertLess(len(conflicting_ids.intersection(set(batch["tasks"]))), 2)
+
+    def test_unspecified_write_scope_is_not_batched_with_write_heavy_tasks(self) -> None:
+        input_path = self.make_input(
+            "\n".join(
+                [
+                    "# Tasks",
+                    "- [ ] Investigate flaky test failure",
+                    "- [ ] Update settings route (writes: src/api/settings/route.ts)",
+                    "- [ ] Draft release note (writes: docs/settings.md)",
+                ]
+            )
+        )
+        output_dir = self.make_output_dir()
+
+        result = self.run_cli("--input", str(input_path), "--format", "tasks", "--output-dir", str(output_dir))
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json_from_stdout(result.stdout)
+        investigate_id = next(
+            item["id"] for item in payload["work_items"] if item["title"] == "Investigate Flaky Test Failure"
+        )
+        for batch in payload["parallel_batches"]:
+            if investigate_id in set(batch["tasks"]):
+                self.assertEqual(len(batch["tasks"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -151,6 +151,92 @@ class GenerateBuildDebugScriptsTests(unittest.TestCase):
         self.assertIn('Invoke-RepositoryCommand "make debug"', debug_script.read_text(encoding="utf-8"))
         self.assertIn("## Selected Commands", markdown_path.read_text(encoding="utf-8"))
 
+    def test_ci_run_steps_can_supply_a_debug_command_when_it_appears_at_command_start(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "package.json": json.dumps({"name": "demo"}),
+                "pnpm-lock.yaml": "lockfileVersion: '9.0'\n",
+                ".github/workflows/ci.yml": (
+                    "name: ci\n"
+                    "jobs:\n"
+                    "  app:\n"
+                    "    runs-on: ubuntu-latest\n"
+                    "    steps:\n"
+                    "      - run: pnpm build\n"
+                    "      - run: pnpm dev\n"
+                ),
+            }
+        )
+        output_dir = self.make_output_dir()
+
+        result, json_path, _, _, _ = self.run_cli(repo_root, output_dir)
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json(json_path)
+        self.assertEqual(payload["selected_commands"]["build"]["command"], "pnpm build")
+        self.assertEqual(payload["selected_commands"]["debug"]["command"], "pnpm dev")
+        self.assertFalse(payload["blockers"])
+
+    def test_ci_run_steps_detect_uvicorn_debug_commands_without_reload_flag(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "pyproject.toml": (
+                    "[project]\n"
+                    "name = 'demo'\n"
+                    "dependencies = ['fastapi', 'uvicorn']\n"
+                ),
+                ".github/workflows/ci.yml": (
+                    "name: ci\n"
+                    "jobs:\n"
+                    "  app:\n"
+                    "    runs-on: ubuntu-latest\n"
+                    "    steps:\n"
+                    "      - run: python -m build\n"
+                    "      - run: uvicorn main:app\n"
+                ),
+            }
+        )
+        output_dir = self.make_output_dir()
+
+        result, json_path, _, _, _ = self.run_cli(repo_root, output_dir)
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json(json_path)
+        self.assertEqual(payload["selected_commands"]["build"]["command"], "python -m build")
+        self.assertEqual(payload["selected_commands"]["debug"]["command"], "uvicorn main:app")
+        self.assertFalse(
+            any("No credible quick-debug command was found" in item for item in payload["blockers"]),
+            msg=payload["blockers"],
+        )
+
+    def test_ci_multiline_run_block_can_supply_debug_command(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "package.json": json.dumps({"name": "demo"}),
+                "pnpm-lock.yaml": "lockfileVersion: '9.0'\n",
+                ".github/workflows/ci.yml": (
+                    "name: ci\n"
+                    "jobs:\n"
+                    "  app:\n"
+                    "    runs-on: ubuntu-latest\n"
+                    "    steps:\n"
+                    "      - run: |\n"
+                    "          pnpm dev\n"
+                ),
+            }
+        )
+        output_dir = self.make_output_dir()
+
+        result, json_path, _, _, _ = self.run_cli(repo_root, output_dir)
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_json(json_path)
+        self.assertEqual(payload["selected_commands"]["debug"]["command"], "pnpm dev")
+        self.assertFalse(
+            any("No credible quick-debug command was found" in item for item in payload["blockers"]),
+            msg=payload["blockers"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

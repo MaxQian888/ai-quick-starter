@@ -1,18 +1,36 @@
 ---
 name: tauri-v2
-description: Use when working in a Tauri v2 app or `src-tauri` workspace and needing current guidance for shared `lib.rs` and `main.rs` entrypoints, `#[tauri::command]` registration, `@tauri-apps/api/core` IPC, capabilities and plugin permissions, desktop/mobile setup, or Tauri-specific failures such as `command not found`, `permission denied`, white screen, missing plugin wiring, or window label mismatch.
+description: |
+  Use this skill whenever you are working with Tauri v2, a `src-tauri` workspace, or any Tauri-related issue involving Rust commands, frontend IPC, plugin setup, permissions, or desktop/mobile configuration. Trigger on keywords like `tauri`, `src-tauri`, `invoke`, `command`, `capability`, `permission`, `plugin`, `lib.rs`, `main.rs`, `tauri.conf.json`, or any Tauri-specific error such as `command not found`, `permission denied`, white screen, missing plugin wiring, or window label mismatch. Also use when the user needs guidance on `@tauri-apps/api/core`, `#[tauri::command]`, `generate_handler!`, mobile entry points, or choosing between commands, events, and channels. Make sure to use this skill even if the user only mentions a Tauri symptom indirectly or frames the problem as a generic "Rust + frontend" issue. Covers desktop, mobile, and cross-platform Tauri v2 projects.
+compatibility: >
+  Requires a Tauri v2 project with a `src-tauri/` directory. Uses the standard
+  Tauri CLI (`npm|pnpm tauri`) and standard toolchain (Rust, Node).
+  No additional external dependencies.
 ---
 
 # Tauri v2
 
-Treat Tauri v2 as five coupled surfaces: shared Rust entrypoint, frontend IPC, capability and permission wiring, plugin setup, and platform packaging. Work from the current official docs and CLI introspection instead of copying v1 snippets or stale blog posts.
+Tauri v2 is built from five interconnected layers: the shared Rust entrypoint, frontend IPC, capability and permission wiring, plugin setup, and platform packaging.
+Always rely on the current official docs and CLI output rather than copying v1 snippets or stale blog posts.
+
+## Adaptive Detection
+
+Before troubleshooting or building, detect the project state:
+
+1. **Tauri version**: Run `npm|pnpm tauri info` to confirm v2.
+2. **Platform target**: Determine if the user needs desktop, mobile, or both.
+3. **Frontend framework**: Identify React, Vue, Svelte, or vanilla JS from the frontend manifest.
+4. **Plugin usage**: Check `src-tauri/Cargo.toml` for plugin crates.
+5. **Capability state**: Inspect `src-tauri/capabilities/*.json` for permission coverage.
+
+Use these signals to focus diagnostics and avoid v1 assumptions.
 
 ## First Pass
 
-1. Run `npm|pnpm tauri info` to confirm the project is actually on v2 and to capture the active CLI, Rust, Node, and platform state.
-2. Inspect `src-tauri/src/lib.rs`, `src-tauri/src/main.rs`, `src-tauri/tauri.conf.json`, `src-tauri/capabilities/`, `src-tauri/Cargo.toml`, and the frontend package manifest before changing code.
-3. If the task adds a plugin, prefer `npm|pnpm tauri add <plugin>` so the Rust crate, guest JS package, and generated ACL scaffolding stay aligned.
-4. If permissions are unclear, use `tauri permission ls` and `tauri permission add <permission-id>` instead of guessing identifiers from memory.
+1. Run `npm|pnpm tauri info` to confirm the project is on v2 and capture the active CLI, Rust, Node, and platform state.
+2. Inspect `src-tauri/src/lib.rs`, `src-tauri/src/main.rs`, `src-tauri/tauri.conf.json`, `src-tauri/capabilities/`, `src-tauri/Cargo.toml`, and the frontend package manifest before making changes.
+3. When adding a plugin, prefer `npm|pnpm tauri add <plugin>` so the Rust crate, guest JS package, and generated ACL scaffolding stay aligned.
+4. When permissions are unclear, use `tauri permission ls` and `tauri permission add <permission-id>` instead of guessing identifiers from memory.
 
 ## Symptom Map
 
@@ -29,15 +47,15 @@ Treat Tauri v2 as five coupled surfaces: shared Rust entrypoint, frontend IPC, c
 ### 1. Normalize the entrypoint layout
 
 - Keep the real builder in `src-tauri/src/lib.rs`.
-- Keep `src-tauri/src/main.rs` minimal and let it call `app_lib::run()`.
-- Use `#[cfg_attr(mobile, tauri::mobile_entry_point)]` on `run()` so desktop and mobile share the same builder path.
-- If the repo still keeps business logic in `main.rs`, move the shared pieces before touching plugins or commands.
+- Keep `src-tauri/src/main.rs` minimal and have it call `app_lib::run()`.
+- Tag `run()` with `#[cfg_attr(mobile, tauri::mobile_entry_point)]` so desktop and mobile share the same builder path.
+- If the repo still has business logic in `main.rs`, move the shared pieces out before touching plugins or commands.
 
 ### 2. Wire commands before touching the frontend
 
 - Annotate every callable function with `#[tauri::command]`.
 - Register every command in `tauri::generate_handler![...]`.
-- Use owned types such as `String`, `Vec<T>`, or explicit structs for async command arguments; avoid borrowed parameters such as `&str`.
+- For async command arguments, use owned types such as `String`, `Vec<T>`, or explicit structs; avoid borrowed parameters like `&str`.
 - Return `Result<T, E>` for failure paths and serialize errors explicitly.
 - When commands live in separate modules, mark them `pub` there and register them with their full module path in `generate_handler!`.
 
@@ -46,7 +64,7 @@ Treat Tauri v2 as five coupled surfaces: shared Rust entrypoint, frontend IPC, c
 - Use `invoke` plus commands for request-response work.
 - Use events for low-volume notifications or broadcast-style updates.
 - Use `Channel` for ordered, higher-throughput streaming such as download progress, logs, or child-process output.
-- Do not use events for large or high-frequency payloads if a channel fits better.
+- Do not use events for large or high-frequency payloads when a channel is a better fit.
 - Do not forget listener cleanup on the frontend; Tauri only auto-cleans on page reload, not on SPA component unmount.
 
 ### 4. Add capabilities and permissions deliberately
@@ -71,7 +89,7 @@ Treat Tauri v2 as five coupled surfaces: shared Rust entrypoint, frontend IPC, c
 - `build.frontendDist` and `build.beforeBuildCommand` must match the production frontend output.
 - `app.windows[].label` must stay consistent with capability targeting.
 - `bundle` fields should reflect the actual packaging target instead of cargo-culting a different app's config.
-- For mobile plugins, also read the plugin page's Android manifest or iOS privacy requirements before claiming the setup is complete.
+- For mobile plugins, read the plugin page's Android manifest or iOS privacy requirements before claiming the setup is complete.
 
 ## Guardrails
 
@@ -81,6 +99,23 @@ Treat Tauri v2 as five coupled surfaces: shared Rust entrypoint, frontend IPC, c
 - Do not assume desktop plugin behavior automatically works on Android or iOS.
 - Do not pass borrowed types into async commands unless you deliberately apply one of the documented workarounds.
 - Do not report success until the exact failing path is re-run after capability or plugin changes.
+
+## Examples
+
+### Example 1: Add a plugin with aligned dependencies
+
+```bash
+pnpm tauri add dialog
+```
+
+This updates the Rust crate, guest JS package, and ACL scaffolding.
+
+### Example 2: List and add a permission
+
+```bash
+tauri permission ls
+tauri permission add core:window:allow-close
+```
 
 ## References
 

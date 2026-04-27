@@ -1,0 +1,23 @@
+{
+  "skill_name": "image-to-terminal-pixel-art",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a screenshot at ./assets/mockup-v2.png. Can you show me what it looks like without opening an image viewer? I'm in a terminal-only SSH session.",
+      "expected_output": "Renders the image as terminal pixel art using the bundled PowerShell script with truecolor ANSI output at a reasonable width (e.g., 80 columns), displaying the preview inline in the terminal.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need to compare two UI mockups quickly — ./assets/design-a.png and ./assets/design-b.png. Can you render both as text in the terminal so I can spot the differences without switching windows?",
+      "expected_output": "Renders both images as terminal pixel art with matching column widths so their dimensions align, then presents them sequentially (or side-by-side if the terminal width permits) for visual comparison.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want to paste an image preview into a GitHub issue comment. The image is at ./bug-screenshot.png. Can you give me a terminal-friendly version that won't break when ANSI codes get stripped?",
+      "expected_output": "Renders the image with -ColorMode none (grayscale fallback) so the output is pure text without ANSI escape sequences, making it safe to copy into Markdown or issue comments.",
+      "files": []
+    }
+  ]
+}

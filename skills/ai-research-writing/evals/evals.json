@@ -1,0 +1,23 @@
+{
+  "skill_name": "ai-research-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a Chinese draft of a machine learning paper. Help me translate and format it into English academic LaTeX.",
+      "expected_output": "Runs the workflow selector, routes to cn-to-en, reads the upstream prompt contract, and produces English academic LaTeX output following the cached standard.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Polish the introduction section of my English research paper. Make it more concise and academic.",
+      "expected_output": "Routes to en-refine, reads the cached upstream section for English polishing, applies logic checks and shortening while preserving the LaTeX surface.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Set up the AI research writing tools and external components for my local environment.",
+      "expected_output": "Reads references/components-and-setup.md, generates an installation plan with scripts/install_components.py, and only executes after explicit user approval.",
+      "files": []
+    }
+  ]
+}

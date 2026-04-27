@@ -62,11 +62,127 @@ function positionFromIndex(content, index) {
   return { line, column };
 }
 
+function sanitizeExecutableText(content) {
+  let result = '';
+  const stack = [{ type: 'code' }];
+
+  for (let index = 0; index < content.length; index += 1) {
+    const char = content[index];
+    const next = content[index + 1] ?? '';
+    const state = stack[stack.length - 1];
+
+    if (state.type === 'line-comment') {
+      if (char === '\n') {
+        stack.pop();
+        result += '\n';
+      } else {
+        result += ' ';
+      }
+      continue;
+    }
+
+    if (state.type === 'block-comment') {
+      if (char === '*' && next === '/') {
+        result += '  ';
+        index += 1;
+        stack.pop();
+      } else {
+        result += char === '\n' ? '\n' : ' ';
+      }
+      continue;
+    }
+
+    if (state.type === 'string') {
+      if (char === '\\') {
+        result += ' ';
+        if (next) {
+          result += next === '\n' ? '\n' : ' ';
+          index += 1;
+        }
+        continue;
+      }
+      if (char === state.quote) {
+        stack.pop();
+      }
+      result += char === '\n' ? '\n' : ' ';
+      continue;
+    }
+
+    if (state.type === 'template') {
+      if (char === '\\') {
+        result += ' ';
+        if (next) {
+          result += next === '\n' ? '\n' : ' ';
+          index += 1;
+        }
+        continue;
+      }
+      if (char === '`') {
+        result += ' ';
+        stack.pop();
+        continue;
+      }
+      if (char === '$' && next === '{') {
+        result += '${';
+        index += 1;
+        stack.push({ type: 'template-expression', braceDepth: 1 });
+        continue;
+      }
+      result += char === '\n' ? '\n' : ' ';
+      continue;
+    }
+
+    if (char === '/' && next === '/') {
+      result += '  ';
+      index += 1;
+      stack.push({ type: 'line-comment' });
+      continue;
+    }
+
+    if (char === '/' && next === '*') {
+      result += '  ';
+      index += 1;
+      stack.push({ type: 'block-comment' });
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      stack.push({ quote: char, type: 'string' });
+      result += ' ';
+      continue;
+    }
+
+    if (char === '`') {
+      stack.push({ type: 'template' });
+      result += ' ';
+      continue;
+    }
+
+    if (state.type === 'template-expression') {
+      if (char === '{') {
+        state.braceDepth += 1;
+      } else if (char === '}') {
+        state.braceDepth -= 1;
+        if (state.braceDepth === 0) {
+          result += '}';
+          stack.pop();
+          continue;
+        }
+      }
+    }
+
+    result += char;
+  }
+
+  return result;
+}
+
 function findBrowserGlobalIssues(content) {
   const issues = [];
+  const executableText = sanitizeExecutableText(content);
   for (const name of BROWSER_GLOBALS) {
     const pattern = new RegExp(`\\b${name}\\b`, 'g');
-    for (const match of content.matchAll(pattern)) {
+    for (const match of executableText.matchAll(pattern)) {
       const { line, column } = positionFromIndex(content, match.index ?? 0);
       issues.push({
         column,

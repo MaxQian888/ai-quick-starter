@@ -1,6 +1,6 @@
 ---
 name: explain-programming-knowledge
-description: Explain programming concepts, algorithms, data structures, language features, debugging foundations, and software-engineering practices with audience-aware depth. Use when users ask for conceptual explanations, beginner-friendly tutorials, interview-oriented breakdowns, code walkthroughs, technology comparisons, learning plans, or troubleshooting caused by misunderstood fundamentals. Trigger on requests like "explain X", "what is X in programming", "compare A vs B", "teach me X", "讲解X", "通俗解释X", and "看不懂这段代码".
+description: Use when Codex needs to explain programming concepts, algorithms, data structures, language features, debugging fundamentals, or software-engineering practices for learners, interview prep, code walkthroughs, concept comparisons, or confusion caused by misunderstood foundations.
 ---
 
 # Explain Programming Knowledge

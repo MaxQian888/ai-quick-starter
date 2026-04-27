@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pig Skill"
+  short_description: "Build and evolve QQ friend persona skills"
+  default_prompt: "Use $pig-skill to turn QQ chat evidence and user impressions into a reusable friend persona skill, then keep it up to date with corrections and versioned updates."

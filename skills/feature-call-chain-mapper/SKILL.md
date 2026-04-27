@@ -1,11 +1,24 @@
 ---
 name: feature-call-chain-mapper
-description: Generate structured Markdown and JSON feature call-chain reports for unfamiliar repositories by tracing likely entrypoints, symbols, imports, registrations, and cross-module handoffs. Use when Codex needs to locate where a feature lives, map how a request or capability flows through a codebase, identify candidate entry files or handlers, or produce parseable call-chain documentation instead of freeform prose.
+description: Use whenever tracing feature call chains, mapping execution paths, understanding unfamiliar code, analyzing runtime paths, or exploring how a specific capability flows through a codebase. Make sure to use this skill for code tracing, function call mapping, dependency chain analysis, feature exploration, or any request involving understanding how a feature works end-to-end. Also triggers for entrypoint discovery, cross-module handoff identification, or generating structured call-chain reports in Markdown and JSON.
 ---
 
 # Feature Call Chain Mapper
 
 Trace the feature first, explain second. Use this skill when the user wants a stable call-chain artifact, not a prose-only summary.
+
+## Adaptive Detection
+
+Before tracing, scan the workspace to understand the codebase structure:
+
+1. Detect repository language and framework:
+   - Look for `package.json` (Node.js), `Cargo.toml` (Rust), `go.mod` (Go), `pyproject.toml` (Python), `pom.xml` (Java).
+   - Check for framework-specific entry patterns (Next.js pages, Flask routes, Express handlers).
+2. Detect existing feature boundaries:
+   - Search for feature-named directories (`features/`, `modules/`, `domains/`).
+   - Look for API route files or controller files that may serve as entrypoints.
+3. Detect test coverage:
+   - Look for test files that may reveal feature entrypoints and expected flows.
 
 ## Start Here
 
@@ -70,6 +83,26 @@ Read [references/output-schema.md](references/output-schema.md) when you need th
 - Prefer the JSON output as the truth source; use the Markdown output for rendering and human review.
 - If the report is noisy, rerun with `--include`, `--exclude`, or a more precise anchor instead of opening many unrelated files.
 - If confidence is low, say so plainly and use `blind_spots` plus `suggested_next_reads` to define the next verification pass.
+
+## Examples
+
+### Example 1: Tracing a Login Feature
+
+**Input:** "How does login work in this repo?"
+
+**Output:**
+- Identifies entrypoint (e.g., `src/routes/auth.ts`).
+- Maps chain through validation, database query, session creation.
+- Lists cross-module handoffs and blind spots (e.g., middleware not statically traceable).
+
+### Example 2: Narrowing to a Subtree
+
+**Input:** "Trace the payment callback but only in the backend code."
+
+**Output:**
+- Uses `--include src/server --exclude src/client`.
+- Focuses on webhook handler, payment service, and database updates.
+- Explicitly notes excluded frontend code as a blind spot.
 
 ## Guardrails
 

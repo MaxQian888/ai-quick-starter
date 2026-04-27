@@ -1,0 +1,15 @@
+{
+  "skill": "project-structure-migrator",
+  "evaluations": [
+    {
+      "name": "monorepo-migration",
+      "prompt": "Migrate this single-package repo into a pnpm workspace monorepo",
+      "criteria": ["Runs blueprint generator first", "Executes in batches with verification", "Preserves compatibility shims", "Reports open_questions when evidence is weak"]
+    },
+    {
+      "name": "legacy-restructure",
+      "prompt": "Reorganize this legacy flat directory into feature-based boundaries",
+      "criteria": ["Detects manifests and workspace files", "Separates facts from recommendations", "Verifies after each batch", "Does not mix with business-logic rewrites"]
+    }
+  ]
+}

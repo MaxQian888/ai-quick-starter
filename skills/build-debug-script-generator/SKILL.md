@@ -1,11 +1,34 @@
 ---
 name: build-debug-script-generator
-description: Use when Codex needs to inspect an existing repository and generate repo-local PowerShell build and quick-debug scripts, plus matching JSON or Markdown planning artifacts, from manifests, lockfiles, CI hints, Make targets, or known entrypoints instead of freehand guesses.
+description: >
+  Make sure to use this skill whenever the user needs build scripts, debug scripts,
+  PowerShell wrappers, or local development automation for an existing repository.
+  Also trigger when they mention "how do I build this project," "create a build
+  script," "generate debug commands," "local CI scripts," or "repo setup helpers."
+  Use it for Node.js, Python, Rust, Go, or mixed projects where manifests, lockfiles,
+  CI configs, or Make targets exist. Covers synonyms like "build automation,"
+  "dev scripts," "local build helpers," "project bootstrap," "compile wrapper,"
+  and "debug workflow." Use it even when the user only says "I want to run this
+  project locally" or "how do I compile this."
 ---
 
 # Build Debug Script Generator
 
 Generate repo-local PowerShell wrappers from repository evidence. Start with the helper script, read the JSON bundle first, then trust or refine the generated scripts based on blockers and assumptions.
+
+## Adaptive Detection
+
+Before generating, detect the project type from repository signals:
+
+- Node.js: `package.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`
+- Python: `pyproject.toml`, `setup.py`, `requirements.txt`, `uv.lock`
+- Rust: `Cargo.toml`
+- Go: `go.mod`
+- CI hints: `.github/workflows/*.yml`, `.gitlab-ci.yml`
+- Build tools: `Makefile`, `justfile`, `CMakeLists.txt`
+- Entrypoints: `main.py`, `app.py`, `manage.py`, `src/index.ts`
+
+Do not invent a build or debug path before reading those signals.
 
 ## Quick Start
 
@@ -83,6 +106,18 @@ If the repository changes, or if the selected commands are obviously stale, reru
 - Do not turn quick debug into a full multi-service bootstrap unless the repository already proves that flow.
 - Do not add destructive commands, git cleanup, or filesystem rewrites to the generated scripts.
 - Do not hide uncertainty. Surface blockers and assumptions exactly as the helper reports them.
+
+## Examples
+
+**Generate for a Node.js repo:**
+```bash
+python scripts/generate_build_debug_scripts.py --project-root ./my-web-app --output-dir ./my-web-app/scripts
+```
+
+**Generate with custom output:**
+```bash
+python scripts/generate_build_debug_scripts.py --project-root ./backend --output-dir ./backend/.dev-scripts
+```
 
 ## References
 

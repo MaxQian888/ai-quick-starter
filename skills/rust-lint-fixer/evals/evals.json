@@ -1,0 +1,10 @@
+{
+  "skill": "rust-lint-fixer",
+  "evaluations": [
+    {
+      "name": "fix-clippy-warnings",
+      "prompt": "Fix all Clippy warnings in this Rust workspace",
+      "criteria": ["Runs discovery script first", "Chooses narrowest target", "Traces unused code before deleting", "Re-runs failing command after fixes"]
+    }
+  ]
+}

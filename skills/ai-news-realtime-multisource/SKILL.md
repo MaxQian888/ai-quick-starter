@@ -1,6 +1,13 @@
 ---
 name: ai-news-realtime-multisource
-description: Real-time aggregation of latest AI news from multiple Chinese and global sources. Use when users ask for latest AI news/updates/intel, cross-region AI trend tracking, daily brief generation, or structured multi-source AI updates. Supports concurrent RSS/Atom fetching, source fallback, deduplication, keyword filtering, and latest-first ranking.
+description: >
+  Make sure to use this skill whenever the user asks for the latest AI news, AI trends,
+  daily briefings, or near-real-time updates from Chinese and global sources. Also trigger
+  when they mention AI headlines, tech news aggregation, research updates, model releases,
+  open-source AI, or cross-region AI comparisons. Use it for keyword-filtered AI news,
+  structured news collection, RSS-based monitoring, or generating markdown/JSON reports
+  from multiple feeds. Covers synonyms like "AI updates," "machine learning news,"
+  "LLM announcements," "AI industry briefing," and "tech trend tracking."
 ---
 
 # AI News Realtime Multisource
@@ -9,6 +16,15 @@ description: Real-time aggregation of latest AI news from multiple Chinese and g
 
 Fetch and rank the latest AI news from multiple domestic (`cn`) and global (`global`) sources.
 Use the bundled script for repeatable, machine-readable results.
+
+## Adaptive Detection
+
+Before fetching, scan the environment to adapt the query:
+
+- Check `references/sources.json` for configured feeds and regions.
+- Detect if the user request is region-specific (`cn`, `global`, or both).
+- Identify keyword filters, time windows, and output format preferences from the request.
+- Use `--source` for ad-hoc feeds without modifying `sources.json`.
 
 ## Run Workflow
 
@@ -86,4 +102,16 @@ The script also reports:
 - Prefer `--hours` between `24` and `72` for near-real-time briefings.
 - Use `--max-per-source` to avoid one source flooding the result set.
 - Use `--source "NAME|REGION|URL"` for temporary ad-hoc feeds without editing files.
+
+## Examples
+
+**Daily AI briefing (global, last 24 hours):**
+```bash
+uv run --python 3.11 scripts/fetch_ai_news.py --region global --hours 24 --format markdown
+```
+
+**Keyword-filtered China AI news (JSON export):**
+```bash
+uv run --python 3.11 scripts/fetch_ai_news.py --region cn --keywords "LLM,agent" --hours 48 --format json --output outputs/cn_ai_news.json
+```
 

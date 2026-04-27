@@ -1,9 +1,21 @@
 ---
 name: project-ai-context-initializer
-description: Use when initializing or refreshing project AI context for a repository, especially when Codex needs to scan a codebase, generate root-level and module-level AGENTS.md or CLAUDE.md files, add Mermaid structure maps and breadcrumb navigation, or report which modules were scanned versus skipped.
+description: >
+  Use this skill whenever you need to initialize, refresh, or update AI-facing documentation for a repository.
+  Make sure to use it when the user wants to create AGENTS.md or CLAUDE.md files, add navigation maps, document project structure for AI assistants, or generate module-level context docs with Mermaid diagrams and breadcrumbs.
+  Covers subagent-driven repository scanning, root and module doc generation, coverage reporting, and incremental updates for mono-repos and multi-module projects.
 ---
 
 # Project AI Context Initializer
+
+## Adaptive Detection
+
+Before initializing context, scan for:
+- Existing root docs (`AGENTS.md`, `CLAUDE.md`, `README.md`) to decide between create and refresh
+- Repository type (mono-repo, skill collection, single app, library) to set module selection strategy
+- Generated or temporary directories to skip (`node_modules`, `dist`, `.tmp*`, `__pycache__`)
+- Primary entrypoints and high-signal implementation seams for module doc candidates
+- Whether the environment supports subagent dispatch (Claude Tasks, Codex native tools)
 
 ## Overview
 
@@ -116,3 +128,17 @@ The preferred output set is:
 - and a main-chat summary that reports coverage honestly.
 
 If the repository already standardizes on only one root agent file, reuse that pattern and make the second root file a thin redirect.
+
+## Examples
+
+**Example 1: Initialize context for a new repository**
+```
+User: "Can you generate AI context documentation for this repository so future agents can understand it faster?"
+Agent: Dispatch a datetime subagent, then an architect subagent with the repo root, run `scripts/scan_project_context.py --root .` for inventory, generate root AGENTS.md and CLAUDE.md, create 3-8 module-level CLAUDE.md files with Mermaid diagrams, and print an honest coverage summary.
+```
+
+**Example 2: Refresh docs after major changes**
+```
+User: "We refactored the auth and payment modules. Can you update the context docs?"
+Agent: Run the inventory script, identify affected modules, merge incremental updates into existing root and module docs, preserve high-quality unchanged sections, and report what was updated versus preserved.
+```

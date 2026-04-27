@@ -1,0 +1,21 @@
+{
+  "skill": "guarded-log-editor",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "add-logs-to-feature",
+      "prompt": "Add logging to the new payment handler",
+      "criteria": ["Runs audit script", "Reuses existing logger", "Matches message style"]
+    },
+    {
+      "id": "reduce-noisy-logs",
+      "prompt": "This directory has too many debug logs, clean them up",
+      "criteria": ["Identifies high-density files", "Removes redundant triplets", "Preserves useful logs"]
+    },
+    {
+      "id": "unify-log-style",
+      "prompt": "Make all logs in src/services/ use the same format",
+      "criteria": ["Converges to dominant pattern", "Does not introduce new framework", "Scopes to requested directory"]
+    }
+  ]
+}

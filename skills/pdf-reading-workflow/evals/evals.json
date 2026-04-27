@@ -1,0 +1,42 @@
+{
+  "skill_name": "pdf-reading-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a research paper at ./papers/ml-survey.pdf. Can you pull out the abstract and the first section so I can skim it without opening the file?",
+      "expected_output": "Probes the environment for an available backend, inspects the PDF to confirm it is text-readable, extracts text from the first few pages using the text command, and returns the abstract and first section to the user.",
+      "files": [],
+      "expectations": [
+        "The skill probes for an available backend before attempting extraction",
+        "The skill inspects the PDF metadata or page count before extracting text",
+        "The skill uses the text command rather than render for a born-digital PDF",
+        "The extracted content includes the abstract and first section"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This invoice at ./scans/invoice-march.pdf seems to be a scan — copy-paste from the viewer gives nothing. Can you turn the pages into images so I can run OCR on them?",
+      "expected_output": "Probes the environment, inspects the PDF to confirm low or no text content, switches to render mode, converts the target pages to images, and saves them to an explicit output directory for downstream OCR processing.",
+      "files": [],
+      "expectations": [
+        "The skill detects that text extraction is unlikely to work and switches to render",
+        "The skill renders pages as images using the appropriate backend",
+        "Rendered images are saved to an explicit, reported output directory",
+        "The skill does not falsely claim to have performed OCR"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I just downloaded a PDF called report-final.pdf and I have no idea what's in it or how big it is. Can you give me a quick overview before I decide whether to read it?",
+      "expected_output": "Probes the environment for available backends, runs inspect to report page count, metadata (title, author, creation date if present), and whether the PDF has bookmarks or an outline, then gives the user a concise summary to help them decide next steps.",
+      "files": [],
+      "expectations": [
+        "The skill probes for available backends first",
+        "The skill runs inspect to gather metadata and structure info",
+        "The output includes page count and any available metadata",
+        "The skill reports whether bookmarks or an outline exist",
+        "The response is concise and helps the user decide whether to read deeper"
+      ]
+    }
+  ]
+}

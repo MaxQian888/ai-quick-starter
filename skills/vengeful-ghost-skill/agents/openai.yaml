@@ -1,0 +1,4 @@
+interface:
+  display_name: "Colleague Repellent"
+  short_description: "Block coworker-clone and persona-copy requests"
+  default_prompt: "Use $colleague-repellent to distinguish normal knowledge retrieval from requests to turn a real person into an AI stand-in, then block only the imitation cases."

@@ -532,6 +532,241 @@ def build_quality_gate_plan(kind: str, commands: list[GateCommand]) -> dict[str,
     }
 
 
+def build_final_commit_suggestion(batches: list[Batch]) -> dict[str, object]:
+    if not batches:
+        return {
+            "type": "chore",
+            "alternatives": [],
+            "scope": "workspace",
+            "subject": "record grouped changes",
+            "body_points": [],
+        }
+
+    feature_batches = [batch for batch in batches if batch.kind == "feature"]
+    config_batches = [batch for batch in batches if batch.kind == "config"]
+    test_batches = [batch for batch in batches if batch.kind == "test"]
+    docs_batches = [batch for batch in batches if batch.kind == "docs"]
+
+    if len(feature_batches) == 1 and len(batches) <= 2 and not config_batches:
+        suggestion = dict(feature_batches[0].suggested_commit)
+        suggestion["subject"] = f"deliver {feature_batches[0].label} updates"
+        suggestion["body_points"] = [
+            f"Collapse {len(batches)} temporary batch commit(s) into one final commit.",
+        ]
+        return suggestion
+
+    if feature_batches:
+        labels = [batch.label for batch in feature_batches[:2]]
+        remainder = len(feature_batches) - len(labels)
+        summary = " and ".join(labels)
+        if remainder > 0:
+            summary = f"{summary} and {remainder} more scope(s)"
+        return {
+            "type": "feat",
+            "alternatives": ["fix", "chore"],
+            "scope": "workspace",
+            "subject": f"deliver {summary} updates",
+            "body_points": [
+                "Collapse temporary split-batch commits after all gates pass.",
+                "Mention secondary docs, config, or test scopes in the commit body.",
+            ],
+        }
+
+    if config_batches:
+        return {
+            "type": "build",
+            "alternatives": ["chore", "ci"],
+            "scope": "tooling",
+            "subject": "align shared tooling updates",
+            "body_points": [
+                "Collapse temporary split-batch commits after all gates pass.",
+            ],
+        }
+
+    if test_batches and not docs_batches:
+        return {
+            "type": "test",
+            "alternatives": ["fix"],
+            "scope": "workspace",
+            "subject": "consolidate grouped coverage updates",
+            "body_points": [
+                "Collapse temporary split-batch commits after all gates pass.",
+            ],
+        }
+
+    return {
+        "type": "docs",
+        "alternatives": ["chore"],
+        "scope": "workspace",
+        "subject": "consolidate grouped documentation updates",
+        "body_points": [
+            "Collapse temporary split-batch commits after all gates pass.",
+        ],
+    }
+
+
+def clone_commit_suggestion(suggestion: dict[str, object]) -> dict[str, object]:
+    body_points = suggestion.get("body_points", [])
+    alternatives = suggestion.get("alternatives", [])
+    return {
+        "type": str(suggestion.get("type", "chore")),
+        "alternatives": list(alternatives) if isinstance(alternatives, list) else [],
+        "scope": str(suggestion.get("scope", "workspace")),
+        "subject": str(suggestion.get("subject", "record grouped changes")),
+        "body_points": list(body_points) if isinstance(body_points, list) else [],
+    }
+
+
+def build_scoped_commit_suggestion(group_batches: list[Batch]) -> dict[str, object]:
+    if not group_batches:
+        return build_final_commit_suggestion([])
+
+    if len(group_batches) == 1:
+        suggestion = clone_commit_suggestion(group_batches[0].suggested_commit)
+        suggestion["body_points"].append(
+            "Collapse temporary checkpoint commits for this scope only."
+        )
+        return suggestion
+
+    suggestion = clone_commit_suggestion(build_final_commit_suggestion(group_batches))
+    suggestion["body_points"].append(
+        "Keep this scope separate from other scope-level consolidation groups."
+    )
+    return suggestion
+
+
+def build_scoped_consolidation_groups(batches: list[Batch]) -> list[dict[str, object]]:
+    grouped: dict[str, list[Batch]] = defaultdict(list)
+    ordered_keys: list[str] = []
+    for batch in batches:
+        group_key = sanitize_scope_token(batch.scope if batch.scope else batch.key)
+        if group_key not in grouped:
+            ordered_keys.append(group_key)
+        grouped[group_key].append(batch)
+
+    groups: list[dict[str, object]] = []
+    for group_key in ordered_keys:
+        group_batches = grouped[group_key]
+        labels = [batch.label for batch in group_batches]
+        label = labels[0] if all(item == labels[0] for item in labels) else ", ".join(labels)
+        groups.append(
+            {
+                "key": group_key,
+                "label": label,
+                "batch_keys": [batch.key for batch in group_batches],
+                "kinds": list(dict.fromkeys(batch.kind for batch in group_batches)),
+                "files": sorted({file for batch in group_batches for file in batch.files}),
+                "final_commit": build_scoped_commit_suggestion(group_batches),
+            }
+        )
+    return groups
+
+
+def build_granularity_plans(
+    batches: list[Batch],
+) -> tuple[dict[str, dict[str, object]], dict[str, object]]:
+    final_commit = build_final_commit_suggestion(batches)
+    scoped_groups = build_scoped_consolidation_groups(batches)
+    final_steps = []
+    scoped_steps = []
+    if batches:
+        final_steps = [
+            "git reset --soft <base_commit>",
+            "git commit -m \"<final conventional commit>\"",
+        ]
+        scoped_steps = [
+            "git reset --soft <base_commit>",
+            "git reset HEAD -- .",
+            "git add <group files>",
+            "git commit -m \"<group conventional commit>\"",
+            "Repeat git add + git commit for each scoped consolidation group in order.",
+        ]
+
+    granularity_plans = {
+        "final": {
+            "description": "Collapse every completed batch checkpoint into one final commit.",
+            "commit_count": 1 if batches else 0,
+            "execution_steps": final_steps,
+            "final_commits": [clone_commit_suggestion(final_commit)] if batches else [],
+            "consolidation_groups": [],
+        },
+        "scoped": {
+            "description": "Collapse completed checkpoint commits into one final commit per scope-level group.",
+            "commit_count": len(scoped_groups),
+            "execution_steps": scoped_steps,
+            "final_commits": [clone_commit_suggestion(group["final_commit"]) for group in scoped_groups],
+            "consolidation_groups": scoped_groups,
+        },
+        "checkpoint": {
+            "description": "Keep each completed batch commit as its own checkpoint without an extra squash step.",
+            "commit_count": len(batches),
+            "execution_steps": [],
+            "final_commits": [clone_commit_suggestion(batch.suggested_commit) for batch in batches],
+            "consolidation_groups": [],
+        },
+    }
+    return granularity_plans, clone_commit_suggestion(final_commit)
+
+
+def build_post_commit_consolidation_plan(batches: list[Batch]) -> dict[str, object]:
+    granularity_plans, final_commit = build_granularity_plans(batches)
+    default_granularity = "final"
+    if not batches:
+        return {
+            "enabled_by_default": False,
+            "strategy": "checkpoint-then-final-squash",
+            "trigger": "No planned batches remain, so no final squash is required.",
+            "default_granularity": default_granularity,
+            "selected_granularity": default_granularity,
+            "available_granularities": ["final", "scoped", "checkpoint"],
+            "required_completed_batch_count": 0,
+            "checkpoint": {
+                "capture_command": "git rev-parse HEAD",
+                "branch_command": "git branch --show-current",
+                "note": "Capture the pre-split checkpoint before the first temporary batch commit.",
+            },
+            "verification_commands": [],
+            "execution_steps": [],
+            "abort_conditions": [],
+            "fallback": "No consolidation step is needed when there are no temporary batch commits.",
+            "final_commit": final_commit,
+            "granularity_plans": granularity_plans,
+        }
+
+    return {
+        "enabled_by_default": True,
+        "strategy": "checkpoint-then-final-squash",
+        "trigger": "Run automatically after every planned batch commits cleanly and no dirty files remain.",
+        "default_granularity": default_granularity,
+        "selected_granularity": default_granularity,
+        "available_granularities": ["final", "scoped", "checkpoint"],
+        "required_completed_batch_count": len(batches),
+        "checkpoint": {
+            "capture_command": "git rev-parse HEAD",
+            "branch_command": "git branch --show-current",
+            "note": "Record the pre-split checkpoint before the first temporary batch commit.",
+        },
+        "verification_commands": [
+            "git status --short",
+            "git rev-list --count <base_commit>..HEAD",
+            "git merge-base <base_commit> HEAD",
+        ],
+        "execution_steps": [
+            "git reset --soft <base_commit>",
+            "git commit -m \"<final conventional commit>\"",
+        ],
+        "abort_conditions": [
+            "Stop if git status --short is not empty before the squash step.",
+            "Stop if git rev-list --count <base_commit>..HEAD does not match the completed batch count.",
+            "Stop if git merge-base <base_commit> HEAD is not <base_commit>.",
+            "Stop if any batch is still blocked or intentionally left unverified.",
+        ],
+        "fallback": "If any consolidation safety check fails, stop and keep the checkpoint commits instead of forcing a squash.",
+        "final_commit": final_commit,
+        "granularity_plans": granularity_plans,
+    }
+
+
 def plan_batches(
     changes: list[FileChange], gate_commands: list[GateCommand]
 ) -> tuple[list[Batch], list[str]]:
@@ -679,6 +914,21 @@ def render_text(payload: dict[str, object]) -> str:
         narrow = batch["quality_gate_plan"]["narrow_commands"]
         if narrow:
             lines.append(f"  First checks: {', '.join(narrow)}")
+    consolidation = payload.get("post_commit_consolidation")
+    if consolidation:
+        lines.append("Post-commit consolidation:")
+        lines.append(
+            f"- Strategy: {consolidation['strategy']} "
+            f"(default={'on' if consolidation['enabled_by_default'] else 'off'})"
+        )
+        lines.append(
+            f"- Default granularity: {consolidation['default_granularity']}"
+        )
+        if consolidation["execution_steps"]:
+            lines.append(f"- Final steps: {', '.join(consolidation['execution_steps'])}")
+        scoped_plan = consolidation["granularity_plans"].get("scoped", {})
+        if scoped_plan.get("commit_count"):
+            lines.append(f"- Scoped option: {scoped_plan['commit_count']} grouped commit(s)")
     if payload["global_cautions"]:
         lines.append("Global cautions:")
         for caution in payload["global_cautions"]:
@@ -721,6 +971,7 @@ def main() -> int:
             "quality_gate_commands": [asdict(item) for item in gate_commands],
             "batches": [asdict(batch) for batch in batches],
             "recommended_order": [batch.key for batch in batches],
+            "post_commit_consolidation": build_post_commit_consolidation_plan(batches),
             "global_cautions": global_cautions,
         }
 

@@ -1,0 +1,23 @@
+{
+  "skill_name": "commit-quality-fixer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have some changes staged in my repo and I need to commit them. Can you help me write a proper commit message and make sure everything passes before I push? The repo is at ./my-project.",
+      "expected_output": "Discovers the repository's quality checks, runs them, generates a Conventional Commit message from the staged diff, and commits only after all checks pass.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm trying to commit but `npm run lint` keeps failing with a bunch of ESLint errors. Can you fix them so I can get my changes in? Project is at ./web-app.",
+      "expected_output": "Discovers lint and related checks, reproduces the ESLint failure, traces errors to their root cause, applies targeted fixes, re-runs the lint check, then verifies the full quality gate suite passes before committing.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I just wrote a commit message but my teammate says it doesn't follow our team's convention. Can you rewrite it properly? The current message is 'updated stuff and fixed bug'.",
+      "expected_output": "Reads the Conventional Commit standard, rewrites the message into a proper `<type>(<scope>): <subject>` format with imperative mood, and explains the type and scope choices.",
+      "files": []
+    }
+  ]
+}

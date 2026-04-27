@@ -100,3 +100,57 @@ test('checker reports node-check failures for invalid JavaScript syntax', async 
   assert.equal(payload.issues[0].rule, 'node-check');
   assert.match(payload.issues[0].message, /SyntaxError|Unexpected token|Expression expected/i);
 });
+
+test('checker ignores browser-global words inside strings and comments', async (t) => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'local-js-skill-'));
+  t.after(async () => {
+    await rm(tempRoot, { recursive: true, force: true });
+  });
+
+  const scriptPath = join(tempRoot, 'string-and-comment-safe.mjs');
+  await writeFile(
+    scriptPath,
+    [
+      "#!/usr/bin/env node",
+      "const message = 'window document navigator localStorage sessionStorage';",
+      "// window should not count when it only appears in a comment",
+      "console.log(message);",
+      "",
+    ].join('\n'),
+    'utf8',
+  );
+
+  const result = await runNode([checkerScript, '--json', scriptPath]);
+  assert.equal(result.code, 0, result.stderr || result.stdout);
+
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.ok, true);
+  assert.deepEqual(payload.issues, []);
+});
+
+test('checker flags browser globals that appear inside template literal expressions', async (t) => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'local-js-skill-'));
+  t.after(async () => {
+    await rm(tempRoot, { recursive: true, force: true });
+  });
+
+  const scriptPath = join(tempRoot, 'template-expression-browser-leak.mjs');
+  await writeFile(
+    scriptPath,
+    [
+      '#!/usr/bin/env node',
+      'const currentLocation = `${window.location.href}`;',
+      'console.log(currentLocation);',
+      '',
+    ].join('\n'),
+    'utf8',
+  );
+
+  const result = await runNode([checkerScript, '--json', scriptPath]);
+  assert.notEqual(result.code, 0);
+
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.ok, false);
+  assert.equal(payload.issues[0].rule, 'no-browser-globals');
+  assert.match(payload.issues[0].message, /window/);
+});

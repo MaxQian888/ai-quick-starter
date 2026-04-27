@@ -1,0 +1,73 @@
+{
+  "skill_name": "github-actions-ci-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just started a new Node.js project with pnpm and vitest. There's no CI at all. Can you set up a GitHub Actions workflow that runs lint and tests on pull requests and pushes to main? I also want it to use caching so it's fast.",
+      "expected_output": "A complete `.github/workflows/ci.yml` with pnpm setup, dependency caching, lint and test jobs, proper triggers, explicit permissions, and SHA-pinned action references.",
+      "files": [],
+      "expectations": [
+        "The workflow uses actions/setup-node with cache support",
+        "The workflow includes pnpm/action-setup or equivalent",
+        "Triggers include pull_request and push to main",
+        "Permissions are explicit and start narrow",
+        "External actions are SHA-pinned with tag comments",
+        "A local verification plan is provided"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My `.github/workflows/ci.yml` is 400 lines and does everything — tests, lint, build Docker images, deploy to staging, and run nightly security scans. It feels unmaintainable. Can you help me split this into smaller, focused workflows?",
+      "expected_output": "A split plan with separate workflow files (e.g., ci.yml, deploy.yml, nightly.yml), rationale for each split, and guidance on reusable workflows or composite actions where appropriate.",
+      "files": ["tests/fixtures/monolith-ci.yml"],
+      "expectations": [
+        "The split follows lifecycle boundaries (validate, deploy, scheduled)",
+        "Reusable workflows are suggested for repeated job graphs",
+        "Composite actions are suggested for repeated step blocks",
+        "File paths follow GitHub conventions",
+        "The plan explains ownership and maintainability benefits"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I inherited a repo with GitHub Actions workflows that haven't been updated in a year. I'm worried about security — some actions are pinned to `@v2` or `@main`. Can you audit the workflows and tell me what needs updating?",
+      "expected_output": "A scan of existing workflow files identifying outdated or floating action refs, latest stable versions with SHAs, and a prioritized list of updates with security notes.",
+      "files": [],
+      "expectations": [
+        "All external `uses:` references are identified and checked",
+        "Floating refs like @v2 or @main are flagged",
+        "Latest stable tags and commit SHAs are resolved",
+        "Security implications of outdated actions are explained",
+        "A concrete update plan with file edits is provided"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want to run my GitHub Actions workflows locally before pushing so I don't burn through CI minutes on silly mistakes. I think `act` is the tool but I've never used it. Can you set it up for me and show me how to run the CI workflow?",
+      "expected_output": "A local execution plan using `act` or fallback commands, including environment checks, command templates, and guidance on secrets, event payloads, and runner images.",
+      "files": [],
+      "expectations": [
+        "The local environment is inspected (Docker, act availability)",
+        "A plan is generated before execution",
+        "act command patterns are shown with correct flags",
+        "Fallback commands are provided if act is unavailable",
+        "Secret and event file handling is explained",
+        "Scope limits are stated honestly"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "My team's CI is slow and we keep hitting GitHub Actions rate limits. Can you review our workflows and suggest performance improvements? We have a monorepo with multiple packages and run everything on every change.",
+      "expected_output": "Performance analysis with specific recommendations: path-aware workflow triggers, matrix optimization, caching strategy, artifact cleanup, and concurrency settings.",
+      "files": [],
+      "expectations": [
+        "Path-aware triggers or fan-out are suggested for the monorepo",
+        "Cache strategy is optimized for the package manager",
+        "Matrix dimensions are reviewed for explosion risk",
+        "Concurrency and cancel-in-progress are configured",
+        "Artifact usage is audited for redundancy",
+        "Each recommendation includes expected tradeoffs"
+      ]
+    }
+  ]
+}

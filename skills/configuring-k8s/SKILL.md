@@ -1,11 +1,32 @@
 ---
 name: configuring-k8s
-description: Use when Codex needs to inspect or change an existing repository's Kubernetes configuration across kubeconfig files, raw manifests, Helm charts, Helmfile releases, or Kustomize overlays; when switching or validating cluster context or namespace; when deciding whether a change belongs in values files, templates, bases, overlays, ConfigMaps, Secrets, resources, probes, Services, Ingress, or RBAC; or when a repo mixes multiple K8s config layers and ownership is unclear.
+description: >
+  Make sure to use this skill whenever the user needs to inspect, edit, or
+  validate Kubernetes configuration in a repository, including raw manifests,
+  Helm charts, Helmfile releases, or Kustomize overlays. Also trigger for
+  cluster context switching, namespace changes, ConfigMap or Secret updates,
+  Service/Ingress modifications, RBAC changes, resource limit adjustments,
+  probe configuration, or "help me with my k8s yaml." Covers synonyms like
+  "Kubernetes config," "K8s manifests," "Helm values," "Kustomize patches,"
+  "deployment yaml," "cluster configuration," and "container orchestration
+  setup." Use it even when the user only mentions "my k8s setup" or
+  "help me deploy this to Kubernetes."
 ---
 
 # Configuring K8s
 
 Discover the repository's Kubernetes configuration surface before editing YAML. Pick the narrowest configuration layer that owns the change, then verify with rendering or diff commands before claiming the update is safe.
+
+## Adaptive Detection
+
+Before editing, detect the configuration landscape:
+
+- Identify the primary toolchain: raw manifests, Helm, Kustomize, Helmfile, or mixed.
+- Check for kubeconfig files and active cluster context.
+- Detect chart structure: `Chart.yaml`, `values*.yaml`, `templates/`.
+- Detect Kustomize structure: `kustomization.yaml`, bases, overlays, patches.
+- Check for existing namespaces, resource limits, probes, and RBAC rules.
+- Identify the target environment: dev, staging, or production.
 
 ## Workflow
 
@@ -87,6 +108,19 @@ kubectl diff -k <overlay-dir>
 - Do not widen selectors, ports, RBAC verbs, or namespaces casually.
 - Do not remove requests, limits, probes, or labels just to make a deployment "work".
 - Do not claim a configuration is safe if you only edited files and never rendered or diffed the result.
+
+## Examples
+
+**Discover K8s surface in a repo:**
+```bash
+python scripts/discover_k8s_surface.py --project-root . --json
+```
+
+**Preview Helm changes before applying:**
+```bash
+helm template my-release ./charts/my-app -f ./values-staging.yaml
+kubectl diff -f ./rendered.yaml
+```
 
 ## References
 

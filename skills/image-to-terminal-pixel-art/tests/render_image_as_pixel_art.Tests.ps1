@@ -83,6 +83,28 @@ Describe "pixel art renderer" {
     }
   }
 
+  It "blends transparent pixels over the configured background color" {
+    Add-Type -AssemblyName System.Drawing
+
+    $bitmap = New-Object System.Drawing.Bitmap 1, 2
+    try {
+      $bitmap.SetPixel(0, 0, [System.Drawing.Color]::FromArgb(128, 255, 0, 0))
+      $bitmap.SetPixel(0, 1, [System.Drawing.Color]::FromArgb(128, 0, 0, 255))
+
+      $lines = Convert-BitmapToPixelArt -Bitmap $bitmap -Columns 1 -ColorMode truecolor -Background "#00ff00" -AllowUpscale
+
+      $escape = [char]27
+      $halfBlock = [char]0x2580
+      $expectedPrefix = "${escape}[38;2;128;127;0m${escape}[48;2;0;127;128m"
+
+      $lines.Count | Should Be 1
+      $lines[0] | Should Match ([regex]::Escape($expectedPrefix) + [regex]::Escape([string]$halfBlock))
+    }
+    finally {
+      $bitmap.Dispose()
+    }
+  }
+
   It "prints rendered rows from the CLI wrapper" {
     $tempImage = Join-Path $env:TEMP "pixel-art-render-test.png"
     New-TestBitmap -Path $tempImage
@@ -96,5 +118,14 @@ Describe "pixel art renderer" {
     finally {
       Remove-Item $tempImage -Force -ErrorAction SilentlyContinue
     }
+  }
+
+  It "fails with a clear message when the CLI image path is missing" {
+    $missingImage = Join-Path $env:TEMP "pixel-art-missing-$([guid]::NewGuid().ToString('N')).png"
+
+    $result = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -Path $missingImage -Columns 2 -ColorMode none 2>&1
+
+    $LASTEXITCODE | Should Not Be 0
+    ($result -join [Environment]::NewLine) | Should Match "Image not found:"
   }
 }

@@ -1,0 +1,23 @@
+{
+  "skill_name": "build-project-fixer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just cloned a repo and `npm test` fails with a bunch of TypeScript errors. Can you figure out what's wrong and fix it? The repo is at ./my-project.",
+      "expected_output": "Discovers the repository's real build/test commands using the script, reproduces the TypeScript failure, applies a targeted fix, and re-runs verification without weakening checks.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our CI is failing on the lint step for this Python project. I think we added a new dependency but forgot to update something. Can you investigate and fix it? Project is at ./python-service.",
+      "expected_output": "Discovers Python lint commands via the script, reproduces the CI lint failure, identifies the dependency or configuration issue, applies the smallest valid repair, and re-runs the lint check.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I need to make sure this Rust project builds and passes tests before I open a PR. Can you run the checks and fix anything that's broken? Repo is at ./rust-app.",
+      "expected_output": "Discovers Cargo build and test commands, runs them, reproduces any failures, fixes the root cause with the smallest valid change, and verifies both the targeted and broader checks pass.",
+      "files": []
+    }
+  ]
+}

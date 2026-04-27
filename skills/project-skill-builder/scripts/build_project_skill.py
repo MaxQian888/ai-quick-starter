@@ -25,6 +25,7 @@ IGNORED_DIR_NAMES = {
     ".svn",
     ".tox",
     ".uv-cache",
+    ".codex-uv-cache",
     ".uv-cache-codex",
     ".uv-cache-local",
     ".uv-python",

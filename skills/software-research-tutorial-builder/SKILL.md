@@ -1,6 +1,7 @@
 ---
 name: software-research-tutorial-builder
-description: Research software products, frameworks, libraries, SDKs, and developer tools through a staged multi-agent workflow, then turn the findings into practical tutorials with runnable commands, config fragments, and layered examples. Use when Codex needs to study how a software package works, compare official and community setup guidance, collect evidence across sources, or produce an actionable learning guide instead of a simple summary.
+description: |
+  Use whenever you need evidence-backed software research tutorials that connect product context, docs, workflows, and practical adoption paths. Make sure to use this skill whenever the user says "tutorial", "getting started", "how to use", "research", "learn", "guide", "walkthrough", or "documentation" for a specific software product, library, framework, or tool — even for niche or emerging projects with limited docs. Also trigger when the user needs to onboard a team to a new technology, create internal training materials, or evaluate adoption feasibility. Covers open-source libraries, SaaS products, developer tools, cloud services, and programming languages.
 ---
 
 # Software Research Tutorial Builder
@@ -10,6 +11,18 @@ description: Research software products, frameworks, libraries, SDKs, and develo
 Research a software product in parallel, normalize the findings into one shared brief, then build a tutorial package with runnable steps and support materials.
 
 Default to a two-stage flow: collect evidence first, synthesize tutorial assets second.
+
+## Adaptive Detection
+
+Before building a tutorial, detect the target context:
+
+1. **Software type**: Is it a library, CLI tool, SaaS, framework, or cloud service?
+2. **Version window**: Check for latest stable, LTS, or bleeding-edge requirements.
+3. **Platform constraints**: Note OS, runtime, and dependency requirements.
+4. **Learner level**: Determine if the audience is beginner, intermediate, or advanced.
+5. **Existing docs**: Check official docs quality, community tutorials, and known gaps.
+
+Use these signals to choose research depth, example complexity, and prerequisite list.
 
 ## Workflow
 
@@ -82,6 +95,20 @@ Read `references/tutorial-contract.md` for the required sections and asset expec
 - Do not present a source-backed step as fully verified unless it was actually executed.
 - Do not turn this skill into general market research or academic research. Keep the scope software-specific.
 - Do not skip the troubleshooting case. A tutorial without failure recovery is incomplete.
+
+## Examples
+
+### Example 1: Build a research brief
+
+```bash
+python scripts/build_research_brief.py --input findings.json --format markdown --output research-brief.md
+```
+
+### Example 2: Generate tutorial outline
+
+```bash
+python scripts/build_tutorial_outline.py --input research-brief.json --output tutorial-outline.md
+```
 
 ## References
 

@@ -1,0 +1,99 @@
+{
+  "skill_name": "tauri-v2",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "command-not-found-diagnosis",
+      "prompt": "My Tauri v2 app keeps throwing 'command not found' when I try to call 'greet' from the frontend. The command is annotated with #[tauri::command] in src-tauri/src/lib.rs and I'm calling invoke('greet', { name: 'World' }) from the React frontend. What could be wrong?",
+      "expected_output": "The skill should diagnose that the command exists but may not be registered in generate_handler!, or the frontend name may not match. It should guide checking lib.rs invoke_handler list and frontend invoke() name.",
+      "files": [],
+      "expectations": [
+        "The response mentions checking generate_handler! registration",
+        "The response mentions verifying the frontend invoke() command name",
+        "The response references lib.rs as the place where commands are registered",
+        "The response does not suggest v1-style @tauri-apps/api/tauri import"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "permission-denied-fix",
+      "prompt": "I just added the dialog plugin to my Tauri v2 app with 'pnpm tauri add dialog' and I'm trying to open a file picker, but I get 'permission denied'. I see the plugin is registered in lib.rs. What am I missing?",
+      "expected_output": "The skill should guide the user to check capability files under src-tauri/capabilities/, confirm the correct permission IDs with tauri permission ls, and add only the needed dialog permissions to the capability file.",
+      "files": [],
+      "expectations": [
+        "The response mentions capability files under src-tauri/capabilities/",
+        "The response mentions using tauri permission ls to find correct IDs",
+        "The response mentions matching window/webview labels",
+        "The response does not suggest hardcoding permission IDs from memory"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "plugin-setup-three-part",
+      "prompt": "Help me add file system access to my Tauri v2 app. I need to read and write files in the app's data directory.",
+      "expected_output": "The skill should guide a three-part plugin setup: add via CLI, register in lib.rs, install guest package, then set up scoped capabilities.",
+      "files": [],
+      "expectations": [
+        "The response mentions using tauri add fs (or npm|pnpm tauri add fs)",
+        "The response mentions registering tauri_plugin_fs::init() in lib.rs",
+        "The response mentions installing @tauri-apps/plugin-fs",
+        "The response mentions scoped permissions rather than broad access",
+        "The response mentions app-directory oriented permissions like fs:allow-appdata-read"
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "ipc-channel-vs-events",
+      "prompt": "In my Tauri v2 app I need to stream progress updates from Rust to the frontend during a long-running file processing job. Should I use events or channels?",
+      "expected_output": "The skill should recommend Channel for ordered, higher-throughput streaming like progress updates, and explain why events are not ideal for this use case.",
+      "files": [],
+      "expectations": [
+        "The response recommends Channel for streaming progress",
+        "The response explains that events are not ideal for high-frequency payloads",
+        "The response mentions ordered delivery as a channel advantage",
+        "The response mentions creating Channel on the frontend and passing it to invoke"
+      ]
+    },
+    {
+      "id": 5,
+      "eval_name": "mobile-entrypoint-layout",
+      "prompt": "I want to make my existing Tauri v2 desktop app also work on Android. The builder logic is currently all in main.rs. What changes do I need to make?",
+      "expected_output": "The skill should guide moving shared builder logic to lib.rs, keeping main.rs minimal, adding the mobile_entry_point attribute, and warning about desktop-only assumptions.",
+      "files": [],
+      "expectations": [
+        "The response mentions moving the builder to lib.rs",
+        "The response mentions keeping main.rs minimal with app_lib::run()",
+        "The response mentions #[cfg_attr(mobile, tauri::mobile_entry_point)]",
+        "The response warns about desktop-only assumptions not working on mobile",
+        "The response mentions checking plugin platform notes for mobile support"
+      ]
+    },
+    {
+      "id": 6,
+      "eval_name": "white-screen-debug",
+      "prompt": "My Tauri v2 app shows a white screen on startup. The dev tools console is empty. How do I debug this?",
+      "expected_output": "The skill should guide checking build.devUrl, build.frontendDist, beforeDevCommand, and CSP as the most likely causes.",
+      "files": [],
+      "expectations": [
+        "The response mentions checking build.devUrl",
+        "The response mentions checking build.frontendDist",
+        "The response mentions checking beforeDevCommand",
+        "The response mentions CSP as a potential cause",
+        "The response suggests running tauri info as a first step"
+      ]
+    },
+    {
+      "id": 7,
+      "eval_name": "async-command-borrowed-args",
+      "prompt": "I'm getting a compile error in my Tauri v2 app when I try to use async command with &str arguments. The error says something about lifetimes. What's the fix?",
+      "expected_output": "The skill should explain that borrowed types like &str are a footgun in async commands and recommend using owned types like String instead.",
+      "files": [],
+      "expectations": [
+        "The response explains that borrowed arguments don't work well in async commands",
+        "The response recommends using owned types like String instead of &str",
+        "The response mentions this is a documented async constraint in Tauri v2",
+        "The response does not suggest complex lifetime workarounds as the first solution"
+      ]
+    }
+  ]
+}

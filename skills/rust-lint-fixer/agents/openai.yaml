@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rust Lint Fixer"
+  short_description: "Discover Rust lint gates and repair warnings safely"
+  default_prompt: "Use $rust-lint-fixer to find this repository's real Rust lint surface, fix all warnings without papering them over, reuse unused code before deleting it, and verify the final Rust checks with current official documentation when behavior is unclear."

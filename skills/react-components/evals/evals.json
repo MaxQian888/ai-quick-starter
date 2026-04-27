@@ -1,0 +1,10 @@
+{
+  "skill": "react-components",
+  "evaluations": [
+    {
+      "name": "convert-design-to-react",
+      "prompt": "Convert this Stitch design into modular React components",
+      "criteria": ["Breaks into independent files", "Uses custom hooks for logic", "Includes Readonly TypeScript interfaces", "Maps Tailwind config to style-guide.json"]
+    }
+  ]
+}

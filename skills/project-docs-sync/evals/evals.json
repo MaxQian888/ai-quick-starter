@@ -1,0 +1,41 @@
+{
+  "skill_name": "project-docs-sync",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My project has changed a lot recently and the README is outdated. The project is at D:/Project/skills-test/build-project-fixer. Please update the README to accurately reflect the current implementation.",
+      "expected_output": "An updated README.md that accurately describes the build-project-fixer skill's purpose, features, usage, and structure based on reading the actual source files.",
+      "files": [],
+      "expectations": [
+        "The updated README mentions the project's actual purpose and features",
+        "The README accurately describes the directory structure",
+        "The README references actual files that exist in the project",
+        "No hallucinated features or files are documented"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Update the CHANGELOG for this project. There have been recent changes that aren't documented. The project is at D:/Project/skills-test/build-project-fixer.",
+      "expected_output": "An updated CHANGELOG.md (or new one if it doesn't exist) with recent changes properly categorized and described.",
+      "files": [],
+      "expectations": [
+        "The CHANGELOG follows a recognized format (Keep a Changelog or similar)",
+        "Recent commits are reflected in the CHANGELOG",
+        "Changes are categorized (Added, Fixed, Changed, etc.)",
+        "Entries are written for users, not developers"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The docs in my project are getting stale. Can you sync all documentation (README, CHANGELOG, and docs/ folder) with the current codebase? Project at D:/Project/skills-test/agents-team-builder.",
+      "expected_output": "Updated documentation across README, CHANGELOG, and docs/ that accurately reflects the current codebase.",
+      "files": [],
+      "expectations": [
+        "Multiple documentation files were reviewed and updated",
+        "The research phase used subagents to study the codebase",
+        "Documentation gaps were identified and addressed",
+        "No features were documented that don't exist in the code"
+      ]
+    }
+  ]
+}

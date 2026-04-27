@@ -182,6 +182,68 @@ class BuildProjectSkillTests(unittest.TestCase):
         forced = self.run_cli(repo_root, output_dir, "replaceable-skill", "--force")
         self.assertEqual(forced.returncode, 0, msg=forced.stderr or forced.stdout)
 
+    def test_skips_codex_uv_cache_noise_from_analysis(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "README.md": "# Demo repo\n",
+                "package.json": json.dumps({"name": "demo-app", "scripts": {"dev": "vite"}}),
+                ".codex-uv-cache/noise/generated.py": "print('noise')\n",
+                ".uv-cache-codex/noise/generated.py": "print('noise')\n",
+                "src/main.ts": "console.log('ready')\n",
+            }
+        )
+        output_dir = self.make_temp_dir("output-")
+
+        result = self.run_cli(repo_root, output_dir, "cache-safe-skill")
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        analysis_path = self.read_output_path(result.stdout, "ANALYSIS_JSON")
+        payload = json.loads(analysis_path.read_text(encoding="utf-8"))
+        serialized = json.dumps(payload)
+        self.assertNotIn(".codex-uv-cache", serialized)
+        self.assertNotIn(".uv-cache-codex", serialized)
+
+    def test_records_scan_limit_when_max_files_is_hit(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "README.md": "# Demo repo\n",
+                "package.json": json.dumps({"name": "demo-app", "scripts": {"dev": "vite"}}),
+                "src/a.ts": "export const a = 1;\n",
+                "src/b.ts": "export const b = 2;\n",
+                "src/c.ts": "export const c = 3;\n",
+            }
+        )
+        output_dir = self.make_temp_dir("output-")
+
+        result = self.run_cli(repo_root, output_dir, "limited-skill", "--max-files", "2")
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        analysis_path = self.read_output_path(result.stdout, "ANALYSIS_JSON")
+        payload = json.loads(analysis_path.read_text(encoding="utf-8"))
+        self.assertTrue(payload["limits"])
+        self.assertIn("Stopped after indexing 2 matching files", payload["limits"][0]["detail"])
+
+    def test_generated_metadata_matches_skill_and_project_identity(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "package.json": json.dumps({"name": "demo-app", "scripts": {"dev": "vite", "test": "vitest run"}}),
+                "src/main.ts": "console.log('ready')\n",
+            }
+        )
+        output_dir = self.make_temp_dir("output-")
+
+        result = self.run_cli(repo_root, output_dir, "demo-app-helper")
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        skill_dir = self.read_output_path(result.stdout, "SKILL_DIR")
+        openai_yaml = (skill_dir / "agents" / "openai.yaml").read_text(encoding="utf-8")
+        working_rules = (skill_dir / "references" / "working-rules.md").read_text(encoding="utf-8")
+
+        self.assertIn('display_name: "Demo App Helper"', openai_yaml)
+        self.assertIn("Use $demo-app-helper", openai_yaml)
+        self.assertIn("`demo-app`", working_rules)
+        self.assertIn("`$demo-app-helper`", working_rules)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,4 @@
+interface:
+  display_name: "shadcn/ui Integration"
+  short_description: "Discover and integrate shadcn/ui components"
+  default_prompt: "Use $shadcn-ui to select, install, and customize shadcn/ui components for this project."

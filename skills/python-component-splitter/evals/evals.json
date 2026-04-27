@@ -1,0 +1,10 @@
+{
+  "skill": "python-component-splitter",
+  "evaluations": [
+    {
+      "name": "split-monolithic-service",
+      "prompt": "Split this 2000-line Python service into layered components",
+      "criteria": ["Runs plan_split.py first", "Detects existing project conventions", "Preserves compatibility imports", "Runs tests after each batch"]
+    }
+  ]
+}

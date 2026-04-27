@@ -1,9 +1,21 @@
 ---
 name: agents-team-builder
-description: Generate Codex subagent team plans, prompt templates, and `.toml` drafts from a complex project brief or task list. Use when Codex needs to split work into serial and parallel tracks, map tasks to `default` or `worker` or `explorer` or custom roles, output reviewable agent configs, or produce structured Markdown and JSON artifacts instead of loose multi-agent advice.
+description: >
+  Use this skill whenever you need to plan, design, or generate a Codex subagent team from a project brief, task list, or existing plan.
+  Make sure to use it when the user wants to break down work into parallel tasks, assign roles to subagents, create structured team plans, or generate agent configuration files.
+  Covers workflow-aware decomposition for superpowers plans, OpenSpec opsx flows, and generic projects, with support for task graphs, parallel groups, prompt templates, and installable .toml drafts.
 ---
 
 # Agents Team Builder
+
+## Adaptive Detection
+
+Before generating a team plan, scan for:
+- The request source (natural-language brief, task list, or existing `config.toml` / `AGENTS.md`)
+- Workflow keywords (`superpowers`, `OpenSpec`, `opsx`, `writing-plans`, `verification-before-completion`)
+- Existing agent configs in `~/.codex/agents/` or local `agents/` directories
+- Project type (web app, library, infrastructure, documentation) to shape role selection
+- Team size constraints and merge-point requirements
 
 ## Overview
 
@@ -177,3 +189,17 @@ python scripts/build_agents_team.py \
 - Use [assets/examples/ecommerce-team.json](assets/examples/ecommerce-team.json) as a sample machine-readable output.
 - Use [assets/examples/superpowers-input.md](assets/examples/superpowers-input.md) for a workflow-aware superpowers example.
 - Use [assets/examples/openspec-input.md](assets/examples/openspec-input.md) for a workflow-aware OpenSpec example.
+
+## Examples
+
+**Example 1: Plan a subagent team for a project brief**
+```
+User: "I need to rebuild our ecommerce platform. Can you plan a Codex team for it?"
+Agent: Run `python scripts/build_agents_team.py --input brief.md --output-dir ./team`, read the generated JSON for task_graph and parallel_groups, review the Markdown plan, and present the recommended agent roster with risks and open questions.
+```
+
+**Example 2: Generate OpenSpec-aware team configuration**
+```
+User: "Plan agents for our OpenSpec opsx:auth-refactor workflow."
+Agent: Run the generator with auto-detected workflow profile or `--workflow-profile openspec-expanded`, ensure design and planning gates are serial, parallelize only implementation phases, and include verification-before-completion gates in the execution plan.
+```

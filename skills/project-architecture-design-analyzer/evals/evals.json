@@ -1,0 +1,23 @@
+{
+  "skill_name": "project-architecture-design-analyzer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just cloned this repo and I have no idea how it's structured. Can you analyze the architecture and tell me what I'm looking at? The repo is at ./my-project.",
+      "expected_output": "Runs the architecture analyzer on the repository, reads the generated report, and returns a concise summary of the repo shape, design patterns, entry points, and recommended next steps or linked skills.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We're about to refactor the authentication flow in this codebase. Can you analyze how the login subsystem is architected before we start? The repo is at ./backend-service.",
+      "expected_output": "Runs the analyzer with --focus on the authentication/login subsystem, reads the focused report, and returns an architecture snapshot centered on auth, including boundaries, design patterns, and recommended follow-up skills such as feature-call-chain-mapper.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "This monorepo is huge and I only care about the web app in apps/web. Can you analyze just that part and skip the generated vendor code? The repo is at ./huge-monorepo.",
+      "expected_output": "Runs the analyzer with --include apps/web and --exclude vendor/generated, reads the scoped report, and returns a focused architecture summary of the web app without noise from unrelated packages.",
+      "files": []
+    }
+  ]
+}

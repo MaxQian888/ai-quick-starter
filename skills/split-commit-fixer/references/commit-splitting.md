@@ -2,7 +2,7 @@
 
 ## Goal
 
-Turn one large dirty worktree into a small sequence of reviewable commits without breaking coupled changes or hiding quality-gate failures.
+Turn one large dirty worktree into a small sequence of reviewable temporary commits without breaking coupled changes or hiding quality-gate failures, then collapse those temporary commits into a smaller final history once the full sequence lands cleanly.
 
 ## Preferred Grouping Order
 
@@ -36,6 +36,8 @@ Turn one large dirty worktree into a small sequence of reviewable commits withou
 
 Rebuild the batch plan after each commit. The remaining worktree is new evidence.
 
+After the last planned batch, consolidate the temporary batch commits into the smallest final history that still describes the real net change. The default target is one final commit, but the final history can stay more fine-grained when the user asks for scope-level or checkpoint-level retention.
+
 ## Commit-Time Repair Rules
 
 - Start from the first failing quality gate, not from generic cleanup.
@@ -44,9 +46,30 @@ Rebuild the batch plan after each commit. The remaining worktree is new evidence
 - If the fix requires shared config or lockfile changes, fold them into the current batch and note the coupling.
 - If a gate failure belongs to a different uncommitted feature, stop and regroup instead of hiding it in the current commit.
 
+## Post-Commit Consolidation
+
+1. Record the pre-split base commit before the first temporary batch commit.
+2. Treat each per-batch commit as a checkpoint, not as the default final history.
+3. Choose a granularity before the final rewrite:
+   - `final`: one final commit for the whole change.
+   - `scoped`: one final commit per generated consolidation group.
+   - `checkpoint`: keep the temporary batch commits as-is.
+4. Squash only after every planned batch has committed successfully and the worktree is clean.
+5. Verify the checkpoint still matches the same lineage before squashing:
+   - `git status --short` must be empty.
+   - `git rev-list --count <base_commit>..HEAD` must match the completed batch count.
+   - `git merge-base <base_commit> HEAD` must still equal `<base_commit>`.
+6. Prefer deterministic non-interactive consolidation:
+   - `git reset --soft <base_commit>`
+   - For `final`, run one `git commit -m "<final conventional commit>"`.
+   - For `scoped`, clear the index after the soft reset, then re-stage each generated consolidation group and commit them in order.
+7. If any consolidation safety check fails, stop and keep the checkpoint commits instead of forcing a squash.
+
 ## Reporting Checklist
 
 - State why each batch exists.
 - Call out shared-risk files explicitly.
 - Recommend a commit type and scope, but note when `feat` vs `fix` vs `refactor` is ambiguous.
 - Tell the user what remains blocked or unverified after each batch.
+- State whether the final squash ran, and if not, which safety check kept the checkpoint commits in place.
+- State which granularity was selected, and list the scope-level groups when `scoped` granularity is used.

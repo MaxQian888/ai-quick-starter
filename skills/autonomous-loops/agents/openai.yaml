@@ -1,0 +1,4 @@
+interface:
+  display_name: "Autonomous Loops"
+  short_description: "Plan autonomous loops across Claude, Codex, and OpenCode"
+  default_prompt: "Use $autonomous-loops to choose the right autonomous loop pattern for this task, adapt it to the target CLI, generate starter commands, and add safe stop conditions plus verification gates."

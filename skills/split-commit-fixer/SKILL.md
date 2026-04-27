@@ -1,31 +1,57 @@
 ---
 name: split-commit-fixer
-description: Use when a repository has a large dirty git worktree and Codex must split uncommitted changes into reviewable commit batches by feature or concern, preserve risky couplings, stage and commit each batch in sequence, and fix commit-time lint, test, or type-check blockers without collapsing everything into one commit.
+description: |
+  Use whenever a git worktree has large uncommitted changes that need to be split into reviewable commit batches. Also trigger when the user wants to group changes by feature, fix commit-time lint/test/type-check failures incrementally, or consolidate multiple checkpoint commits into a smaller final history. Make sure to use this skill whenever the user says "split commits", "organize commits", "commit batches", "checkpoint commits", "squash", "rebase", "clean history", or "my changes are too big for one commit" — even for medium-sized changes that just need better grouping. Also trigger before creating a pull request when the working tree has mixed concerns. Covers Conventional Commits, quality-gate driven commits, and safe checkpoint-then-squash workflows.
 ---
 
 # Split Commit Fixer
 
-Plan commit-sized batches before staging anything. Keep coupled files together, commit one batch at a time, and repair the first quality-gate failure inside the current batch before moving to the next.
+Plan commit-sized batches before staging anything. Keep coupled files together, commit one batch at a time, fix quality-gate failures as they surface, then automatically collapse the checkpoint commits into clean final history.
+
+## Adaptive Detection
+
+Before splitting, detect the repository state:
+
+1. **Git status**: Confirm this is a git worktree with uncommitted changes.
+2. **Change scope**: Estimate file count and concern mixing from `git status`.
+3. **Quality gates**: Identify lint, test, typecheck, and build commands from manifests and CI.
+4. **Commit style**: Check if the project uses Conventional Commits or another commit convention.
+5. **Consolidation preference**: Ask if the user wants final, scoped, or checkpoint history.
+
+Use these signals to tune batch grouping and quality-gate selection.
 
 ## Workflow
 
-1. Confirm the current directory is a git worktree and inspect the dirty state.
-2. Run `uv run --python 3.11 scripts/plan_commit_batches.py --project-root <repo> --json`.
-3. Review `quality_gate_commands`, `batches`, `recommended_order`, and `global_cautions`.
-4. Pick the first batch and stage only that batch's files or hunks.
-5. Start from the batch's `quality_gate_plan.narrow_commands`, then widen to `quality_gate_plan.full_commands`.
-6. Fix the first real blocker with the smallest valid change.
-7. Re-run the failing check, then re-run the broader gate chain for that batch.
-8. Write a Conventional Commit message from the batch intent, not from the entire worktree.
-9. Commit the batch, then rebuild the plan before committing the next batch.
+1. Confirm you're inside a git worktree and inspect the dirty state.
+2. Run the helper script to get a deterministic plan:
+
+   ```bash
+   uv run --python 3.11 scripts/plan_commit_batches.py --project-root <repo> --json
+   ```
+
+3. Review the output fields: `quality_gate_commands`, `batches`, `recommended_order`, `post_commit_consolidation`, and `global_cautions`.
+4. Record the pre-split checkpoint from `post_commit_consolidation.checkpoint` before the first temporary batch commit.
+5. Pick the first batch and stage only its files or hunks.
+6. Start with the batch's `quality_gate_plan.narrow_commands`, then expand to `quality_gate_plan.full_commands` once the local failure is fixed.
+7. Fix the first real blocker with the smallest valid change.
+8. Re-run the failing check, then re-run the broader gate chain for that batch.
+9. Write a Conventional Commit message from the batch intent, not from the entire worktree. Treat each batch commit as a temporary checkpoint.
+10. Commit the batch, then rebuild the plan before committing the next one.
+11. After all planned batches commit cleanly, run the consolidation `verification_commands`.
+12. Choose how to collapse the checkpoint commits:
+    - **final** (default): squash everything into one commit.
+    - **scoped**: one commit per consolidation group.
+    - **checkpoint**: keep the temporary commits as final history.
+13. If the verification checks pass, execute the selected plan. `post_commit_consolidation.execution_steps` mirrors the **final** granularity.
+14. If a consolidation check fails, stop and keep the checkpoint commits.
 
 ## Batch Rules
 
 - Split by feature, subsystem, or clearly independent concern.
-- Keep matching tests and docs with the feature when they describe or verify the same scope.
-- Keep root config, lockfiles, and shared tooling files attached only when one feature clearly owns them.
-- Stop splitting when a file is partially staged, renamed across concerns, or obviously shared by multiple features.
-- Prefer one coherent commit over multiple fragile commits.
+- Keep matching tests and docs with the same feature when they describe or verify it.
+- Attach root config, lockfiles, and shared tooling only when one feature clearly owns them.
+- Stop splitting when a file is partially staged, renamed across concerns, or shared by multiple features.
+- Prefer one coherent commit over several fragile ones.
 
 ## Repair Loop
 
@@ -35,29 +61,48 @@ Plan commit-sized batches before staging anything. Keep coupled files together, 
 4. Re-run the same failing gate.
 5. Re-run the main gate chain for the batch.
 6. Commit only after the gates pass or the remaining blocker is clearly environmental.
+7. Do not run the final squash while any batch remains blocked.
 
-If the same gate fails repeatedly after three focused attempts, stop and report the failing command, attempted fixes, and why the batch remains blocked.
+If the same gate fails after three focused attempts, stop and report the failing command, the attempted fixes, and why the batch is still blocked.
 
 ## Guardrails
 
-- Never force unrelated files into a batch just to make one commit pass.
-- Never use `git commit --no-verify` unless the user explicitly asks.
-- Never split lockfiles, root manifests, or shared config across multiple commits without evidence that they are independent.
-- Never present a batch plan from a non-git directory as if it were safe to commit.
-- Rebuild the batch plan after each commit; the remaining worktree may regroup differently.
+- Do not force unrelated files into a batch just to make one commit pass.
+- Do not use `git commit --no-verify` unless the user explicitly asks for it.
+- Do not split lockfiles, root manifests, or shared config across multiple commits without evidence that they are independent.
+- Do not present a batch plan from a non-git directory as if it were safe to commit.
+- Rebuild the batch plan after each commit; the remaining worktree is new evidence.
+- Do not squash across commits that predate the recorded base checkpoint.
+- Do not run the final squash while the worktree is dirty or the completed-batch count no longer matches the plan.
+- If a consolidation safety check fails, keep the checkpoint commits instead of forcing a squash.
+- Do not claim a finer-grained history exists unless it matches one of the generated consolidation groups.
+
+## Examples
+
+### Example 1: Generate a batch plan
+
+```bash
+uv run --python 3.11 scripts/plan_commit_batches.py --project-root . --json
+```
+
+### Example 2: Targeted plan with focus keyword
+
+```bash
+uv run --python 3.11 scripts/plan_commit_batches.py --project-root . --focus auth --json
+```
 
 ## References
 
 - Read `references/commit-splitting.md` for grouping heuristics, coupling warnings, and commit sequencing rules.
 - Use `scripts/plan_commit_batches.py` to produce a deterministic starting plan before staging.
 - Read each batch's `quality_gate_plan` before deciding which command to run first.
+- Read `post_commit_consolidation` before the first commit so the final squash is deterministic and non-interactive.
+- Use `post_commit_consolidation.granularity_plans` when the user wants finer or more traceable final history.
 
 ## Helper Script
-
-Run:
 
 ```bash
 uv run --python 3.11 scripts/plan_commit_batches.py --project-root <repo> --json
 ```
 
-Use the JSON output as a planning artifact. Each batch now includes a `quality_gate_plan` with the smallest suggested checks to run first and the broader command chain to re-run before committing.
+Use the JSON output as a planning artifact. Each batch includes a `quality_gate_plan` with the smallest suggested checks to run first and the broader command chain to re-run before committing. The top-level `post_commit_consolidation` block records the default automatic final squash plan, the available granularity levels, the scope-level consolidation groups, the required safety checks, and the fallback rule to keep checkpoint commits when the squash is unsafe.

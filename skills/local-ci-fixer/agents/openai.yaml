@@ -1,0 +1,4 @@
+interface:
+  display_name: "Local CI Fixer"
+  short_description: "Run GitHub Actions locally and repair failures"
+  default_prompt: "Use $local-ci-fixer to inspect this repository's GitHub Actions workflows, simulate the relevant CI steps locally with act when possible, and fix failures without weakening checks or changing intended behavior."

@@ -1,11 +1,31 @@
 ---
 name: component-unit-test-completer
-description: Complete and enforce unit tests for UI components with strict one-to-one component-to-test mapping and minimum 80% coverage. Use when users ask to add missing component unit tests, align each component file with a matching test file, increase low coverage, or add CI quality gates for component tests.
+description: >
+  Make sure to use this skill whenever the user wants to add missing component
+  tests, complete unit test coverage, enforce one-to-one component/test mapping,
+  or set up test coverage gates. Also trigger when they mention "write tests for
+  my components," "increase test coverage," "missing component tests," "test
+  coverage is too low," "add RTL tests," or "set up Vitest/Jest coverage."
+  Covers synonyms like "unit test completion," "test gap analysis," "coverage
+  enforcement," "component testing," "test scaffolding," and "UI test audit."
+  Use it even when the user only says "I need tests" or "my components aren't
+  tested" without specifying the framework.
 ---
 
 # Component Unit Test Completer
 
 When completing component unit tests, enforce one-to-one component/test mapping first, then fill behavior assertions, then enforce the coverage threshold gate.
+
+## Adaptive Detection
+
+Before testing, detect the project's test ecosystem:
+
+- Check `package.json` for test frameworks: Vitest, Jest, Cypress, Playwright.
+- Detect testing libraries: React Testing Library, Vue Test Utils, Enzyme.
+- Check for existing coverage configuration: `vitest.config.ts`, `jest.config.js`, `.nycrc`.
+- Identify component file extensions: `.tsx`, `.jsx`, `.vue`, `.svelte`.
+- Detect test file conventions: co-located, `__tests__`, or mirrored `tests/` directory.
+- Check for existing CI coverage gates in `.github/workflows/`.
 
 ## Workflow
 
@@ -69,6 +89,20 @@ When completing component unit tests, enforce one-to-one component/test mapping 
 - Keep assertions behavior-oriented; avoid snapshot-only suites unless repository already depends on snapshots.
 - Avoid mock-heavy tests that hide component behavior; mock only unstable boundaries (network/time/random/browser-only APIs).
 - Keep test names explicit so missing behavior is discoverable in CI.
+
+## Examples
+
+**Discover missing tests:**
+```bash
+uv run --python 3.11 scripts/component_test_map.py --root .
+```
+
+**Scaffold and check coverage:**
+```bash
+uv run --python 3.11 scripts/component_test_map.py --root . --scaffold-missing
+vitest run --coverage
+uv run --python 3.11 scripts/check_coverage_threshold.py --root . --threshold 80
+```
 
 ## References
 

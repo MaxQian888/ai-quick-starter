@@ -1,0 +1,21 @@
+{
+  "skill": "guarded-code-comment-editor",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "humanize-comments",
+      "prompt": "Make the comments in src/utils.ts sound more human",
+      "criteria": ["Runs audit script", "Samples local style", "Rewrites without changing code"]
+    },
+    {
+      "id": "add-missing-comments",
+      "prompt": "Add comments to explain the non-obvious logic in this directory",
+      "criteria": ["Identifies unclear logic", "Matches local density", "Explains why not what"]
+    },
+    {
+      "id": "mixed-language-repo",
+      "prompt": "Clean up comments across a Python + TypeScript repo",
+      "criteria": ["Preserves language-specific style", "Does not flatten terminology", "Handles density per area"]
+    }
+  ]
+}

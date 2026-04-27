@@ -292,6 +292,29 @@ def discover_pyproject(root: Path, state: DiscoveryState) -> None:
         )
 
 
+def discover_requirements_txt(root: Path, state: DiscoveryState) -> None:
+    requirements = root / "requirements.txt"
+    if not requirements.exists():
+        return
+
+    state.add_manifest(requirements, "requirements.txt")
+    state.add_command(
+        category="install",
+        command="python -m pip install -r requirements.txt",
+        source="requirements.txt",
+        evidence="requirements.txt detected.",
+        priority=58,
+    )
+    if root.joinpath("tests").exists():
+        state.add_command(
+            category="test",
+            command="python -m pytest",
+            source="requirements.txt",
+            evidence="requirements.txt plus tests directory detected.",
+            priority=35,
+        )
+
+
 def discover_cargo(root: Path, state: DiscoveryState) -> None:
     cargo_toml = root / "Cargo.toml"
     if not cargo_toml.exists():
@@ -408,6 +431,7 @@ def inspect_repository(root: Path, category: str) -> dict[str, object]:
     state = DiscoveryState(root=root)
     discover_package_json(root, state)
     discover_pyproject(root, state)
+    discover_requirements_txt(root, state)
     discover_cargo(root, state)
     discover_makefile(root, state)
     extract_ci_commands(root, state)

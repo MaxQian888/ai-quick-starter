@@ -33,18 +33,23 @@ class ApplyComponentReorgPlanTests(unittest.TestCase):
                 return Path(line[len(prefix) :].strip())
         self.fail(f"Could not find {key}=... in stdout:\n{stdout}")
 
-    def run_cli(self, plan_path: Path) -> tuple[dict[str, object], str]:
+    def run_cli_raw(self, plan_path: Path, *extra_args: str) -> subprocess.CompletedProcess[str]:
         result = subprocess.run(
             [
                 str(PYTHON),
                 str(SCRIPT),
                 "--plan",
                 str(plan_path),
+                *extra_args,
             ],
             capture_output=True,
             text=True,
             check=False,
         )
+        return result
+
+    def run_cli(self, plan_path: Path, *extra_args: str) -> tuple[dict[str, object], str]:
+        result = self.run_cli_raw(plan_path, *extra_args)
         self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
         json_path = self.read_output_path(result.stdout, "JSON_OUT")
         markdown_path = self.read_output_path(result.stdout, "MARKDOWN_OUT")
@@ -188,6 +193,131 @@ class ApplyComponentReorgPlanTests(unittest.TestCase):
         self.assertIn("## Applied Moves", markdown)
         self.assertIn("## Rewritten Files", markdown)
         self.assertIn("## Skipped Entries", markdown)
+
+    def test_respects_explicit_output_paths(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "src/components/OrderForm.tsx": "export function OrderForm() { return <form />; }\n",
+            }
+        )
+        plan_path = self.write_plan(
+            repo_root,
+            {
+                "root": str(repo_root),
+                "target_directory": "src/components",
+                "move_plan": [
+                    {
+                        "path": "src/components/OrderForm.tsx",
+                        "action": "move",
+                        "destination_path": "src/components/forms/OrderForm.tsx",
+                        "proposed_subfolder": "forms",
+                    }
+                ],
+            },
+        )
+        json_out = repo_root / "reports" / "execution.json"
+        markdown_out = repo_root / "reports" / "execution.md"
+
+        result = self.run_cli_raw(
+            plan_path,
+            "--json-out",
+            str(json_out),
+            "--markdown-out",
+            str(markdown_out),
+        )
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        self.assertTrue(json_out.exists(), str(json_out))
+        self.assertTrue(markdown_out.exists(), str(markdown_out))
+        payload = json.loads(json_out.read_text(encoding="utf-8"))
+        self.assertEqual(payload["summary"]["moved"], 1)
+        self.assertIn("## Applied Moves", markdown_out.read_text(encoding="utf-8"))
+
+    def test_returns_error_when_planned_move_source_is_missing(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "src/components/OrderPage.tsx": "export function OrderPage() { return <div />; }\n",
+            }
+        )
+        plan_path = self.write_plan(
+            repo_root,
+            {
+                "root": str(repo_root),
+                "target_directory": "src/components",
+                "move_plan": [
+                    {
+                        "path": "src/components/Missing.tsx",
+                        "action": "move",
+                        "destination_path": "src/components/forms/Missing.tsx",
+                        "proposed_subfolder": "forms",
+                    }
+                ],
+            },
+        )
+
+        result = self.run_cli_raw(plan_path)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Planned move source does not exist", result.stdout + result.stderr)
+
+    def test_rejects_plan_entries_that_escape_the_repository_root(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "src/components/OrderForm.tsx": "export function OrderForm() { return <form />; }\n",
+            }
+        )
+        escaped_dir_name = f"escaped-{repo_root.name}"
+        plan_path = self.write_plan(
+            repo_root,
+            {
+                "root": str(repo_root),
+                "target_directory": "src/components",
+                "move_plan": [
+                    {
+                        "path": "src/components/OrderForm.tsx",
+                        "action": "move",
+                        "destination_path": f"../{escaped_dir_name}/OrderForm.tsx",
+                        "proposed_subfolder": "forms",
+                    }
+                ],
+            },
+        )
+
+        result = self.run_cli_raw(plan_path)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("must stay within the repository root", result.stdout + result.stderr)
+        self.assertTrue((repo_root / "src/components/OrderForm.tsx").exists())
+        self.assertFalse((repo_root.parent / escaped_dir_name / "OrderForm.tsx").exists())
+
+    def test_rejects_target_directory_that_escapes_the_repository_root(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "src/components/OrderForm.tsx": "export function OrderForm() { return <form />; }\n",
+            }
+        )
+        escaped_dir_name = f"outside-target-{repo_root.name}"
+        plan_path = self.write_plan(
+            repo_root,
+            {
+                "root": str(repo_root),
+                "target_directory": f"../{escaped_dir_name}",
+                "move_plan": [
+                    {
+                        "path": "src/components/OrderForm.tsx",
+                        "action": "keep-put",
+                        "destination_path": "src/components/OrderForm.tsx",
+                        "proposed_subfolder": "",
+                    }
+                ],
+            },
+        )
+
+        result = self.run_cli_raw(plan_path)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Target directory must stay within the repository root", result.stdout + result.stderr)
+        self.assertFalse((repo_root.parent / escaped_dir_name).exists())
 
 
 if __name__ == "__main__":

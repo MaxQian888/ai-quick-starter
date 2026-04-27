@@ -1,49 +1,64 @@
 ---
 name: e2e-test-completer
-description: Use when recent implementation changes may have invalidated Playwright or Cypress style end-to-end tests and Codex needs to discover the real E2E command surface, map changed files to affected user flows, update or add the corresponding E2E specs, raise coverage on uncovered flows, and simulate the safest next E2E run before broader verification.
+description: Use whenever Playwright or Cypress E2E tests may be broken by code changes, when coverage gaps need closing, or when mapping implementation changes to affected test specs. Make sure to use this skill for end-to-end test repair, test coverage analysis, QA automation updates, UI test synchronization, or planning the safest verification command before running the full suite. Also triggers for test discovery, spec ranking against changed files, dry-run verification planning, or any request involving keeping E2E tests in sync with implementation changes.
 ---
 
 # E2E Test Completer
 
-Sync E2E coverage with the latest implementation truth before touching assertions. Use the helper script to discover the current runner surface, rank affected specs from changed files, highlight uncovered flows, and build a dry-run command plan.
+Bring E2E tests back in sync with the code before editing assertions. Use the helper script to discover the current runner, rank affected specs from changed files, highlight uncovered flows, and build a dry-run command plan.
+
+## Adaptive Detection
+
+Before planning E2E work, scan the workspace to understand the test setup:
+
+1. Detect the E2E runner:
+   - Look for `playwright.config.ts`, `playwright.config.js`, or `@playwright/test` in `package.json`.
+   - Look for `cypress.config.ts`, `cypress.config.js`, or `cypress` in `package.json`.
+   - Check `package.json` scripts for `test:e2e`, `e2e`, or `playwright` commands.
+2. Detect test structure:
+   - Look for `e2e/`, `tests/e2e/`, `cypress/`, or `playwright/` directories.
+   - Check for existing fixtures, page objects, or support files.
+3. Detect app structure:
+   - Identify nested app working directories in monorepos.
+   - Check for `vite.config.ts`, `next.config.js`, or similar to understand the dev server setup.
 
 ## Workflow
 
-1. Discover the current E2E surface.
-   - Run:
-     ```bash
-     uv run --python 3.11 scripts/build_e2e_change_plan.py --project-root . --mode discover --json
-     ```
-   - Read `runner.framework`, `runner.primary_command`, `runner.config_paths`, `runner.working_directory`, and `spec_count`.
+1. **Discover the E2E surface.**
+   Run:
+   ```bash
+   uv run --python 3.11 scripts/build_e2e_change_plan.py --project-root . --mode discover --json
+   ```
+   Read `runner.framework`, `runner.primary_command`, `runner.config_paths`, `runner.working_directory`, and `spec_count`.
 
-2. Build a change-driven E2E plan.
-   - Prefer explicit changed paths when the user gives them:
+2. **Build a change-driven E2E plan.**
+   - When the user gives explicit changed paths:
      ```bash
      uv run --python 3.11 scripts/build_e2e_change_plan.py --project-root . --mode plan --changed-file src/features/auth/login-form.tsx --json
      ```
-   - If the repo is a git checkout and no `--changed-file` values are passed, the helper tries `git status --porcelain` automatically.
-   - If you need branch-relative change detection, prefer:
+   - If the repo is a git checkout and no `--changed-file` values are passed, the helper runs `git status --porcelain` automatically.
+   - For branch-relative change detection, use:
      ```bash
      uv run --python 3.11 scripts/build_e2e_change_plan.py --project-root . --mode plan --git-base origin/main --json
      ```
    - Read `change_reports` first, then `coverage_gaps`.
 
-3. Update the affected E2E specs.
-   - Prefer existing Playwright or Cypress conventions, fixtures, page objects, and selectors.
+3. **Update the affected E2E specs.**
+   - Follow existing Playwright or Cypress conventions, fixtures, page objects, and selectors.
    - Extend an existing spec when the changed flow is already represented there.
    - Create a new spec only when no existing candidate can absorb the new flow cleanly.
    - Cover the happy path plus the highest-risk branch introduced by the implementation change.
 
-4. Simulate the first verification command before widening.
-   - Run:
-     ```bash
-     uv run --python 3.11 scripts/build_e2e_change_plan.py --project-root . --mode simulate --changed-file src/features/auth/login-form.tsx --json
-     ```
+4. **Simulate the first verification command before widening.**
+   Run:
+   ```bash
+   uv run --python 3.11 scripts/build_e2e_change_plan.py --project-root . --mode simulate --changed-file src/features/auth/login-form.tsx --json
+   ```
    - Use `execution_plan.targeted_command` as the first real run candidate.
-   - Treat `simulate` as command planning only. It does not prove the suite passed.
+   - `simulate` is command planning only. It does not prove the suite passed.
 
-5. Run targeted verification, then widen.
-   - First run the targeted command suggested by the helper.
+5. **Run targeted verification, then widen.**
+   - Run the targeted command suggested by the helper first.
    - Only after the targeted scope passes should you run the broader E2E or repo verification path.
    - If the targeted scope fails, fix that root cause before expanding.
 
@@ -65,6 +80,28 @@ Useful flags:
 - `--git-base <rev>`: use `git diff --name-only <rev>` when branch-relative changes matter more than worktree status.
 - `--framework playwright|cypress`: override auto-detection when the repo is mixed or ambiguous.
 - `--max-matches <n>`: cap candidate specs per changed file.
+
+## Examples
+
+### Example 1: Post-Refactor Test Sync
+
+**Input:** "I refactored the auth flow. Update the E2E tests."
+
+**Output:**
+- Discovers Playwright or Cypress runner.
+- Maps changed auth files to affected specs.
+- Updates login/logout specs to match new flow.
+- Provides targeted verification command.
+
+### Example 2: Coverage Gap Analysis
+
+**Input:** "What E2E coverage is missing for the checkout feature?"
+
+**Output:**
+- Identifies checkout-related implementation files.
+- Ranks existing specs by relevance.
+- Lists uncovered paths (e.g., error states, payment validation).
+- Suggests new spec files or extensions.
 
 ## References
 

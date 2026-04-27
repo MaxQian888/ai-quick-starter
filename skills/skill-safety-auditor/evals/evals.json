@@ -1,0 +1,10 @@
+{
+  "skill": "skill-safety-auditor",
+  "evaluations": [
+    {
+      "name": "audit-new-skill",
+      "prompt": "Audit this skill folder for safety risks before publishing",
+      "criteria": ["Runs audit helper first", "Reads JSON output first", "Restricts edits to safe_fix_plan", "Re-runs audit after repairs"]
+    }
+  ]
+}

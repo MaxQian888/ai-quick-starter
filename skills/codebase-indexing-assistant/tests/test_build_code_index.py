@@ -173,6 +173,23 @@ class BuildCodeIndexTests(unittest.TestCase):
         self.assertIn("src/server.py", entry_paths)
         self.assertNotIn("docs/indexing-playbook.md", entry_paths)
 
+    def test_nested_component_index_barrels_are_not_promoted_to_entry_candidates(self) -> None:
+        repo_root = self.make_repo(
+            {
+                "src/index.ts": "export const bootstrap = true;\n",
+                "src/components/index.ts": "export * from './button';\n",
+                "src/components/button.tsx": "export const Button = () => null;\n",
+            }
+        )
+
+        result = self.run_cli("--root", str(repo_root))
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
+        payload = self.load_payload_from_stdout(result.stdout)
+        entry_paths = {entry["path"] for entry in payload["entry_candidates"]}
+        self.assertIn("src/index.ts", entry_paths)
+        self.assertNotIn("src/components/index.ts", entry_paths)
+
 
 if __name__ == "__main__":
     unittest.main()

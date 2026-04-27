@@ -1,0 +1,23 @@
+{
+  "skill_name": "autonomous-loops",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to run an unattended loop to fix all ESLint warnings in my project using Codex CLI. What's the safest way to set this up?",
+      "expected_output": "Classifies the work as iterative-pr, maps to Codex CLI adapter, generates starter commands with render_loop_command.py, and insists on max-runs and stop conditions.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Help me resume my previous Claude Code session where I was refactoring the auth module.",
+      "expected_output": "Selects the resume pattern, generates Claude-specific resume commands, and advises using a notes file for cross-iteration state.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have a large RFC with multiple dependency layers. How do I orchestrate parallel execution across different parts?",
+      "expected_output": "Selects parallel-dag pattern, generates decomposition scaffolding, advises executing one ready layer at a time with merge review, and warns against full autopilot.",
+      "files": []
+    }
+  ]
+}
