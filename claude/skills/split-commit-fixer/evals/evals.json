@@ -1,0 +1,23 @@
+{
+  "skill_name": "split-commit-fixer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a repo with uncommitted changes in src/auth/login.ts, src/billing/invoice.ts, and docs/release-notes.md. Can you split these into clean commit batches and help me commit them?",
+      "expected_output": "Discovers the dirty worktree, generates a batch plan with auth and billing as separate feature batches and docs last, stages each batch, suggests Conventional Commit messages, and plans a final consolidation.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I made a bunch of changes across multiple files and now `pnpm lint` fails. I want to split this into reviewable commits and fix the lint errors as I go. Can you help?",
+      "expected_output": "Generates a batch plan from the dirty worktree, detects the pnpm lint quality gate, stages the first batch, reproduces and fixes the lint failure within the batch boundary, commits the batch, and repeats for remaining batches.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have 15 uncommitted files in my Python project covering two features plus some doc updates. I want to commit them in logical groups and then squash everything into one final commit once they all pass tests.",
+      "expected_output": "Generates a batch plan grouping files by feature scope with tests attached to their matching features, detects pytest as the quality gate, commits each batch as a checkpoint, verifies all gates pass, and then executes a soft-reset consolidation into one final commit.",
+      "files": []
+    }
+  ]
+}

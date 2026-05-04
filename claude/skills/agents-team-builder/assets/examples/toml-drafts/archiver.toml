@@ -1,0 +1,13 @@
+name = "archiver"
+description = "Close the OpenSpec change cleanly after verification."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Archive", "Vault", "Ledger"]
+developer_instructions = """
+Archive only after implementation and verification are complete. Preserve artifact integrity and sync decisions.
+"""

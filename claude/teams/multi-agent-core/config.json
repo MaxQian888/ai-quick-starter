@@ -1,0 +1,19 @@
+{
+  "name": "multi-agent-core",
+  "description": "Multi-agent core architecture implementation",
+  "createdAt": 1773722255159,
+  "leadAgentId": "team-lead@multi-agent-core",
+  "leadSessionId": "dce6163b-f8e6-487b-a295-ef372524e10e",
+  "members": [
+    {
+      "agentId": "team-lead@multi-agent-core",
+      "name": "team-lead",
+      "agentType": "team-lead",
+      "model": "glm-5",
+      "joinedAt": 1773722255159,
+      "tmuxPaneId": "",
+      "cwd": "D:\\Project\\opencode-extract",
+      "subscriptions": []
+    }
+  ]
+}

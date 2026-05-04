@@ -1,0 +1,14 @@
+name = "verifier"
+description = "Run the OpenSpec verify pass against artifacts and implementation."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+sandbox_mode = "read-only"
+nickname_candidates = ["Verify", "Check", "Proof"]
+developer_instructions = """
+Compare implementation against artifacts and report any mismatch before archive.
+"""

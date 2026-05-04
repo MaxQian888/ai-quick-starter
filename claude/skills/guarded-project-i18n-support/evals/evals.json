@@ -1,0 +1,21 @@
+{
+  "skill": "guarded-project-i18n-support",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "nextjs-i18n",
+      "prompt": "Add internationalization to my Next.js app",
+      "criteria": ["Runs planner script", "Recommends next-intl", "Staged rollout plan"]
+    },
+    {
+      "id": "vue-i18n",
+      "prompt": "Set up i18n for my Vue 3 project",
+      "criteria": ["Detects Vue stack", "Recommends vue-i18n", "Wires locale routing"]
+    },
+    {
+      "id": "existing-i18n-extension",
+      "prompt": "Add Spanish support to an app that already uses react-i18next",
+      "criteria": ["Extends existing system", "Does not introduce second provider", "Adds locale files"]
+    }
+  ]
+}

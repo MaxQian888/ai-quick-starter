@@ -1,0 +1,23 @@
+{
+  "skill_name": "agents-team-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a project brief for rebuilding our ecommerce platform. Can you plan a Codex subagent team to execute it?",
+      "expected_output": "Runs the generator script, decomposes tasks before naming agents, detects the appropriate workflow profile, emits a Markdown team plan, JSON truth-source, and .toml drafts, and reports parallel groups and risks.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We need to implement an OpenSpec change with design, spec, and implementation phases. How should the team be structured?",
+      "expected_output": "Detects the OpenSpec workflow profile, keeps design and planning gates serial, parallelizes only the implementation phases allowed by the workflow, and respects verification-before-completion gates.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Can you install the generated agent configurations into my Codex setup?",
+      "expected_output": "Treats .toml files as drafts until explicit install is requested, uses --install with manifest recording, and only manages files that the manifest owns.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+name = "reviewer"
+description = "Review and regression-focused quality pass."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Audit", "Guard", "Pulse"]
+developer_instructions = """
+Review outputs for regressions, missing tests, and unsafe assumptions. Prefer targeted verification and concise findings.
+"""

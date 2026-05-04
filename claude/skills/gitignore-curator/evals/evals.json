@@ -1,0 +1,23 @@
+{
+  "skill_name": "gitignore-curator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just cloned a Node.js project and `git status` shows a ton of untracked files — node_modules, .next, coverage, and some .env files. Can you clean up my .gitignore so I don't accidentally commit generated stuff? The repo is at ./my-web-app.",
+      "expected_output": "Inspects the repo, detects Node/Next.js stack signals, reviews existing .gitignore, proposes safe additions (node_modules/, .next/, coverage/, .env.local), routes editor noise to .git/info/exclude if appropriate, and applies them after analysis.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My Python project has a lot of cache directories showing up in git status — __pycache__, .pytest_cache, .mypy_cache, and a .venv folder. Can you review what I should be ignoring? Project is at ./python-service.",
+      "expected_output": "Inspects the repo, detects Python stack signals, reviews existing .gitignore and .git/info/exclude, proposes safe additions (__pycache__/, .pytest_cache/, .mypy_cache/, .venv/, .env), explains routing choices, and surfaces any tracked-file conflicts before applying.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "This isn't a git repo — it's just a plain workspace at ./legacy-project with a bunch of .idea metadata, some tmp directories, and a .env file. Can you set up ignore rules so I don't have to see this clutter?",
+      "expected_output": "Treats the directory as a non-git workspace, detects observed directories and stack signals, routes all rules to .gitignore (since .git/info/exclude is unavailable), stays conservative with cache/temp/editor patterns only, proposes safe additions, and confirms before applying.",
+      "files": []
+    }
+  ]
+}

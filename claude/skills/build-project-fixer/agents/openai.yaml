@@ -1,0 +1,14 @@
+interface:
+  display_name: "Build Project Fixer"
+  short_description: "Discover build checks and repair failures safely"
+  default_prompt: "Use $build-project-fixer to discover this repository's real build and quality-check commands, reproduce the failing step, fix the root cause, and re-run verification without weakening checks or breaking existing behavior."
+chains:
+  upstream:
+    - feature-optimization-planner
+    - component-reorg-executor
+    - agents-team-builder
+    - guarded-component-i18n-fix
+  downstream:
+    - commit-quality-fixer
+  common_sequences:
+    - [build-project-fixer, commit-quality-fixer]

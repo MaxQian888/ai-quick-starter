@@ -1,0 +1,15 @@
+interface:
+  display_name: "Agents Team Builder"
+  short_description: "Design Codex or Claude Code agent teams and config drafts."
+  default_prompt: "Use $agents-team-builder to decompose this project into an agent team. Default target is Codex .toml; pass --target claude-code or --target both for Claude Code subagent .md files plus an agent-team brief."
+chains:
+  upstream: []
+  downstream:
+    - development-task-orchestrator
+    - build-project-fixer
+    - component-unit-test-completer
+    - e2e-test-completer
+    - github-actions-ci-builder
+  common_sequences:
+    - [agents-team-builder, development-task-orchestrator, build-project-fixer]
+    - [agents-team-builder, build-project-fixer]

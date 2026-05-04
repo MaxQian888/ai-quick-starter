@@ -1,0 +1,32 @@
+{
+  "name": "docker-article",
+  "description": "Research and write a comprehensive Docker operations article with runnable examples",
+  "createdAt": 1774756048993,
+  "leadAgentId": "team-lead@docker-article",
+  "leadSessionId": "653f71c9-a7e8-4149-bfde-e9e2db56eee2",
+  "members": [
+    {
+      "agentId": "team-lead@docker-article",
+      "name": "team-lead",
+      "agentType": "team-lead",
+      "model": "glm-5.1",
+      "joinedAt": 1774756048993,
+      "tmuxPaneId": "",
+      "cwd": "D:\\Project\\discovery",
+      "subscriptions": []
+    },
+    {
+      "agentId": "compose-research@docker-article",
+      "name": "compose-research",
+      "model": "claude-opus-4-6",
+      "prompt": "You are a researcher. Your task is to thoroughly research Docker Compose v2 and orchestration by searching the web. This is a RESEARCH-ONLY task — do NOT write any files.\n\nClaim task #2 from the task list first, then research the following topics by searching the web:\n\n1. **Docker Compose V2**: Differences from v1, new commands (docker compose vs docker-compose), compose file format versions (v3.8+ and newer), latest features 2025-2026.\n2. **Compose File Structure**: services, networks, volumes, configs, secrets. Include all important service configuration keys (image, build, ports, environment, env_file, volumes, networks, depends_on, healthcheck, restart, deploy, resource limits).\n3. **Networking in Compose**: Default network, custom networks, network aliases, internal networks, link-local.\n4. **Volumes and Persistence**: Named volumes, bind mounts, tmpfs in compose. Volume drivers.\n5. **Advanced Features**: profiles, extends, x- extensions, environment variable interpolation (.env file), compose watch, compose alpha (dry-run), compose convert.\n6. **Complete Real-World Example**: A full-stack application compose file with: Nginx reverse proxy, Node.js/Go API, PostgreSQL database, Redis cache, with proper health checks, depends_on conditions, named volumes, custom network, environment variables, restart policies.\n\nUse WebSearch extensively. After your research, send ALL findings to team-lead@docker-article via SendMessage. Include complete, runnable docker-compose.yml examples. Mark task #2 as completed when done.",
+      "color": "purple",
+      "planModeRequired": false,
+      "joinedAt": 1774756126369,
+      "tmuxPaneId": "in-process",
+      "cwd": "D:\\Project\\discovery",
+      "subscriptions": [],
+      "backendType": "in-process"
+    }
+  ]
+}

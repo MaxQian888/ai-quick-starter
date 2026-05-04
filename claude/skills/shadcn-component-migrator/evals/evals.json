@@ -1,0 +1,32 @@
+{
+  "skill_name": "shadcn-component-migrator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Migrate all components in the folder <HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-simple-components\\test-components to shadcn/ui equivalents. Ensure the public API is preserved and responsive classes survive.",
+      "expected_output": "custom-button.tsx should be migrated to use shadcn/ui Button, custom-badge.tsx should be migrated to use shadcn/ui Badge, custom-separator.tsx should be migrated to use shadcn/ui Separator. All original props interfaces must be preserved.",
+      "files": [
+        "<HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-simple-components\\test-components\\custom-button.tsx",
+        "<HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-simple-components\\test-components\\custom-badge.tsx",
+        "<HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-simple-components\\test-components\\custom-separator.tsx"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Audit the folder <HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-complex-components\\test-components for shadcn/ui migration. Skip any components that already use multiple shadcn/ui primitives or have complex internal logic.",
+      "expected_output": "composite-card.tsx should be skipped (already uses Card, Badge, Progress). hook-heavy.tsx should be skipped (uses useState, useEffect, useCallback, useRef). No files should be modified.",
+      "files": [
+        "<HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-complex-components\\test-components\\composite-card.tsx",
+        "<HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-complex-components\\test-components\\hook-heavy.tsx"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Migrate components in <HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-responsive\\test-components to shadcn/ui. Pay special attention to responsive Tailwind classes — they must be preserved after migration.",
+      "expected_output": "responsive-banner.tsx should be migrated while keeping all responsive classes (sm:flex-row, md:p-5, lg:rounded-xl, sm:text-base, md:text-lg, sm:flex-1, etc.). The original props interface must be preserved.",
+      "files": [
+        "<HOME>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-responsive\\test-components\\responsive-banner.tsx"
+      ]
+    }
+  ]
+}

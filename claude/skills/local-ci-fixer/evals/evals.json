@@ -1,0 +1,21 @@
+{
+  "skill": "local-ci-fixer",
+  "version": "1.0",
+  "evaluations": [
+    {
+      "id": "diagnose-failing-workflow",
+      "prompt": "My GitHub Actions workflow is failing on the test step, help me fix it",
+      "criteria": ["Runs discover script", "Identifies failing step", "Proposes targeted fix"]
+    },
+    {
+      "id": "local-ci-reproduction",
+      "prompt": "Run my CI tests locally before I push",
+      "criteria": ["Selects runnable mode", "Reports skipped steps", "Verifies locally"]
+    },
+    {
+      "id": "workflow-interpretation",
+      "prompt": "Explain what this GitHub Actions workflow does",
+      "criteria": ["Maps workflow jobs", "Interprets uses steps", "Notes blockers"]
+    }
+  ]
+}

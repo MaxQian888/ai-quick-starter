@@ -1,0 +1,45 @@
+{
+  "name": "endpoint-leak-audit",
+  "description": "审计 OpenAI Compatible provider 切换后可能泄漏到 Anthropic 端点的所有代码路径，并提出修复方案",
+  "createdAt": 1775013233172,
+  "leadAgentId": "team-lead@endpoint-leak-audit",
+  "leadSessionId": "5cd99355-348a-4f76-a726-c97bfe81b2d0",
+  "members": [
+    {
+      "agentId": "team-lead@endpoint-leak-audit",
+      "name": "team-lead",
+      "agentType": "team-lead",
+      "model": "qwen/qwen3.6-plus-preview:free",
+      "joinedAt": 1775013233172,
+      "tmuxPaneId": "",
+      "cwd": "D:\\Project\\open-claude-code",
+      "subscriptions": []
+    },
+    {
+      "agentId": "auxiliary-auditor@endpoint-leak-audit",
+      "name": "auxiliary-auditor",
+      "model": "claude-opus-4-6",
+      "prompt": "Research task: Find all secondary/auxiliary API calls in the codebase at D:\\Project\\open-claude-code\\src that might still hit Anthropic endpoints even when an OpenAI-compatible provider profile is active.\n\nContext: The main chat flow correctly routes via resolveEffectiveAPIProvider(). But the app makes many OTHER calls that could bypass this routing:\n\nFocus areas:\n1. WebFetch preflight checks (src/tools/WebFetchTool/) - checkDomainBlocklist calls api.anthropic.com\n2. GrowthBook/Feature flags (src/services/analytics/growthbook.ts) - remote evaluation calls\n3. Advisor tool (uses queryHaiku internally)\n4. MCP proxy connections (claude.ai proxy URLs)  \n5. Session ingress/persistence\n6. Metrics/analytics endpoints\n7. OAuth/token refresh paths\n\nSearch for these patterns:\n1. Use mcp__augment-context-engine__codebase-retrieval to search for: \"secondary api calls, domain blocklist, preflight, growthbook remote eval, advisor tool helper, analytics endpoint, telemetry endpoint, metrics endpoint, api.anthropic.com hardcoded URL\"\n\n2. Grep across all ts/tsx files for:\n   - \"api.anthropic.com\"\n   - \"claude.ai\" (as URL base)\n   - \"ant-haiku\"\n   - \"haiku\" (in model references)\n   - \"checkDomainBlocklist\"\n   - \"remoteEval\" / \"growthbook\" related fetch calls\n   - \"advisor\" related API calls\n\n3. For each find, determine:\n   - Is this a hardcoded Anthropic URL?\n   - Does this get called during normal user interaction?\n   - Does it respect the active provider profile or bypass it?\n\nReturn a comprehensive audit report.",
+      "color": "green",
+      "planModeRequired": false,
+      "joinedAt": 1775013262502,
+      "tmuxPaneId": "in-process",
+      "cwd": "D:\\Project\\open-claude-code",
+      "subscriptions": [],
+      "backendType": "in-process"
+    },
+    {
+      "agentId": "solution-designer@endpoint-leak-audit",
+      "name": "solution-designer",
+      "model": "claude-opus-4-6",
+      "prompt": "Design research task: Given the identified problem that session-level OpenAI-compatible provider profiles can be bypassed by code paths that only check environment variables (not session profiles), research the existing architecture and propose solution approaches.\n\nThe core issue:\n- `getAPIProvider()` in `src/utils/model/providers.ts` only reads env vars\n- `getAnthropicClient()` in `src/services/api/client.ts` only checks env vars like CLAUDE_CODE_USE_BEDROCK\n- Session profiles are stored in globalConfig and passed through Options.activeProviderProfileId\n- But many code paths don't have access to Options\n\nRead these files in D:\\Project\\open-claude-code\\src:\n1. `services/api/claude.ts` - lines 1403-1487 for how the main routing works\n2. `utils/model/providers.ts` - full file for the provider resolution logic  \n3. `utils/model/model.ts` - for getSmallFastModel, getDefaultSonnetModel etc\n4. `bootstrap/state.ts` - for session state management\n5. `commands/provider/provider.tsx` - for how profiles are set/activated\n\nResearch questions:\n1. How is `activeProviderProfileId` currently stored and accessed?\n2. Which functions call `getAPIProvider()` vs `resolveEffectiveAPIProvider()`?\n3. What would be the minimal change to make getAPIProvider() session-aware?\n4. Are there singleton/state patterns already in use that could be leveraged?\n\nPropose at least 3 different fix approaches with pros/cons for each, considering:\n- Minimal code changes\n- Backwards compatibility\n- Performance impact\n- Risk of breaking existing functionality\n\nReturn findings and proposed solutions.",
+      "color": "yellow",
+      "planModeRequired": false,
+      "joinedAt": 1775013273967,
+      "tmuxPaneId": "in-process",
+      "cwd": "D:\\Project\\open-claude-code",
+      "subscriptions": [],
+      "backendType": "in-process"
+    }
+  ]
+}

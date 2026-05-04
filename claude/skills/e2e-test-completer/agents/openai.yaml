@@ -1,0 +1,11 @@
+interface:
+  display_name: "E2E Test Completer"
+  short_description: "Sync E2E tests to code changes safely"
+  default_prompt: "Use $e2e-test-completer to map code changes to affected E2E flows, update or add missing tests, and simulate the safest verification command before running the full suite."
+chains:
+  upstream:
+    - component-unit-test-completer
+  downstream:
+    - build-project-fixer
+  common_sequences:
+    - [component-unit-test-completer, e2e-test-completer, build-project-fixer]

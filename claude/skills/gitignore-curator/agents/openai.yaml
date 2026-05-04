@@ -1,0 +1,11 @@
+interface:
+  display_name: "Gitignore Curator"
+  short_description: "Inspect repos and workspaces, then propose or apply safe ignore rules based on actual stack signals and evidence."
+  default_prompt: "Use $gitignore-curator to look at this repository or workspace, check what's already in .gitignore and related files, and figure out what generated or local-only artifacts should be ignored. Propose the changes with clear reasoning first, then apply them only when I explicitly ask for a direct cleanup."
+chains:
+  upstream:
+    - codebase-indexing-assistant
+  downstream:
+    - commit-quality-fixer
+  common_sequences:
+    - [codebase-indexing-assistant, gitignore-curator, commit-quality-fixer]

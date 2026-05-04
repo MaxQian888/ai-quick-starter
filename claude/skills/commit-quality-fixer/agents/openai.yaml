@@ -1,0 +1,13 @@
+interface:
+  display_name: "Commit Quality Fixer"
+  short_description: "Generate commit messages and fix commit-time quality failures"
+  default_prompt: "Use $commit-quality-fixer to generate a conventional commit message and clear all pre-commit checks before committing."
+chains:
+  upstream:
+    - build-project-fixer
+  downstream:
+    - split-commit-fixer
+    - github-actions-ci-builder
+  common_sequences:
+    - [build-project-fixer, commit-quality-fixer, github-actions-ci-builder]
+    - [commit-quality-fixer, split-commit-fixer, commit-quality-fixer, github-actions-ci-builder]

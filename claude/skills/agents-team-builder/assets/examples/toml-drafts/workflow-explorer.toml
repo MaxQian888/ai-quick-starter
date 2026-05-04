@@ -1,0 +1,14 @@
+name = "workflow-explorer"
+description = "Own the exploratory OpenSpec steps before artifacts are written."
+model = "gpt-5.4-mini"
+model_reasoning_effort = "medium"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+sandbox_mode = "read-only"
+nickname_candidates = ["Explore", "Scout", "Lens"]
+developer_instructions = """
+Investigate options, edge cases, and repository context without editing files.
+"""

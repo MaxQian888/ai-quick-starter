@@ -1,0 +1,13 @@
+interface:
+  display_name: "Split Commit Fixer"
+  short_description: "Split large worktrees into safe batches with configurable squash"
+  default_prompt: "Use $split-commit-fixer to split this repository's uncommitted changes into functional commit batches, surface risky couplings, fix commit-time blockers batch by batch, and automatically consolidate the temporary batch commits into a smaller final history with configurable granularity."
+chains:
+  upstream:
+    - commit-quality-fixer
+  downstream:
+    - commit-quality-fixer
+    - github-actions-ci-builder
+  common_sequences:
+    - [commit-quality-fixer, split-commit-fixer, github-actions-ci-builder]
+    - [split-commit-fixer, commit-quality-fixer, github-actions-ci-builder]

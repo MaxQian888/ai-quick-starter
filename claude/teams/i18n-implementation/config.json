@@ -1,0 +1,19 @@
+{
+  "name": "i18n-implementation",
+  "description": "Add complete i18n support to AgentForge - frontend (next-intl) and backend (go-i18n)",
+  "createdAt": 1774574988391,
+  "leadAgentId": "team-lead@i18n-implementation",
+  "leadSessionId": "31e0e97b-77fc-4c07-9cea-782d23f9e44a",
+  "members": [
+    {
+      "agentId": "team-lead@i18n-implementation",
+      "name": "team-lead",
+      "agentType": "team-lead",
+      "model": "claude-opus-4-6[1m]",
+      "joinedAt": 1774574988391,
+      "tmuxPaneId": "",
+      "cwd": "D:\\Project\\AgentForge",
+      "subscriptions": []
+    }
+  ]
+}

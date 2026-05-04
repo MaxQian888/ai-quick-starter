@@ -1,0 +1,23 @@
+{
+  "skill_name": "e2e-test-completer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just refactored the login form in src/features/auth/login-form.tsx and now the CI E2E tests are failing. Can you figure out which tests are affected, update them, and tell me the safest command to run first?",
+      "expected_output": "Discovers the E2E runner, maps login-form.tsx to affected auth specs, updates or extends the matching test files, and simulates the narrowest verification command before suggesting broader runs.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We added a new checkout flow in src/features/billing/checkout/ but I don't think we have any E2E coverage for it yet. Can you check what exists and add the missing tests?",
+      "expected_output": "Discovers existing E2E specs, identifies the checkout flow as a coverage gap, adds or extends specs to cover the new happy path and a high-risk branch, then simulates the targeted verification command.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I made changes across a few files in our monorepo's apps/web directory. I want to run only the E2E tests that might be affected instead of the whole suite. Can you find the right ones?",
+      "expected_output": "Detects the nested E2E runner under apps/web, maps changed files to affected specs within that subtree, respects the working directory for command paths, and produces a scoped targeted command.",
+      "files": []
+    }
+  ]
+}

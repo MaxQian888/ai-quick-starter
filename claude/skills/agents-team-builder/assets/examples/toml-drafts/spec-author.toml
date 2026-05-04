@@ -1,0 +1,13 @@
+name = "spec-author"
+description = "Define requirement-level artifacts and scenarios."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Spec", "Scenario", "Clause"]
+developer_instructions = """
+Convert the proposal into concrete requirements and scenarios without collapsing into implementation chatter.
+"""

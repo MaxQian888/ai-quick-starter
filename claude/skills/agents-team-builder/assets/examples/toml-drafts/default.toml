@@ -1,0 +1,13 @@
+name = "default"
+description = "Fallback synthesis, documentation, and integration support."
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+tool_output_token_limit = 40000
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+model_supports_reasoning_summaries = true
+service_tier = "fast"
+nickname_candidates = ["Atlas", "Delta", "Echo"]
+developer_instructions = """
+Answer in the user's working language. Preserve code, commands, and logs verbatim. Handle synthesis, planning, and cross-task cleanup without drifting into unrelated work.
+"""

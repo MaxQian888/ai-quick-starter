@@ -1,0 +1,517 @@
+{
+  "request": {
+    "project_name": "superpowers-demo",
+    "project_slug": "superpowers-demo",
+    "input_path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\superpowers-input.md",
+    "source_summary": "# Superpowers Execution Brief\n\nWe already finished the design discussion and want the rest of the work to follow the local superpowers flow.\n\nPlease use:\n\n- superpowers:writing-plans\n- superpowers:subagent-driven-development\n- verification-before-completion\n\nThe feature includes:\n\n- frontend changes\n- backend changes\n- tests\n\nWe want a team plan that preserves review gates instead of blindly parallelizing every task."
+  },
+  "workflow_profile": "superpowers-plan",
+  "workflow_detection": {
+    "mode": "auto",
+    "signals": [
+      "superpowers:writing-plans",
+      "superpowers:subagent-driven-development",
+      "verification-before-completion"
+    ],
+    "summary": "Detected superpowers planning or execution skill cues."
+  },
+  "workflow_steps": [
+    {
+      "id": "brainstorming",
+      "title": "Brainstorming",
+      "parallelizable": false,
+      "notes": "Keep design clarification on the main thread."
+    },
+    {
+      "id": "writing-plans",
+      "title": "Writing Plans",
+      "parallelizable": false,
+      "notes": "Freeze file boundaries and task granularity before implementation."
+    },
+    {
+      "id": "subagent-driven-development",
+      "title": "Subagent Driven Development",
+      "parallelizable": true,
+      "notes": "Parallelize only independent implementation tasks and keep spec/code review checkpoints."
+    },
+    {
+      "id": "verification-before-completion",
+      "title": "Verification Before Completion",
+      "parallelizable": false,
+      "notes": "Run fresh verification before completion claims."
+    }
+  ],
+  "workflow_integrations": [
+    {
+      "id": "superpowers:brainstorming",
+      "type": "skill",
+      "phase": "design",
+      "summary": "Design before implementation."
+    },
+    {
+      "id": "superpowers:writing-plans",
+      "type": "skill",
+      "phase": "planning",
+      "summary": "Turn the approved design into an implementation plan."
+    },
+    {
+      "id": "superpowers:subagent-driven-development",
+      "type": "skill",
+      "phase": "execution",
+      "summary": "Execute independent plan tasks with implementer and reviewer subagents in the same session."
+    },
+    {
+      "id": "superpowers:executing-plans",
+      "type": "skill",
+      "phase": "execution-fallback",
+      "summary": "Fallback when tasks are tightly coupled or subagents are unavailable."
+    },
+    {
+      "id": "superpowers:verification-before-completion",
+      "type": "skill",
+      "phase": "verification",
+      "summary": "Require fresh verification before claiming completion."
+    }
+  ],
+  "assumptions": [
+    "Used superpowers-input.md as the primary request source.",
+    "This first-pass plan uses keyword heuristics instead of a semantic dependency graph.",
+    "Generated .toml files are reviewable drafts and are not installed automatically.",
+    "Verification work was split into its own phase to avoid false parallelism.",
+    "Applied the superpowers-plan workflow profile to shape extra roles and workflow steps."
+  ],
+  "task_graph": [
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Implement screens, components, and client-side behavior.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "design-assets",
+        "research-notes"
+      ],
+      "writes_to": [
+        "frontend"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "backend",
+      "title": "Backend",
+      "role": "worker",
+      "phase": "implementation",
+      "description": "Implement APIs, services, and server-side orchestration.",
+      "parallelizable": true,
+      "reads_from": [
+        "requirements",
+        "research-notes",
+        "database"
+      ],
+      "writes_to": [
+        "backend"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "role": "worker",
+      "phase": "verification",
+      "description": "Add or run checks that verify the merged behavior.",
+      "parallelizable": false,
+      "reads_from": [
+        "frontend",
+        "backend",
+        "database"
+      ],
+      "writes_to": [
+        "tests",
+        "verification-results"
+      ],
+      "depends_on": [
+        "backend",
+        "frontend"
+      ]
+    }
+  ],
+  "parallel_groups": [
+    {
+      "group_id": "implementation-batch",
+      "goal": "Implementation",
+      "tasks": [
+        "frontend",
+        "backend"
+      ],
+      "max_concurrency": 2,
+      "why_parallelizable": "These tasks share the same phase and do not require one another's immediate writes.",
+      "merge_point": "Review outputs from this batch before handing off to the next phase."
+    }
+  ],
+  "agents": [
+    {
+      "name": "default",
+      "role": "default",
+      "purpose": "Fallback synthesis, documentation, and integration support.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Atlas",
+        "Delta",
+        "Echo"
+      ],
+      "developer_instructions": "Answer in the user's working language. Preserve code, commands, and logs verbatim. Handle synthesis, planning, and cross-task cleanup without drifting into unrelated work.",
+      "owns_tasks": [],
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "implementation-status"
+      ],
+      "writes_to": [
+        "docs",
+        "summaries",
+        "handoff-notes"
+      ]
+    },
+    {
+      "name": "worker",
+      "role": "worker",
+      "purpose": "Execution-focused implementation and fixes.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Forge",
+        "Relay",
+        "Nova"
+      ],
+      "developer_instructions": "Implement only the assigned scope. Validate touched files. Do not revert work owned by other agents. Call out blocked dependencies instead of guessing.",
+      "owns_tasks": [
+        "backend",
+        "frontend",
+        "testing"
+      ],
+      "reads_from": [
+        "brief",
+        "research-notes",
+        "existing-code"
+      ],
+      "writes_to": [
+        "source-code",
+        "tests",
+        "fixes"
+      ]
+    },
+    {
+      "name": "explorer",
+      "role": "explorer",
+      "purpose": "Read-heavy exploration, mapping, and evidence gathering.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Scout",
+        "Trace",
+        "Lens"
+      ],
+      "developer_instructions": "Stay in exploration mode. Read, map, and report findings without editing files. Surface uncertainty and likely next reads.",
+      "owns_tasks": [],
+      "reads_from": [
+        "brief",
+        "repositories",
+        "docs",
+        "public-sources"
+      ],
+      "writes_to": [
+        "findings",
+        "indices",
+        "research-notes"
+      ]
+    },
+    {
+      "name": "reviewer",
+      "role": "reviewer",
+      "purpose": "Review and regression-focused quality pass.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Audit",
+        "Guard",
+        "Pulse"
+      ],
+      "developer_instructions": "Review outputs for regressions, missing tests, and unsafe assumptions. Prefer targeted verification and concise findings.",
+      "owns_tasks": [
+        "testing"
+      ],
+      "reads_from": [
+        "diff",
+        "tests",
+        "logs"
+      ],
+      "writes_to": [
+        "review-findings",
+        "regression-tests"
+      ]
+    },
+    {
+      "name": "planner",
+      "role": "planner",
+      "purpose": "Turn approved specs into execution-ready plans and chunk boundaries.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Draft",
+        "Frame",
+        "Map"
+      ],
+      "developer_instructions": "Focus on implementation planning, explicit file boundaries, and bite-sized steps. Do not skip review checkpoints.",
+      "owns_tasks": [
+        "planning",
+        "documentation"
+      ],
+      "reads_from": [
+        "specs",
+        "requirements"
+      ],
+      "writes_to": [
+        "plans",
+        "task-breakdowns"
+      ]
+    },
+    {
+      "name": "implementer",
+      "role": "implementer",
+      "purpose": "Execute one scoped task at a time from the approved plan.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "workspace-write",
+      "nickname_candidates": [
+        "Forge",
+        "Patch",
+        "Shift"
+      ],
+      "developer_instructions": "Implement only the assigned task, validate touched files, and ask for missing context instead of guessing.",
+      "owns_tasks": [
+        "frontend",
+        "backend",
+        "database",
+        "testing"
+      ],
+      "reads_from": [
+        "plan",
+        "code"
+      ],
+      "writes_to": [
+        "source-code",
+        "tests"
+      ]
+    },
+    {
+      "name": "spec-reviewer",
+      "role": "reviewer",
+      "purpose": "Review whether implementation still matches the approved spec and plan.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Spec Guard",
+        "Trace",
+        "Scope"
+      ],
+      "developer_instructions": "Lead with missing requirements, unexpected behavior changes, and scope drift. Stay read-only.",
+      "owns_tasks": [
+        "spec-review"
+      ],
+      "reads_from": [
+        "specs",
+        "diff"
+      ],
+      "writes_to": [
+        "findings"
+      ]
+    },
+    {
+      "name": "quality-reviewer",
+      "role": "reviewer",
+      "purpose": "Review code quality, regression risk, and test gaps after spec compliance is clear.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Audit",
+        "Pulse",
+        "Guard"
+      ],
+      "developer_instructions": "Focus on real risks, missing tests, and maintainability issues. Avoid style-only commentary.",
+      "owns_tasks": [
+        "quality-review"
+      ],
+      "reads_from": [
+        "diff",
+        "tests",
+        "logs"
+      ],
+      "writes_to": [
+        "findings"
+      ]
+    },
+    {
+      "name": "final-reviewer",
+      "role": "reviewer",
+      "purpose": "Run the final branch-level pass before development is considered complete.",
+      "model": "gpt-5.4",
+      "reasoning_effort": "high",
+      "sandbox_mode": "read-only",
+      "nickname_candidates": [
+        "Final Gate",
+        "Atlas",
+        "Delta"
+      ],
+      "developer_instructions": "Review the combined branch outcome, summarize residual risks, and confirm verification evidence exists.",
+      "owns_tasks": [
+        "final-review"
+      ],
+      "reads_from": [
+        "diff",
+        "verification-results"
+      ],
+      "writes_to": [
+        "summary"
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "agent": "default",
+      "prompt": "Use the default agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "worker",
+      "prompt": "Use the worker agent to handle Backend, Frontend, Testing. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "explorer",
+      "prompt": "Use the explorer agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "reviewer",
+      "prompt": "Use the reviewer agent to handle Testing. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "planner",
+      "prompt": "Use the planner agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "implementer",
+      "prompt": "Use the implementer agent to handle Frontend, Backend, Testing. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "spec-reviewer",
+      "prompt": "Use the spec-reviewer agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "quality-reviewer",
+      "prompt": "Use the quality-reviewer agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    },
+    {
+      "agent": "final-reviewer",
+      "prompt": "Use the final-reviewer agent to handle integration support and overflow tasks. Keep ownership clear, stay within the assigned write scope, and report blockers early."
+    }
+  ],
+  "toml_files": {
+    "default.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\default.toml",
+      "role": "default",
+      "content": "name = \"default\"\ndescription = \"Fallback synthesis, documentation, and integration support.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Atlas\", \"Delta\", \"Echo\"]\ndeveloper_instructions = \"\"\"\nAnswer in the user's working language. Preserve code, commands, and logs verbatim. Handle synthesis, planning, and cross-task cleanup without drifting into unrelated work.\n\"\"\"\n"
+    },
+    "worker.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\worker.toml",
+      "role": "worker",
+      "content": "name = \"worker\"\ndescription = \"Execution-focused implementation and fixes.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Forge\", \"Relay\", \"Nova\"]\ndeveloper_instructions = \"\"\"\nImplement only the assigned scope. Validate touched files. Do not revert work owned by other agents. Call out blocked dependencies instead of guessing.\n\"\"\"\n"
+    },
+    "explorer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\explorer.toml",
+      "role": "explorer",
+      "content": "name = \"explorer\"\ndescription = \"Read-heavy exploration, mapping, and evidence gathering.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Scout\", \"Trace\", \"Lens\"]\ndeveloper_instructions = \"\"\"\nStay in exploration mode. Read, map, and report findings without editing files. Surface uncertainty and likely next reads.\n\"\"\"\n"
+    },
+    "reviewer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\reviewer.toml",
+      "role": "reviewer",
+      "content": "name = \"reviewer\"\ndescription = \"Review and regression-focused quality pass.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Audit\", \"Guard\", \"Pulse\"]\ndeveloper_instructions = \"\"\"\nReview outputs for regressions, missing tests, and unsafe assumptions. Prefer targeted verification and concise findings.\n\"\"\"\n"
+    },
+    "planner.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\planner.toml",
+      "role": "planner",
+      "content": "name = \"planner\"\ndescription = \"Turn approved specs into execution-ready plans and chunk boundaries.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Draft\", \"Frame\", \"Map\"]\ndeveloper_instructions = \"\"\"\nFocus on implementation planning, explicit file boundaries, and bite-sized steps. Do not skip review checkpoints.\n\"\"\"\n"
+    },
+    "implementer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\implementer.toml",
+      "role": "implementer",
+      "content": "name = \"implementer\"\ndescription = \"Execute one scoped task at a time from the approved plan.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nnickname_candidates = [\"Forge\", \"Patch\", \"Shift\"]\ndeveloper_instructions = \"\"\"\nImplement only the assigned task, validate touched files, and ask for missing context instead of guessing.\n\"\"\"\n"
+    },
+    "spec-reviewer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\spec-reviewer.toml",
+      "role": "reviewer",
+      "content": "name = \"spec-reviewer\"\ndescription = \"Review whether implementation still matches the approved spec and plan.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Spec Guard\", \"Trace\", \"Scope\"]\ndeveloper_instructions = \"\"\"\nLead with missing requirements, unexpected behavior changes, and scope drift. Stay read-only.\n\"\"\"\n"
+    },
+    "quality-reviewer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\quality-reviewer.toml",
+      "role": "reviewer",
+      "content": "name = \"quality-reviewer\"\ndescription = \"Review code quality, regression risk, and test gaps after spec compliance is clear.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Audit\", \"Pulse\", \"Guard\"]\ndeveloper_instructions = \"\"\"\nFocus on real risks, missing tests, and maintainability issues. Avoid style-only commentary.\n\"\"\"\n"
+    },
+    "final-reviewer.toml": {
+      "path": "D:\\Project\\skills-test\\agents-team-builder\\assets\\examples\\toml-drafts\\final-reviewer.toml",
+      "role": "reviewer",
+      "content": "name = \"final-reviewer\"\ndescription = \"Run the final branch-level pass before development is considered complete.\"\nmodel = \"gpt-5.4\"\nmodel_reasoning_effort = \"high\"\ntool_output_token_limit = 40000\nmodel_reasoning_summary = \"detailed\"\nmodel_verbosity = \"high\"\nmodel_supports_reasoning_summaries = true\nservice_tier = \"fast\"\nsandbox_mode = \"read-only\"\nnickname_candidates = [\"Final Gate\", \"Atlas\", \"Delta\"]\ndeveloper_instructions = \"\"\"\nReview the combined branch outcome, summarize residual risks, and confirm verification evidence exists.\n\"\"\"\n"
+    }
+  },
+  "execution_plan": [
+    {
+      "step": 1,
+      "task_id": "backend",
+      "title": "Backend",
+      "phase": "implementation",
+      "depends_on": [],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 2,
+      "task_id": "frontend",
+      "title": "Frontend",
+      "phase": "implementation",
+      "depends_on": [],
+      "handoff": "Merge with the next phase only after outputs are reviewed."
+    },
+    {
+      "step": 3,
+      "task_id": "testing",
+      "title": "Testing",
+      "phase": "verification",
+      "depends_on": [
+        "backend",
+        "frontend"
+      ],
+      "handoff": "Complete and verify before proceeding."
+    }
+  ],
+  "risks": [
+    "Too many write-capable agents on overlapping files will erase the value of parallelization.",
+    "If a task's immediate next action depends on another task's output, it should stay serial.",
+    "Generated model and prompt choices are defaults, not guarantees of actual runtime selection.",
+    "Frontend, backend, and database work need an explicit merge point before debugging or QA.",
+    "Do not skip from planning straight to implementation; superpowers expects design and plan checkpoints first."
+  ],
+  "open_questions": [
+    "Should any custom agents be promoted from drafts into persistent ~/.codex/agents/*.toml files?",
+    "Are there repository-specific instructions that should be merged into developer_instructions?",
+    "Should the execution path use subagent-driven-development or executing-plans for this repository state?"
+  ],
+  "install_manifest": {},
+  "installed_files": [],
+  "install_actions": []
+}
