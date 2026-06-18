@@ -1,0 +1,19 @@
+{
+  "expectations": [
+    {
+      "text": "composite-card.tsx should remain unchanged (already uses multiple shadcn/ui components)",
+      "passed": true,
+      "evidence": "File was correctly skipped; output is identical to the original."
+    },
+    {
+      "text": "hook-heavy.tsx should remain unchanged (has multiple React hooks)",
+      "passed": true,
+      "evidence": "File was correctly skipped; output is identical to the original."
+    },
+    {
+      "text": "Report should correctly state why each component was skipped",
+      "passed": true,
+      "evidence": "Report (from agent message) correctly identifies composite-card as using multiple primitives and hook-heavy as having 4 hooks."
+    }
+  ]
+}

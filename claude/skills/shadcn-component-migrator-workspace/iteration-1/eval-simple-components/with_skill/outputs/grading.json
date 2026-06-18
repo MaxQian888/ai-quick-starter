@@ -1,0 +1,29 @@
+{
+  "expectations": [
+    {
+      "text": "custom-button.tsx should import and use shadcn/ui Button",
+      "passed": true,
+      "evidence": "File imports `Button` from `@/components/ui/button` and renders it directly, passing mapped variant/size props."
+    },
+    {
+      "text": "custom-badge.tsx should import and use shadcn/ui Badge",
+      "passed": true,
+      "evidence": "File imports `Badge` from `@/components/ui/badge` and renders it with mapped color prop."
+    },
+    {
+      "text": "custom-separator.tsx should import and use shadcn/ui Separator",
+      "passed": true,
+      "evidence": "File imports `Separator` from `@/components/ui/separator` and passes orientation prop."
+    },
+    {
+      "text": "All migrated components should preserve their original props interfaces",
+      "passed": true,
+      "evidence": "All three files retain the exact same interface names, prop names, types, and defaults as the originals."
+    },
+    {
+      "text": "Migrated components should not duplicate shadcn/ui built-in styles",
+      "passed": true,
+      "evidence": "Components delegate styling to shadcn/ui primitives; only mapping logic and `cn(className)` remain."
+    }
+  ]
+}

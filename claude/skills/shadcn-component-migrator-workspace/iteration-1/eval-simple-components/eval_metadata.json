@@ -1,0 +1,27 @@
+{
+  "eval_id": 1,
+  "eval_name": "simple-components-migration",
+  "prompt": "Migrate all components in the folder C:\\Users\\<user>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-simple-components\\test-components to shadcn/ui equivalents. Ensure the public API is preserved and responsive classes survive.",
+  "assertions": [
+    {
+      "name": "custom-button-uses-shadcn-button",
+      "description": "custom-button.tsx should import and use shadcn/ui Button"
+    },
+    {
+      "name": "custom-badge-uses-shadcn-badge",
+      "description": "custom-badge.tsx should import and use shadcn/ui Badge"
+    },
+    {
+      "name": "custom-separator-uses-shadcn-separator",
+      "description": "custom-separator.tsx should import and use shadcn/ui Separator"
+    },
+    {
+      "name": "props-interface-preserved",
+      "description": "All migrated components should preserve their original props interfaces"
+    },
+    {
+      "name": "no-custom-css-duplication",
+      "description": "Migrated components should not duplicate shadcn/ui built-in styles"
+    }
+  ]
+}

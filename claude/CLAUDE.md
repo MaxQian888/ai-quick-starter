@@ -1,249 +1,240 @@
 # Global Instructions — Claude Code
 
-Applies to every project. A project-level `CLAUDE.md` overrides anything here. Complements the system prompt — rules already in the system prompt (general code style, brevity, no emojis, git safety, subagent prompting basics, Bash-vs-dedicated-tools) are not repeated below.
+Applies to every project; a project-level `CLAUDE.md` overrides this. Complements the system prompt — don't repeat what's already there (code style, brevity, no emojis, git safety, subagent basics). §0 = how to think; §1+ = tools and conventions.
+
+## 0. Behavioral Principles (apply before any tool rule)
+
+From [andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills). For non-trivial work, caution over speed.
+
+- **0.1 Think before coding** — state load-bearing assumptions; if a request has multiple reasonable readings, list them with `AskUserQuestion` instead of silently picking one; push back on a faulty premise or a simpler path.
+- **0.2 Simplicity first** — minimum code that solves it. No abstractions for one call site, no error handling for impossible cases. Self-check: "would a senior call this overengineered?"
+- **0.3 Surgical changes** — every changed line traces to the request. No drive-by refactor / reformat / rename of adjacent code. Clean up only orphans your change created; flag pre-existing dead code, don't delete it.
+- **0.4 Goal-driven** — turn the task into a verifiable check first ("fix the bug" → write a failing repro test, then pass it). Multi-step: list `[step] → verify: [check]` before coding.
 
 ## 1. Environment
 
-- **Shell**: PowerShell 7+ on Windows 11. Use `$env:VAR` (not `$VAR`), `$null` (not `/dev/null`), backtick (`` ` ``) for line continuation. Pipeline `&&` / `||` work the same as bash.
-- **Paths**: `C:\Users\<user>\…`. Quote any path containing spaces.
-- **Locale**: respond in the user's language (often Chinese). Keep technical names, file paths, code identifiers in English.
-- **Dates**: store as ISO 8601 (`YYYY-MM-DD`); convert relative dates ("Thursday", "next week") to absolute before saving to memory.
+- **Shell**: PowerShell 7+ on Windows 11. `$env:VAR` not `$VAR`, `$null` not `/dev/null`, backtick for line-continuation; `&&` / `||` work.
+- **Paths**: `C:\Users\<user>\…`; quote paths with spaces.
+- **Working language**: think, narrate, and write code / commits / tool calls in English. Reply to the user in Chinese only when confirming/reporting results or asking questions (incl. `AskUserQuestion`). Keep technical names, paths, and identifiers in English.
+- **Dates**: ISO 8601; convert relative dates to absolute before saving to memory.
 
 <!-- rtk-instructions v2 -->
-## 2. RTK (Token Optimizer) — Always Use It
+# RTK (Rust Token Killer) - Token-Optimized Commands
 
-**Golden rule**: prefix every shell command with `rtk`. RTK either applies a dedicated filter (60–99% token savings) or passes through unchanged. Always safe.
+## Golden Rule
 
-In chains, every link needs `rtk`:
+**Always prefix commands with `rtk`**. If RTK has a dedicated filter, it uses it. If not, it passes through unchanged. This means RTK is always safe to use.
 
-```
-# ❌ git add . && git commit -m "msg" && git push
-# ✅ rtk git add . && rtk git commit -m "msg" && rtk git push
-```
+**Important**: Even in command chains with `&&`, use `rtk`:
+```bash
+# ❌ Wrong
+git add . && git commit -m "msg" && git push
 
-High-frequency commands:
-
-```
-rtk git status / diff / log / commit / push    # compact git
-rtk vitest run / playwright test / cargo test   # test failures only (~99%)
-rtk tsc / lint / next build                     # grouped errors
-rtk pnpm install / list / outdated              # compact pnpm
-rtk gh pr view <n> / gh pr checks / gh run list # compact GitHub
+# ✅ Correct
+rtk git add . && rtk git commit -m "msg" && rtk git push
 ```
 
-`rtk gain` audits savings; `rtk discover` finds missed opportunities; `rtk --help` for full reference.
+## RTK Commands by Workflow
+
+### Build & Compile (80-90% savings)
+```bash
+rtk cargo build         # Cargo build output
+rtk cargo check         # Cargo check output
+rtk cargo clippy        # Clippy warnings grouped by file (80%)
+rtk tsc                 # TypeScript errors grouped by file/code (83%)
+rtk lint                # ESLint/Biome violations grouped (84%)
+rtk prettier --check    # Files needing format only (70%)
+rtk next build          # Next.js build with route metrics (87%)
+```
+
+### Test (90-99% savings)
+```bash
+rtk cargo test          # Cargo test failures only (90%)
+rtk vitest run          # Vitest failures only (99.5%)
+rtk playwright test     # Playwright failures only (94%)
+rtk test <cmd>          # Generic test wrapper - failures only
+```
+
+### Git (59-80% savings)
+```bash
+rtk git status          # Compact status
+rtk git log             # Compact log (works with all git flags)
+rtk git diff            # Compact diff (80%)
+rtk git show            # Compact show (80%)
+rtk git add             # Ultra-compact confirmations (59%)
+rtk git commit          # Ultra-compact confirmations (59%)
+rtk git push            # Ultra-compact confirmations
+rtk git pull            # Ultra-compact confirmations
+rtk git branch          # Compact branch list
+rtk git fetch           # Compact fetch
+rtk git stash           # Compact stash
+rtk git worktree        # Compact worktree
+```
+
+Note: Git passthrough works for ALL subcommands, even those not explicitly listed.
+
+### GitHub (26-87% savings)
+```bash
+rtk gh pr view <num>    # Compact PR view (87%)
+rtk gh pr checks        # Compact PR checks (79%)
+rtk gh run list         # Compact workflow runs (82%)
+rtk gh issue list       # Compact issue list (80%)
+rtk gh api              # Compact API responses (26%)
+```
+
+### JavaScript/TypeScript Tooling (70-90% savings)
+```bash
+rtk pnpm list           # Compact dependency tree (70%)
+rtk pnpm outdated       # Compact outdated packages (80%)
+rtk pnpm install        # Compact install output (90%)
+rtk npm run <script>    # Compact npm script output
+rtk npx <cmd>           # Compact npx command output
+rtk prisma              # Prisma without ASCII art (88%)
+```
+
+### Files & Search (60-75% savings)
+```bash
+rtk ls <path>           # Tree format, compact (65%)
+rtk read <file>         # Code reading with filtering (60%)
+rtk grep <pattern>      # Search grouped by file (75%)
+rtk find <pattern>      # Find grouped by directory (70%)
+```
+
+### Analysis & Debug (70-90% savings)
+```bash
+rtk err <cmd>           # Filter errors only from any command
+rtk log <file>          # Deduplicated logs with counts
+rtk json <file>         # JSON structure without values
+rtk deps                # Dependency overview
+rtk env                 # Environment variables compact
+rtk summary <cmd>       # Smart summary of command output
+rtk diff                # Ultra-compact diffs
+```
+
+### Infrastructure (85% savings)
+```bash
+rtk docker ps           # Compact container list
+rtk docker images       # Compact image list
+rtk docker logs <c>     # Deduplicated logs
+rtk kubectl get         # Compact resource list
+rtk kubectl logs        # Deduplicated pod logs
+```
+
+### Network (65-70% savings)
+```bash
+rtk curl <url>          # Compact HTTP responses (70%)
+rtk wget <url>          # Compact download output (65%)
+```
+
+### Meta Commands
+```bash
+rtk gain                # View token savings statistics
+rtk gain --history      # View command history with savings
+rtk discover            # Analyze Claude Code sessions for missed RTK usage
+rtk proxy <cmd>         # Run command without filtering (for debugging)
+rtk init                # Add RTK instructions to CLAUDE.md
+rtk init --global       # Add RTK to ~/.claude/CLAUDE.md
+```
+
+## Token Savings Overview
+
+| Category | Commands | Typical Savings |
+|----------|----------|-----------------|
+| Tests | vitest, playwright, cargo test | 90-99% |
+| Build | next, tsc, lint, prettier | 70-87% |
+| Git | status, log, diff, add, commit | 59-80% |
+| GitHub | gh pr, gh run, gh issue | 26-87% |
+| Package Managers | pnpm, npm, npx | 70-90% |
+| Files | ls, read, grep, find | 60-75% |
+| Infrastructure | docker, kubectl | 85% |
+| Network | curl, wget | 65-70% |
+
+Overall average: **60-90% token reduction** on common development operations.
 <!-- /rtk-instructions -->
 
 ## 3. Tools & Information Sources
 
-**Decision tree** — pick the *narrowest* tool that can answer:
+Pick the *narrowest* tool that answers:
 
-1. **Library / SDK / framework API or version-specific behavior** → `mcp__context7`. Training data drifts; context7 is updated within days of releases. Use even when you "know" the answer.
-2. **How a specific GitHub repo works internally** (architecture Q&A) → `mcp__deepwiki` (`ask_question`, `read_wiki_contents`).
-3. **shadcn/ui components** → `mcp__shadcn`. Don't hand-write what shadcn ships.
-4. **Next.js dev / build / upgrade** → `mcp__next-devtools` (`nextjs_docs`, `nextjs_call`).
-5. **Browser automation, UI verification, JS-rendered pages** → `mcp__playwright`.
-6. **HeroUI Native (RN) components** → `mcp__heroui-native`.
-7. **Hard, multi-step reasoning** → `mcp__sequential-thinking`.
-8. **Cross-session knowledge graph** → `mcp__memory`. **Past-conversation recall** → `episodic-memory:search-conversations`.
-9. **Lark / Feishu operations** → matching `lark-*` skill (see §7).
-10. **You don't know which URL holds the answer** → `WebSearch` (cheap; titles + URLs).
-11. **You know the URL** → `WebFetch` / `mcp__fetch__fetch` with an *extraction* prompt ("extract X"), not "summarize" — pages are ~2.5K tokens / 10 KB.
-12. **Stable concepts older than the model cutoff** (algorithms, design patterns, language fundamentals) → training data is fine.
+1. **Library / SDK / framework API or version behavior** → `mcp__context7` (fresher than training data; use even when you "know").
+2. **How a specific GitHub repo works internally** → `mcp__deepwiki`.
+3. **Structure of the *current* codebase** (who calls what, where defined, blast radius) → CodeGraph `codegraph_*` (see below). Grep only for literal text.
+4. **shadcn/ui components** → `mcp__shadcn`.
+5. **Next.js dev / build / upgrade** → `mcp__next-devtools`.
+6. **Browser automation / E2E / visual verify** → `mcp__playwright`; **perf / Lighthouse / network·console** → `mcp__chrome-devtools`.
+7. **HeroUI** → `mcp__heroui-react` (v3 Web) / `mcp__heroui-native` (RN).
+8. **Hard multi-step reasoning** → `mcp__sequential-thinking`.
+9. **Cross-session graph** → `mcp__memory`; **past-conversation recall** → `episodic-memory:search-conversations`.
+10. **Lark / Feishu** → matching `lark-*` skill (§7).
+11. **Find which URL has the answer** → `WebSearch`; **semantic / technical / niche** → `mcp__exa`; **known URL** → `WebFetch` / `mcp__fetch__fetch` / `web_fetch_exa` with an *extraction* prompt, not "summarize".
+12. **Stable concepts older than the cutoff** → training data is fine.
 
-**Web query formulation**:
+**Querying the web**: include version + year, quote errors/symbols verbatim, ask "what does X do" before "why is X broken". `WebSearch`/exa → 1–2 URLs → `WebFetch` extraction → end with a `Sources:` block. Trust order: official docs (via context7) > repo README / DeepWiki > maintainer blogs / RFCs > Stack Overflow (dated) > tutorials.
 
-- Include version + year: `Next.js 16 RSC caching 2026`, not `Next.js caching`.
-- Quote error strings and symbol names verbatim.
-- Avoid leading questions ("why is X broken"); ask "what does X do" first.
-- Zero results → drop one constraint at a time, don't pile on more.
+<!-- CODEGRAPH_START -->
+## CodeGraph
 
-**Source ranking** (highest trust first): official vendor docs (preferably via context7) > source repo README / DeepWiki > maintainer blogs / RFCs / release notes > Stack Overflow (check date + accepted) > tutorial sites > AI-generated content farms.
+If `.codegraph/` exists, a `codegraph_*` MCP serves a tree-sitter graph of every symbol/edge/file — sub-ms, structural answers grep can't give. Prefer it for structural questions; use grep only for literal text or once a file is open.
 
-**Cost discipline**: `WebSearch` → narrow to 1–2 URLs → `WebFetch` with focused extraction. Surface a `Sources:` block with markdown links so the user can verify.
+- **Where defined / find symbol** → `codegraph_search`; **signature/source** → `codegraph_node`; **several symbols at once** → `codegraph_explore`.
+- **Who calls X / what X calls** → `codegraph_callers` / `codegraph_callees`; **blast radius** → `codegraph_impact`.
+- **Task/area context** → `codegraph_context` (composes the above — start here for "how does X work"); **files under a path** → `codegraph_files`; **index health** → `codegraph_status`.
+- Answer directly in 2–3 calls (`codegraph_context`, then one `codegraph_explore`); trust results, don't re-verify with grep; the watcher lags writes ~500ms, so don't re-query the same turn.
+- If not initialized, offer: "run `codegraph init -i` to build the index?"
+<!-- CODEGRAPH_END -->
 
-## 4. Workflow Skills — The Default Path
+## 4. Workflow Skills
 
-Use as a chain, in order, for non-trivial work:
+Skills self-describe via metadata — don't enumerate them, just know the chain. Non-trivial work: `superpowers:brainstorming` → `writing-plans` → `executing-plans`, with `test-driven-development` for any feature/fix and `systematic-debugging` for any bug. Before "done" → `verification-before-completion`. Commit/PR → `commit-quality-fixer` then `commit-commands:*`. Review → `requesting-code-review` (own) / `code-review:code-review` (PR). 2+ independent tasks → `dispatching-parallel-agents` (all Agent calls in one message).
 
-1. Creative / feature work → `superpowers:brainstorming` first.
-2. Multi-step implementation → `superpowers:writing-plans` → `superpowers:executing-plans`.
-3. Any feature or bugfix → `superpowers:test-driven-development` (see §6).
-4. Bug, test failure, unexpected behavior → `superpowers:systematic-debugging` (see §6).
-5. Before claiming "done" → `superpowers:verification-before-completion` (see §10).
-6. Pre-commit / CI failures → `commit-quality-fixer`, then `commit-commands:commit` or `commit-commands:commit-push-pr`.
-7. PR review → `superpowers:requesting-code-review` (own work) or `code-review:code-review` (PR).
-8. Receiving review feedback → `superpowers:receiving-code-review`.
-9. Branch finished → `superpowers:finishing-a-development-branch`.
-10. Building UIs → `frontend-design:frontend-design`.
-11. Writing skills → `superpowers:writing-skills`; brand-new skills → `skill-creator:skill-creator`.
+## 5. Tech Stack Defaults (when the project doesn't specify)
 
-For 2+ independent tasks → `superpowers:dispatching-parallel-agents` (put all Agent calls in *one* message).
+Next.js 16 (App Router/RSC) + React 19 + TS strict + Tailwind + shadcn/ui · Vitest / RTL / Playwright · pnpm (npm fallback) · Python (uv) or Rust (cargo) for scripts · React Native + HeroUI Native for mobile. Detect lint/format from the project; never add a second formatter. Unknown repo → `build-project-fixer`.
 
-**Issue / context helpers** (`mattpocock/skills`): incoming bug or feature request → `triage` (state-machine classification before debugging at scale); plan ready to dispatch → `to-issues` (split into independently-grabbable GitHub issues; companion to `to-prd`); stuck on local detail or unfamiliar area → `zoom-out` (request broader architectural context).
+## 6. Testing & Debugging
 
-## 5. Tech Stack Defaults
-
-When a project doesn't specify otherwise:
-
-- **Frontend**: Next.js 16 (App Router, RSC), React 19, TypeScript 5.x strict, Tailwind, shadcn/ui.
-- **Testing**: Vitest (unit), React Testing Library (components), Playwright (E2E).
-- **Lint / format**: detect from project (Biome or ESLint+Prettier); never introduce a second formatter.
-- **Package manager**: pnpm (workspaces), npm fallback.
-- **Backend / scripts**: Python (uv / poetry), Rust (cargo), Node.js. `build-project-fixer` skill auto-detects on unfamiliar repos.
-- **Mobile**: React Native + HeroUI Native.
-
-## 6. Testing & Debugging Playbook
-
-**TDD by default**:
-
-1. Write a failing test that captures the *behavior*, not the implementation.
-2. Confirm it fails for the right reason.
-3. Implement until passing. Refactor.
-4. Don't mock at boundaries you own — prefer integration tests over over-mocked units.
-5. UI tests: query by accessible role / name, not test IDs.
-6. E2E: `mcp__playwright` snapshots for visual regressions over hand-written assertions.
-
-**Debugging** (`superpowers:systematic-debugging`):
-
-1. Reproduce deterministically *first*. No fix without a repro.
-2. One hypothesis at a time. Test, then move on.
-3. Read the actual error / stack trace before guessing.
-4. Bisect: which commit / config / dep change introduced this?
-5. Check `episodic-memory:search-conversations` — solved here before?
-6. Only after root cause is understood: choose fix vs workaround vs prevention.
-
-CI failures specifically → `local-ci-fixer` skill (reproduces GitHub Actions locally with `act`).
+- **TDD** (`superpowers:test-driven-development`): failing test for the *behavior* → confirm it fails for the right reason → implement → refactor. Prefer integration over over-mocked units; query UI by accessible role, not test IDs.
+- **Debugging** (`superpowers:systematic-debugging`): reproduce first, one hypothesis at a time, read the actual stack trace, bisect; check `episodic-memory:search-conversations` for prior fixes. CI failures → `local-ci-fixer`.
 
 ## 7. Lark / Feishu Cheatsheet
 
-Pick the skill by intent:
+The `lark-*` skills self-describe by intent — pick by what you want to do; don't enumerate them here (§13). Only the non-obvious bits:
 
-- **Schedule meeting / agenda / free time** → `lark-calendar` (`+agenda`, `+create`, `+freebusy`, `+rsvp`). For booking rooms or inviting attendees, read `references/lark-calendar-schedule-meeting.md` first.
-- **Messages, group chats** → `lark-im`.
-- **Feishu doc create/edit, cloud-space search** → `lark-doc` (`docs +search` to locate any cloud resource).
-- **Spreadsheets** → `lark-sheets`. **Bitable** (multi-dim, formulas) → `lark-base`.
-- **Tasks / todos** → `lark-task`. **Wiki** → `lark-wiki`.
-- **Email** → `lark-mail`. **Approval** → `lark-approval`. **Attendance** → `lark-attendance`.
-- **Meeting minutes** (ended meetings) → `lark-minutes` / `lark-vc`.
-- **Whiteboard** (diagrams, flows) → `lark-whiteboard` (DSL / PlantUML / Mermaid).
-- **Slides** → `lark-slides`. **Real-time events** → `lark-event`.
-- **Composite workflows** → `lark-workflow-meeting-summary`, `lark-workflow-standup-report`.
-- **Auth / `Permission denied`** → `lark-shared`.
-- **API not covered by any skill** → `lark-openapi-explorer`.
+- **First-time setup**: `lark-cli config init`, then `lark-cli auth login`.
+- **Schedule a meeting / book a room** → `lark-calendar`, but read `references/lark-calendar-schedule-meeting.md` *first*.
+- **Auth errors / `Permission denied` / missing scopes** → `lark-shared`.
+- **No skill covers the API you need** → `lark-openapi-explorer` (fallback).
 
-First-time setup: `lark-cli config init` then `lark-cli auth login`.
+## 8. Code & Style
 
-## 8. Code & Style Conventions
+Indent: 2 sp (TS/JS/JSON/YAML), 4 sp (Python), tabs (Go). `camelCase` vars/fns, `PascalCase` types/components, `SCREAMING_SNAKE_CASE` env. Collocate `Component.tsx` / `.test.tsx` / `.module.css`. `@/...` alias when relative depth ≥ 2. Throw typed errors; validate at boundaries only.
 
-(System prompt already covers comments, docstrings, no backwards-compat shims, no scaffolding for hypothetical needs.)
+## 9. Git
 
-- **Indentation**: 2 spaces (TS / JS / JSON / YAML), 4 spaces (Python), tabs (Go).
-- **Naming**: `camelCase` for vars and functions, `PascalCase` for types and React components, `SCREAMING_SNAKE_CASE` for env constants.
-- **Files**: collocate `Component.tsx` + `Component.test.tsx` + `Component.module.css`.
-- **Imports**: `@/...` absolute aliases when relative depth ≥ 2.
-- **Errors**: throw typed errors with context. Validate at system boundaries only.
+- **Branch off main** (GitHub Flow), never commit to main: `<type>/<short-kebab>`. Squash-merge via PR; link `Fixes #N`.
+- **Conventional Commits + 50/72**: `<type>[scope][!]: <subject>` imperative ≤72; body explains *why*; breaking → `feat!:` + `BREAKING CHANGE:` footer. Skills: `conventional-branch`, `commit-commands:*`.
+- **Hook fails** → fix root cause, re-stage, new commit (never `--amend`).
+- **Worktrees** (`superpowers:using-git-worktrees`): copy `.env*` manually; **on Windows, close editors/terminals inside before `git worktree remove`** (open handles block it).
 
-## 9. Git Workflow
+## 10. Verification Before "Done"
 
-(System prompt already enforces: never `--no-verify`, never force-push to `main`, never amend pushed commits, prefer specific files over `git add .`/`-A`, commit only when explicitly asked, HEREDOC for messages with `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` trailer.)
-
-**Branching (GitHub Flow)**:
-
-- Feature branches off `main`. Never commit directly to `main` / `master`.
-- Branch names: `<type>/<short-kebab>` — `feat/auth-redirect`, `fix/empty-cart-crash`, `chore/bump-deps`.
-- Squash-merge via PR. Rebase only on local unpushed commits.
-
-**Conventional Commits + 50/72**:
-
-- Format: `<type>[scope][!]: <subject>` — imperative, ≤72 chars (target 50), no trailing period.
-- Types: `feat` `fix` `docs` `style` `refactor` `perf` `test` `chore` `build` `ci` `revert`.
-- Breaking: `feat!: …` *and* a `BREAKING CHANGE: <reason>` footer (uppercase).
-- Body wraps at 72 cols; explains *why*, not *what*.
-- Spec: [conventionalcommits.org](https://www.conventionalcommits.org/en/v1.0.0/).
-
-**Hooks**: if a hook fails, fix the root cause, re-stage, create a *new* commit (the failed one was never created — don't `--amend`).
-
-**Worktrees** (`superpowers:using-git-worktrees`):
-
-- Use for parallel feature work, plan execution, or risky experiments.
-- After `git worktree add`: copy `.env*` files manually (gitignored, don't carry over). Re-run `pnpm install` if `node_modules` is missing.
-- Cleanup: `rtk git worktree remove <path>`. **On Windows, close all editors / terminals inside the worktree first** — open file handles cause removal to fail.
-- Periodic: `rtk git worktree prune`; `commit-commands:clean_gone` removes local branches whose remote is gone.
-
-**GitHub PRs**:
-
-- Link issues with `Fixes #N` / `Closes #N` — auto-closes on merge.
-- WIP: `--draft`. Self-assign with `--assignee @me` when solo.
-- Read review comments: `rtk gh api repos/<owner>/<repo>/pulls/<n>/comments`.
-
-**Signing**: honor whatever the user / project configured (GPG, SSH, or none). Never `--no-gpg-sign`.
-
-## 10. Verification Before Done
-
-Never claim "done" / "fixed" / "passing" without running checks. Pick what applies:
-
-- Unit tests → `rtk vitest run` / `rtk cargo test`
-- E2E → `rtk playwright test`
-- Types → `rtk tsc` (clean)
-- Lint → `rtk lint` (clean)
-- Build → `rtk next build` / `rtk cargo build`
-- Git state → `rtk git status` clean
-- UI changes → drive `mcp__playwright` to visually verify, or explicitly state "I cannot verify the UI from here"
-
-Show command output, not summaries of it.
+Never claim done/fixed/passing without running the check and showing its output: tests (`rtk vitest run` / `cargo test`), E2E (`rtk playwright test`), types (`rtk tsc`), lint, build, `rtk git status`. UI changes → verify via `mcp__playwright` or say "I can't verify the UI from here".
 
 ## 11. Memory & Recall
 
-- **Auto-memory** (`~/.claude/memory/`) captures session learnings — let it work; don't duplicate here.
-- **`episodic-memory:search-conversations`** — recall how something was solved before. Use *before* declaring "I don't know how to approach this."
-- **`mcp__memory`** — persistent knowledge graph for cross-project entities and relations.
-- **CLAUDE.md** = stable rules only. Project-specific knowledge → project-level `CLAUDE.md`.
-- **Verify-before-trust**: a memory naming a file / function / flag is a *historical claim*. Confirm it still exists (Read / Grep) before acting on it.
+Let auto-memory (`~/.claude/memory/`) capture session learnings. `episodic-memory:search-conversations` before declaring "I don't know how"; `mcp__memory` for cross-project entities. A memory naming a file/symbol/flag is a *historical claim* — verify it still exists before acting.
 
 ## 12. Prompt Optimization
 
-(System prompt already covers: brief subagents like a smart colleague who just walked into the room; never delegate understanding; put parallel Agent calls in one tool-use block.)
-
-**`project-prompt-optimizer` skill** — invoke when:
-
-- User gave a vague execution request ("fix the bug", "improve this module").
-- A prompt will be reused (cron, `/loop`, repeated dispatch).
-- The repo has heavy conventions (custom test runners, CI gates) a generic prompt would miss.
-
-**Subagent vs inline**:
-
-- ✅ Open-ended cross-codebase questions, 2+ independent tasks, work whose raw output would pollute main context.
-- ❌ Tasks completable in 1–2 tool calls — delegation overhead exceeds benefit.
-
-**Self-prompts** (`TaskCreate`, `ScheduleWakeup`, `CronCreate`):
-
-- Treat as subagent prompts — future-you has no context either.
-- Specify task, intent, constraints, and the *signal* to watch for.
-- `ScheduleWakeup`: prompt-cache TTL is 5 min. Pick `delaySeconds` of **270** (warm) or **≥1200** (commit to cold restart). Avoid 300 — worst of both.
-
-**Ask vs assume** (`AskUserQuestion`):
-
-- Ask when requirements are unclear, multiple valid approaches exist, or load-bearing assumptions need verification. ≤4 questions × 2–4 options.
-- Don't ask for trivial scope (typo, rename, log line).
-
-**Prompt anti-patterns**:
-
-- ❌ Vague verbs — "optimize", "make it better". Rewrite as: *symptom + likely location + definition of fixed*.
-- ❌ Missing context — error text, file paths, what already failed.
-- ❌ Prescribed step-by-step procedure where the premise might be wrong.
-- ❌ "Based on your findings, do X" — that's delegation of understanding.
+- **`project-prompt-optimizer`** when a request is a vague verb ("fix the bug"), a prompt will be reused (cron, `/loop`), or the repo has conventions a generic prompt would miss.
+- **Subagent vs inline**: delegate open-ended cross-codebase questions, 2+ independent tasks, or output that would pollute context; inline anything 1–2 tool calls finish.
+- **Self-prompts** (`TaskCreate`, `ScheduleWakeup`, `CronCreate`): future-you has no context — give task, intent, constraints, the *signal* to watch. `ScheduleWakeup` TTL 5 min: pick **270** (warm) or **≥1200** (cold), never 300.
+- **`AskUserQuestion`** (interface for §0.1): ask when requirements are unclear or assumptions load-bearing; skip trivial scope.
 
 ## 13. Setup-Specific Anti-patterns
 
-(System prompt already prohibits: destructive git ops without authorization, `--no-verify`, force-push to main, amending pushed commits, `git add .`/`-A`, committing without explicit request, multi-paragraph docstrings, creating planning `.md` files unsolicited, `find`/`grep`/`cat`/`sed`/`head`/`tail` via Bash instead of dedicated tools.)
-
-This setup adds:
-
-- ❌ Running shell commands without `rtk` prefix.
-- ❌ Re-deriving library APIs from training data when `mcp__context7` could fetch fresh docs.
-- ❌ Hand-rolling Feishu API calls when a `lark-*` skill exists (§7).
-- ❌ Hand-writing a UI component when `mcp__shadcn` ships it.
-- ❌ Bash idioms on a PowerShell host — `/dev/null` instead of `$null`, `$VAR` instead of `$env:VAR`.
-- ❌ Locale mismatch — replying in English when the user wrote Chinese (and vice versa).
-- ❌ Enumerating every available skill or MCP — they self-describe via metadata. Reference by purpose.
+- ❌ Shell command without the `rtk` prefix.
+- ❌ Re-deriving library APIs from memory when `mcp__context7` is right there.
+- ❌ Bash idioms on a PowerShell host (`/dev/null`, `$VAR`).
+- ❌ Language mismatch — narrating in Chinese, or sending the user confirmations/questions in English (§1).
+- ❌ Enumerating skills/MCPs — they self-describe.

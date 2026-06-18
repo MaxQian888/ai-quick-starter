@@ -1,11 +1,15 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "autoUpdatesChannel": "latest",
+  "effortLevel": "high",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "permissions": {
-    "defaultMode": "auto"
-  },
   "enabledPlugins": {
+    "claude-code-setup@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "episodic-memory@superpowers-marketplace": true,
@@ -16,9 +20,28 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true
   },
-  "autoUpdatesChannel": "latest",
+  "permissions": {
+    "allow": [
+      "mcp__codegraph__codegraph_search",
+      "mcp__codegraph__codegraph_context",
+      "mcp__codegraph__codegraph_callers",
+      "mcp__codegraph__codegraph_callees",
+      "mcp__codegraph__codegraph_impact",
+      "mcp__codegraph__codegraph_node",
+      "mcp__codegraph__codegraph_status"
+    ],
+    "defaultMode": "auto"
+  },
+  "skillOverrides": {
+    "ai-writing-humanizer": "name-only"
+  },
+  "skipAutoPermissionPrompt": true,
   "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true
+  "statusLine": {
+    "command": "pwsh -NoProfile -NonInteractive -File C:\\Users\\<user>\\.claude\\statusline-command.ps1",
+    "type": "command"
+  }
 }

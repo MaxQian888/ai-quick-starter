@@ -1,0 +1,39 @@
+{
+  "expectations": [
+    {
+      "text": "sm:flex-row responsive class should be preserved",
+      "passed": true,
+      "evidence": "Present on Alert: `sm:flex sm:flex-row sm:items-center sm:gap-4`."
+    },
+    {
+      "text": "md:p-5 responsive class should be preserved",
+      "passed": true,
+      "evidence": "Present on Alert: `md:p-5`."
+    },
+    {
+      "text": "lg:rounded-xl responsive class should be preserved",
+      "passed": true,
+      "evidence": "Present on Alert: `lg:rounded-xl lg:p-6`."
+    },
+    {
+      "text": "sm:text-base responsive class should be preserved",
+      "passed": true,
+      "evidence": "Present on AlertTitle: `sm:text-base`."
+    },
+    {
+      "text": "md:text-lg responsive class should be preserved",
+      "passed": true,
+      "evidence": "Present on AlertTitle: `md:text-lg`."
+    },
+    {
+      "text": "sm:flex-1 responsive class should be preserved",
+      "passed": true,
+      "evidence": "Present on AlertDescription: `sm:flex-1`."
+    },
+    {
+      "text": "Original props interface should be preserved",
+      "passed": true,
+      "evidence": "ResponsiveBannerProps interface is unchanged with title, message, and className."
+    }
+  ]
+}

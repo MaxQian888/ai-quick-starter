@@ -1,0 +1,89 @@
+{
+  "skill_name": "shadcn-component-migrator",
+  "iterations": [
+    {
+      "iteration": 1,
+      "evals": [
+        {
+          "eval_id": 1,
+          "eval_name": "simple-components-migration",
+          "with_skill": {
+            "passed": 5,
+            "total": 5,
+            "pass_rate": 1.0,
+            "duration_seconds": 359.6,
+            "tokens": 39469
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 5,
+            "pass_rate": 0.4,
+            "duration_seconds": 154.9,
+            "tokens": 37618
+          }
+        },
+        {
+          "eval_id": 2,
+          "eval_name": "complex-components-skipped",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1.0,
+            "duration_seconds": 77.3,
+            "tokens": 37481
+          },
+          "without_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1.0,
+            "duration_seconds": 147.7,
+            "tokens": 40058
+          }
+        },
+        {
+          "eval_id": 3,
+          "eval_name": "responsive-classes-preserved",
+          "with_skill": {
+            "passed": 7,
+            "total": 7,
+            "pass_rate": 1.0,
+            "duration_seconds": 332.1,
+            "tokens": 37009
+          },
+          "without_skill": {
+            "passed": 7,
+            "total": 7,
+            "pass_rate": 1.0,
+            "duration_seconds": 95.9,
+            "tokens": 40264
+          }
+        }
+      ],
+      "summary": {
+        "with_skill": {
+          "total_passed": 15,
+          "total_assertions": 15,
+          "overall_pass_rate": 1.0,
+          "mean_duration_seconds": 256.3,
+          "stddev_duration_seconds": 147.3,
+          "mean_tokens": 37986,
+          "stddev_tokens": 1304
+        },
+        "without_skill": {
+          "total_passed": 12,
+          "total_assertions": 15,
+          "overall_pass_rate": 0.8,
+          "mean_duration_seconds": 132.8,
+          "stddev_duration_seconds": 30.0,
+          "mean_tokens": 39313,
+          "stddev_tokens": 1432
+        },
+        "delta": {
+          "pass_rate_delta": 0.2,
+          "duration_delta_seconds": 123.5,
+          "tokens_delta": -1327
+        }
+      }
+    }
+  ]
+}

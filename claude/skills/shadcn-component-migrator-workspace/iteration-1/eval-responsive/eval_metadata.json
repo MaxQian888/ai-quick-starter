@@ -1,0 +1,35 @@
+{
+  "eval_id": 3,
+  "eval_name": "responsive-classes-preserved",
+  "prompt": "Migrate components in C:\\Users\\<user>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-responsive\\test-components to shadcn/ui. Pay special attention to responsive Tailwind classes — they must be preserved after migration.",
+  "assertions": [
+    {
+      "name": "sm-flex-row-preserved",
+      "description": "sm:flex-row responsive class should be preserved"
+    },
+    {
+      "name": "md-p5-preserved",
+      "description": "md:p-5 responsive class should be preserved"
+    },
+    {
+      "name": "lg-rounded-xl-preserved",
+      "description": "lg:rounded-xl responsive class should be preserved"
+    },
+    {
+      "name": "sm-text-base-preserved",
+      "description": "sm:text-base responsive class should be preserved"
+    },
+    {
+      "name": "md-text-lg-preserved",
+      "description": "md:text-lg responsive class should be preserved"
+    },
+    {
+      "name": "sm-flex-1-preserved",
+      "description": "sm:flex-1 responsive class should be preserved"
+    },
+    {
+      "name": "props-interface-preserved",
+      "description": "Original props interface should be preserved"
+    }
+  ]
+}

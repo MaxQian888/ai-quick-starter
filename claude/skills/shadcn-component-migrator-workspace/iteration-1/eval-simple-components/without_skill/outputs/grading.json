@@ -1,0 +1,29 @@
+{
+  "expectations": [
+    {
+      "text": "custom-button.tsx should import and use shadcn/ui Button",
+      "passed": false,
+      "evidence": "File defines its own `customButtonVariants` with cva and renders a native `<button>` — does not use shadcn/ui Button."
+    },
+    {
+      "text": "custom-badge.tsx should import and use shadcn/ui Badge",
+      "passed": false,
+      "evidence": "File defines its own `customBadgeVariants` with cva and renders a native `<span>` — does not use shadcn/ui Badge."
+    },
+    {
+      "text": "custom-separator.tsx should import and use shadcn/ui Separator",
+      "passed": false,
+      "evidence": "File renders a native `<div role='separator'>` with Tailwind classes — does not use shadcn/ui Separator."
+    },
+    {
+      "text": "All migrated components should preserve their original props interfaces",
+      "passed": true,
+      "evidence": "Props interfaces are preserved, though the implementations are inline cva-based instead of shadcn/ui."
+    },
+    {
+      "text": "Migrated components should not duplicate shadcn/ui built-in styles",
+      "passed": false,
+      "evidence": "Baseline recreated shadcn/ui styling with cva, duplicating the built-in style logic instead of delegating to the library components."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "eval_id": 2,
+  "eval_name": "complex-components-skipped",
+  "prompt": "Audit the folder C:\\Users\\<user>\\.claude\\skills\\shadcn-component-migrator-workspace\\iteration-1\\eval-complex-components\\test-components for shadcn/ui migration. Skip any components that already use multiple shadcn/ui primitives or have complex internal logic.",
+  "assertions": [
+    {
+      "name": "composite-card-not-modified",
+      "description": "composite-card.tsx should remain unchanged (already uses multiple shadcn/ui components)"
+    },
+    {
+      "name": "hook-heavy-not-modified",
+      "description": "hook-heavy.tsx should remain unchanged (has multiple React hooks)"
+    },
+    {
+      "name": "correct-skip-reasons",
+      "description": "Report should correctly state why each component was skipped"
+    }
+  ]
+}
